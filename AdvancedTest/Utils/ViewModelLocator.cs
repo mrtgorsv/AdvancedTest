@@ -3,7 +3,7 @@ using AdvancedTest.ViewModel;
 
 namespace AdvancedTest.Utils
 {
-    internal class ViewModelLocator
+    public class ViewModelLocator
     {
         public MainViewModel MainViewModel => IocKernel.Get<MainViewModel>();
     }

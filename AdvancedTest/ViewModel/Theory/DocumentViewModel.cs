@@ -2,17 +2,13 @@
 
 namespace AdvancedTest.ViewModel.Theory
 {
-    public class TheoryPartViewModel : ViewModelBase
+    public class DocumentViewModel : TheoryPartViewModel
     {
         private readonly ITheoryService _theoryService;
 
         private int _currentTheoryPartId;
 
-        public TheoryPartViewModel()
-        {
-            //
-        }
-        public TheoryPartViewModel(int theoryPartId , ITheoryService theoryService)
+        public DocumentViewModel(int theoryPartId , ITheoryService theoryService)
         {
             _theoryService = theoryService;
             _currentTheoryPartId = theoryPartId;

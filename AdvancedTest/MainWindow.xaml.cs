@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using AdvancedTest.Data.Model;
+using AdvancedTest.Utils;
 
 namespace AdvancedTest
 {
@@ -8,9 +9,11 @@ namespace AdvancedTest
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly ViewModelLocator _locator = new ViewModelLocator();
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = _locator.MainViewModel;
         }
 
         private void OnSelectedTheoryPartChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

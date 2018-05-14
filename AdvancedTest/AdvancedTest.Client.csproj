@@ -70,6 +70,9 @@
     <Compile Include="Utils\IoC\IocKernel.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Theory\TestViewModel.cs" />
+    <Compile Include="ViewModel\Theory\DocumentViewModel.cs" />
+    <Compile Include="ViewModel\Theory\TheoryPartViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -121,8 +124,35 @@
       <Name>AdvancedTest.Service</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Content\Tests\initial\" />
+    <Resource Include="Content\Tests\0\1.png" />
+    <Resource Include="Content\Tests\0\10.png" />
+    <Resource Include="Content\Tests\0\11.png" />
+    <Resource Include="Content\Tests\0\12.png" />
+    <Resource Include="Content\Tests\0\13.png" />
+    <Resource Include="Content\Tests\0\14.png" />
+    <Resource Include="Content\Tests\0\15.png" />
+    <Resource Include="Content\Tests\0\16.png" />
+    <Resource Include="Content\Tests\0\17.png" />
+    <Resource Include="Content\Tests\0\18.png" />
+    <Resource Include="Content\Tests\0\19.png" />
+    <Resource Include="Content\Tests\0\2.png" />
+    <Resource Include="Content\Tests\0\20.png" />
+    <Resource Include="Content\Tests\0\21.PNG" />
+    <Resource Include="Content\Tests\0\22.PNG" />
+    <Resource Include="Content\Tests\0\23.PNG" />
+    <Resource Include="Content\Tests\0\24.PNG" />
+    <Resource Include="Content\Tests\0\25.PNG" />
+    <Resource Include="Content\Tests\0\26.PNG" />
+    <Resource Include="Content\Tests\0\27.PNG" />
+    <Resource Include="Content\Tests\0\3.png" />
+    <Resource Include="Content\Tests\0\4.png" />
+    <Resource Include="Content\Tests\0\5.png" />
+    <Resource Include="Content\Tests\0\6.png" />
+    <Resource Include="Content\Tests\0\7.png" />
+    <Resource Include="Content\Tests\0\8.png" />
+    <Resource Include="Content\Tests\0\9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
