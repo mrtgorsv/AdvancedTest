@@ -7,7 +7,7 @@ namespace AdvancedTest
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly ViewModelLocator _locator = new ViewModelLocator();
         public MainWindow()
@@ -20,12 +20,22 @@ namespace AdvancedTest
         {
             if (e.NewValue is TheoryPart theoryPart)
             {
-
+                ShowTheoryTest(theoryPart.Id);
             }
-            else
+            else if (e.NewValue is TheoryDocument theoryDoc)
             {
-                var item = e.NewValue as TheoryDocument;
+                ShowTheoryDoc(theoryDoc.Id);
             }
+        }
+
+        private void ShowTheoryDoc(int theoryDocId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void ShowTheoryTest(int theoryPartId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvancedTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Тестирование" Height="450" Width="800">
     <Grid>
         <DockPanel>
             <TreeView DockPanel.Dock="Left" Width="200px" ItemsSource="{Binding TheoryParts }"

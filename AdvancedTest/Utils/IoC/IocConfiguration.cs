@@ -2,6 +2,7 @@
 using AdvancedTest.Service.Services.Implementation;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.ViewModel;
+using AdvancedTest.ViewModel.Login;
 using Ninject.Modules;
 
 namespace AdvancedTest.Utils.IoC
@@ -10,10 +11,16 @@ namespace AdvancedTest.Utils.IoC
     {
         public override void Load()
         {
-            Bind<ITestService>().To<TestService>().InSingletonScope();
-            Bind<ITheoryService>().To<TheoryService>().InSingletonScope();
             Bind<AppDbContext>().To<AppDbContext>().InSingletonScope();
+
+            Bind<ISecurityManager>().To<SecurityManager>().InSingletonScope();
+
+            Bind<ITestService>().To<TestService>().InSingletonScope();
+            Bind<IUserService>().To<UserService>().InSingletonScope();
+            Bind<ITheoryService>().To<TheoryService>().InSingletonScope();
+
             Bind<MainViewModel>().ToSelf().InTransientScope();
+            Bind<LoginViewModel>().ToSelf().InTransientScope();
         }
     }
 }

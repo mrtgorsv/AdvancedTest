@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AdvancedTest.Data</RootNamespace>
     <AssemblyName>AdvancedTest.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +55,10 @@
     <Compile Include="Migrations\201805141715195_Init.Designer.cs">
       <DependentUpon>201805141715195_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805150611553_UpdateAnswer.cs" />
+    <Compile Include="Migrations\201805150611553_UpdateAnswer.Designer.cs">
+      <DependentUpon>201805150611553_UpdateAnswer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TheoryDocument.cs" />
     <Compile Include="Model\TheoryPart.cs" />
@@ -70,6 +75,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805141715195_Init.resx">
       <DependentUpon>201805141715195_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805150611553_UpdateAnswer.resx">
+      <DependentUpon>201805150611553_UpdateAnswer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
