@@ -1,21 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdvancedTest.Data.Model
 {
-    public partial class UserTheoryTest
+    public class UserTheoryTestMark : UserTheoryElementMark
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [ForeignKey("TheoryPart")]
         public int TheoryPartId { get; set; }
-        [ForeignKey("User")]
-        public int UserId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public int Attempt { get; set; }
         public double Result { get; set; }
 
         public virtual TheoryPart TheoryPart { get; set; }
-        public virtual User User { get; set; }
     }
 }

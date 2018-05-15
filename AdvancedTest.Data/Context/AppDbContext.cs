@@ -9,10 +9,11 @@ namespace AdvancedTest.Data.Context
     {
         public DbSet<User> Users { get; set; }
         public DbSet<TheoryPart> TheoryParts { get; set; }
-        public DbSet<UserTheoryTest> UserTheoryTests { get; set; }
         public DbSet<TheoryTestPart> TheoryTestParts { get; set; }
         public DbSet<TheoryDocument> TheoryDocuments { get; set; }
         public DbSet<TheoryTestPartAnswer> TheoryTestPartAnswers { get; set; }
+        public DbSet<UserTheoryTestMark> UserTheoryTestMarks { get; set; }
+        public DbSet<UserTheoryDocumentMark> UserTheoryDocumentMarks { get; set; }
 
         public AppDbContext()
         {
@@ -60,7 +61,7 @@ namespace AdvancedTest.Data.Context
         }
     }
 
-    public class UserTestMap : EntityTypeConfiguration<UserTheoryTest>
+    public class UserTestMap : EntityTypeConfiguration<UserTheoryTestMark>
     {
         public UserTestMap()
         {

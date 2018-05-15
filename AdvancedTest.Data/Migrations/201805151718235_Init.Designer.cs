@@ -13,7 +13,7 @@ namespace AdvancedTest.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201805141715195_Init"; }
+            get { return "201805151718235_Init"; }
         }
         
         string IMigrationMetadata.Source

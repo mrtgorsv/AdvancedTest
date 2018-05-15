@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="AdvancedTest.Controls.Theory.TestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:test="clr-namespace:AdvancedTest.ViewModels.Test"
+             xmlns:theory="clr-namespace:AdvancedTest.Controls.Theory"
+             mc:Ignorable="d"
+             d:DesignHeight="1024" d:DesignWidth="768">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type test:TestPartViewModel}">
+            <theory:TestPartView />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="240" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="3" Grid.Row="0">
+            <TextBlock Text="{Binding Name}" TextAlignment="Center" />
+        </StackPanel>
+        <ContentControl Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Content="{Binding CurrentTestPart}" >
+        </ContentControl>
+        <Button HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2" Content="Назад"
+                Command="{Binding BackCommand}" Visibility="{Binding CanBack , Converter={StaticResource BoolToHiddenConverter}}" />
+        <Button HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" Content="Начать"
+                Command="{Binding StartTestCommand}" Visibility="{Binding CanStart , Converter={StaticResource BoolToHiddenConverter}}" />
+        <Button HorizontalAlignment="Stretch" Grid.Column="2" Grid.Row="2" Content="{Binding NextButtonText}"
+                Command="{Binding NextPartCommand}" Visibility="{Binding CanNext , Converter={StaticResource BoolToHiddenConverter}}" />
+    </Grid>
+</UserControl>

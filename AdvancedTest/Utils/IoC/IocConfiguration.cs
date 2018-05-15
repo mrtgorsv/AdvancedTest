@@ -1,8 +1,9 @@
 ﻿using AdvancedTest.Data.Context;
 using AdvancedTest.Service.Services.Implementation;
 using AdvancedTest.Service.Services.Interface;
-using AdvancedTest.ViewModel;
 using AdvancedTest.ViewModel.Login;
+using AdvancedTest.ViewModels;
+using AdvancedTest.ViewModels.Test;
 using Ninject.Modules;
 
 namespace AdvancedTest.Utils.IoC
@@ -12,6 +13,7 @@ namespace AdvancedTest.Utils.IoC
         public override void Load()
         {
             Bind<AppDbContext>().To<AppDbContext>().InSingletonScope();
+            Bind<ViewModelLocator>().To<ViewModelLocator>().InSingletonScope();
 
             Bind<ISecurityManager>().To<SecurityManager>().InSingletonScope();
 
@@ -21,6 +23,7 @@ namespace AdvancedTest.Utils.IoC
 
             Bind<MainViewModel>().ToSelf().InTransientScope();
             Bind<LoginViewModel>().ToSelf().InTransientScope();
+            Bind<TestViewModel>().ToSelf().InTransientScope();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AdvancedTest.Data.Context;
+using AdvancedTest.Data.Enum;
 using AdvancedTest.Data.Model;
 
 namespace AdvancedTest.Data.Migrations
@@ -9,7 +10,8 @@ namespace AdvancedTest.Data.Migrations
 
     internal sealed class Configuration : DbMigrationsConfiguration<AdvancedTest.Data.Context.AppDbContext>
     {
-        private int _theorySeq = 0;
+        private int _theorySeq;
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
@@ -21,6 +23,7 @@ namespace AdvancedTest.Data.Migrations
             {
                 CreateDeafaultUser(context);
                 CreateInitialTest(context);
+                CreateFirstTest(context);
             }
         }
 
@@ -46,35 +49,44 @@ namespace AdvancedTest.Data.Migrations
                 Seq = _theorySeq
             };
             _theorySeq++;
-            var first = context.TheoryTestParts.Create();
-            first.TheoryPart = inputTheory;
-            first.Seq = 1;
+            var first = new TheoryTestPart
+            {
+                TheoryPart = inputTheory,
+                Seq = 1,
+                TestType = TestPartType.SingleChoice
+            };
             first.Answers = new List<TheoryTestPartAnswer>
             {
-                new TheoryTestPartAnswer {Text = "11010010", TheoryTestPart = first},
-                new TheoryTestPartAnswer {Text = "11100000", TheoryTestPart = first},
-                new TheoryTestPartAnswer {Text = "11001110", TheoryTestPart = first},
-                new TheoryTestPartAnswer {Text = "11010000 ", TheoryTestPart = first, IsCorrect = true}
+                CreateAnswer(first , "11010010" , 1),
+                CreateAnswer(first , "11100000" , 2),
+                CreateAnswer(first , "11001110" , 3),
+                CreateAnswer(first , "11010000" , 4 , isCorrent:true)
             };
-            var second = context.TheoryTestParts.Create();
-            second.TheoryPart = inputTheory;
-            second.Seq = 2;
+            var second = new TheoryTestPart
+            {
+                TheoryPart = inputTheory,
+                Seq = 2,
+                TestType = TestPartType.SingleChoice
+            };
             second.Answers = new List<TheoryTestPartAnswer>
             {
-                new TheoryTestPartAnswer {Text = "Уменьшился на 20 байт", TheoryTestPart = second, IsCorrect = true},
-                new TheoryTestPartAnswer {Text = "Увеличился на 20 байт", TheoryTestPart = second},
-                new TheoryTestPartAnswer {Text = "Увеличился на 20 бит", TheoryTestPart = second},
-                new TheoryTestPartAnswer {Text = "Уменьшился на 20 бит", TheoryTestPart = second}
+                CreateAnswer(second , "Уменьшился на 20 байт" , 1 , isCorrent:true),
+                CreateAnswer(second , "Увеличился на 20 байт" , 2),
+                CreateAnswer(second , "Увеличился на 20 бит" , 3),
+                CreateAnswer(second , "Уменьшился на 20 бит" , 4)
             };
-            var third = context.TheoryTestParts.Create();
-            third.TheoryPart = inputTheory;
-            third.Seq = 3;
+            var third = new TheoryTestPart
+            {
+                TheoryPart = inputTheory,
+                Seq = 3,
+                TestType = TestPartType.SingleChoice
+            };
             third.Answers = new List<TheoryTestPartAnswer>
             {
-                new TheoryTestPartAnswer {Text = "F:\\Класс10\\", TheoryTestPart = third},
-                new TheoryTestPartAnswer {Text = "F:\\Класс10\\Задания\\Русский\\", TheoryTestPart = third},
-                new TheoryTestPartAnswer {Text = "F:\\Класс10\\Задания", TheoryTestPart = third, IsCorrect = true},
-                new TheoryTestPartAnswer {Text = "F:\\", TheoryTestPart = third}
+                CreateAnswer(third , "F:\\Класс10\\" , 1),
+                CreateAnswer(third , "F:\\Класс10\\Задания\\Русский\\" , 2),
+                CreateAnswer(third , "F:\\Класс10\\Задания" , 3 , isCorrent:true),
+                CreateAnswer(third , "F:\\" , 4)
             };
             inputTheory.TheoryTestParts = new List<TheoryTestPart> {first, second, third};
             context.TheoryParts.Add(inputTheory);
@@ -92,46 +104,104 @@ namespace AdvancedTest.Data.Migrations
                 Seq = _theorySeq
             };
             _theorySeq++;
-            var first = context.TheoryTestParts.Create();
-            first.TheoryPart = firstTheoryPart;
-            first.Seq = 1;
+            var first = new TheoryTestPart
+            {
+                TheoryPart = firstTheoryPart,
+                Seq = 1,
+                TestType = TestPartType.SingleChoice
+            };
             first.Answers = new List<TheoryTestPartAnswer>
             {
-                new TheoryTestPartAnswer {Text = "Html", TheoryTestPart = first},
-                new TheoryTestPartAnswer {Text = "ftp", TheoryTestPart = first},
-                new TheoryTestPartAnswer {Text = "www", TheoryTestPart = first},
-                new TheoryTestPartAnswer {Text = "http ", TheoryTestPart = first, IsCorrect = true}
+                new TheoryTestPartAnswer {Text = "Html", TheoryTestPart = first, Seq = 1},
+                new TheoryTestPartAnswer {Text = "ftp", TheoryTestPart = first, Seq = 2},
+                new TheoryTestPartAnswer {Text = "www", TheoryTestPart = first, Seq = 3},
+                new TheoryTestPartAnswer {Text = "http ", TheoryTestPart = first, IsCorrect = true, Seq = 4}
             };
-            var second = context.TheoryTestParts.Create();
-            second.TheoryPart = firstTheoryPart;
-            second.Seq = 2;
+            var second = new TheoryTestPart
+            {
+                TheoryPart = firstTheoryPart,
+                Seq = 2,
+                TestType = TestPartType.SingleChoice
+            };
             second.Answers = new List<TheoryTestPartAnswer>
             {
-                new TheoryTestPartAnswer {Text = "www.mail.ru", TheoryTestPart = second, IsCorrect = true},
-                new TheoryTestPartAnswer {Text = "mail.ru/chair806", TheoryTestPart = second},
-                new TheoryTestPartAnswer {Text = "chair806", TheoryTestPart = second},
-                new TheoryTestPartAnswer {Text = "ftp.html", TheoryTestPart = second},
-                new TheoryTestPartAnswer {Text = "html", TheoryTestPart = second}
+                new TheoryTestPartAnswer {Text = "www.mail.ru", TheoryTestPart = second, IsCorrect = true, Seq = 1},
+                new TheoryTestPartAnswer {Text = "mail.ru/chair806", TheoryTestPart = second, Seq = 2},
+                new TheoryTestPartAnswer {Text = "chair806", TheoryTestPart = second, Seq = 3},
+                new TheoryTestPartAnswer {Text = "ftp.html", TheoryTestPart = second, Seq = 4},
+                new TheoryTestPartAnswer {Text = "html", TheoryTestPart = second, Seq = 5}
             };
-            var third = context.TheoryTestParts.Create();
-            third.TheoryPart = firstTheoryPart;
-            third.Seq = 3;
+            var third = new TheoryTestPart
+            {
+                TheoryPart = firstTheoryPart,
+                Seq = 3,
+                TestType = TestPartType.MultiplyChoice
+            };
             third.Answers = new List<TheoryTestPartAnswer>
             {
-                new TheoryTestPartAnswer {Text = "Cеть, объединяющая компьютерные сети таким образом, чтобы пользователи и компьютеры, где бы они ни находились, могли взаимодействовать со всеми остальными участниками сети", TheoryTestPart = third, IsCorrect = true},
-                new TheoryTestPartAnswer {Text = "сеть, объединяющая несколько компьютеров и дает возможность пользователям совместно использовать компьютерные ресурсы, а также подключенных в сети периферийных устройств", TheoryTestPart = third},
-                new TheoryTestPartAnswer {Text = "сеть, объединяющая компьютеры и дает возможность пользователям совместно использовать информационные ресурсы в разных частях города", TheoryTestPart = third},
-                new TheoryTestPartAnswer {Text = "сеть, объединяющая компьютеры и принадлежащая одной организации, дает возможность пользователям совместно использовать компьютерные ресурсы в соответствии с правилами этой организации", TheoryTestPart = third}
+                new TheoryTestPartAnswer
+                {
+                    Text =
+                        "Cеть, объединяющая компьютерные сети таким образом, чтобы пользователи и компьютеры, где бы они ни находились, могли взаимодействовать со всеми остальными участниками сети",
+                    TheoryTestPart = third,
+                    IsCorrect = true,
+                    Seq = 1
+                },
+                new TheoryTestPartAnswer
+                {
+                    Text =
+                        "сеть, объединяющая несколько компьютеров и дает возможность пользователям совместно использовать компьютерные ресурсы, а также подключенных в сети периферийных устройств",
+                    TheoryTestPart = third,
+                    Seq = 2
+                },
+                new TheoryTestPartAnswer
+                {
+                    Text =
+                        "сеть, объединяющая компьютеры и дает возможность пользователям совместно использовать информационные ресурсы в разных частях города",
+                    TheoryTestPart = third,
+                    Seq = 3
+                },
+                new TheoryTestPartAnswer
+                {
+                    Text =
+                        "сеть, объединяющая компьютеры и принадлежащая одной организации, дает возможность пользователям совместно использовать компьютерные ресурсы в соответствии с правилами этой организации",
+                    TheoryTestPart = third,
+                    Seq = 4
+                }
             };
-            firstTheoryPart.TheoryTestParts = new List<TheoryTestPart> { first, second, third };
+            firstTheoryPart.TheoryTestParts = new List<TheoryTestPart> {first, second, third};
 
             firstTheoryPart.TheoryDocuments = new List<TheoryDocument>
             {
-                new TheoryDocument {TheoryPart = firstTheoryPart , IsVisible = true , Name = "Транспортирование информации(версия 1)" , Seq = 1},
-                new TheoryDocument {TheoryPart = firstTheoryPart , IsVisible = true , Name = "Транспортирование информации(версия 2)" , Seq = 2}
+                new TheoryDocument
+                {
+                    TheoryPart = firstTheoryPart,
+                    IsVisible = true,
+                    Name = "Транспортирование информации(версия 1)",
+                    Seq = 1
+                },
+                new TheoryDocument
+                {
+                    TheoryPart = firstTheoryPart,
+                    IsVisible = true,
+                    Name = "Транспортирование информации(версия 2)",
+                    Seq = 2
+                }
             };
             context.TheoryParts.Add(firstTheoryPart);
             context.SaveChanges();
+        }
+
+        private TheoryTestPartAnswer CreateAnswer(TheoryTestPart test, string text, int seq , string imagePath = null , bool isCorrent = false)
+        {
+            return new TheoryTestPartAnswer
+            {
+                Seq = seq,
+                ImagePath = imagePath,
+                IsCorrect = isCorrent,
+                Text = text,
+                TheoryTestPart = test
+            };
         }
     }
 }

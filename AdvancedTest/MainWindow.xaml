@@ -3,20 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdvancedTest"
+        xmlns:test="clr-namespace:AdvancedTest.ViewModels.Test"
+        xmlns:theory="clr-namespace:AdvancedTest.Controls.Theory"
+        xmlns:controls="clr-namespace:AdvancedTest.Controls"
         mc:Ignorable="d"
-        Title="Тестирование" Height="450" Width="800">
+        Title="Систему адаптивного обучения" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type test:TestViewModel}">
+            <theory:TestView />
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <DockPanel>
-            <TreeView DockPanel.Dock="Left" Width="200px" ItemsSource="{Binding TheoryParts }"
-                      SelectedItemChanged="OnSelectedTheoryPartChanged">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding TheoryDocuments}">
-                        <TextBlock Text="{Binding Name}"/>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-            <ContentControl Content="{Binding SelectedPart}"/>
+            <Expander Header="Теория">
+                <TreeView DockPanel.Dock="Left" Width="300px" ItemsSource="{Binding TheoryParts }"
+                          SelectedItemChanged="OnSelectedTheoryPartChanged">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="True" />
+                            <Setter Property="Visibility"
+                                    Value="{Binding IsVisible , Converter={StaticResource BoolToHiddenConverter}}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding TheoryPartElements}">
+                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </Expander>
+            <Border BorderBrush="Black" BorderThickness="1" Margin="10">
+                <ContentControl   Margin="30">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Content" Value="{Binding SelectedElement}" />
+                            <Setter Property="BorderBrush" Value="Black" />
+                            <Setter Property="BorderThickness" Value="5" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}"
+                                    Value="{x:Null}">
+                                    <Setter Property="ContentControl.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <controls:WelcomeView />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </Border>
         </DockPanel>
     </Grid>
 </Window>

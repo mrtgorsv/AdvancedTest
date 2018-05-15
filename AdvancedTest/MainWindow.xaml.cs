@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using AdvancedTest.Data.Model;
 using AdvancedTest.Utils;
+using AdvancedTest.ViewModels;
+using AdvancedTest.ViewModels.Test;
+using AdvancedTest.ViewModels.Theory;
 
 namespace AdvancedTest
 {
@@ -10,32 +14,30 @@ namespace AdvancedTest
     public partial class MainWindow
     {
         private readonly ViewModelLocator _locator = new ViewModelLocator();
+        private readonly MainViewModel _currentModel;
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = _locator.MainViewModel;
+            _currentModel = _locator.MainViewModel;
+            DataContext = _currentModel;
         }
 
         private void OnSelectedTheoryPartChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (e.NewValue is TheoryPart theoryPart)
+            if (e.NewValue is TestViewModel theoryPart)
             {
-                ShowTheoryTest(theoryPart.Id);
+                _currentModel.ShowTheoryTest(theoryPart);
             }
-            else if (e.NewValue is TheoryDocument theoryDoc)
+            else if (e.NewValue is DocumentViewModel theoryDoc)
             {
-                ShowTheoryDoc(theoryDoc.Id);
+                _currentModel.ShowDocument(theoryDoc);
             }
         }
 
-        private void ShowTheoryDoc(int theoryDocId)
+        protected override void OnClosed(EventArgs e)
         {
-            throw new System.NotImplementedException();
-        }
-
-        private void ShowTheoryTest(int theoryPartId)
-        {
-            throw new System.NotImplementedException();
+            base.OnClosed(e);
+            App.Current.Shutdown();
         }
     }
 }

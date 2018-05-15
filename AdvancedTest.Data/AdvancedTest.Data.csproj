@@ -49,22 +49,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\AppDbContext.cs" />
-    <Compile Include="Enum\TestType.cs" />
+    <Compile Include="Enum\TestPartType.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />
-    <Compile Include="Migrations\201805141715195_Init.cs" />
-    <Compile Include="Migrations\201805141715195_Init.Designer.cs">
-      <DependentUpon>201805141715195_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805150611553_UpdateAnswer.cs" />
-    <Compile Include="Migrations\201805150611553_UpdateAnswer.Designer.cs">
-      <DependentUpon>201805150611553_UpdateAnswer.cs</DependentUpon>
+    <Compile Include="Migrations\201805151718235_Init.cs" />
+    <Compile Include="Migrations\201805151718235_Init.Designer.cs">
+      <DependentUpon>201805151718235_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TheoryDocument.cs" />
     <Compile Include="Model\TheoryPart.cs" />
     <Compile Include="Model\TheoryTestPartAnswer.cs" />
     <Compile Include="Model\TheoryTestPart.cs" />
-    <Compile Include="Model\UserTheoryTest.cs" />
+    <Compile Include="Model\UserTheoryElementMark.cs" />
+    <Compile Include="Model\UserTheoryDocumentMark.cs" />
+    <Compile Include="Model\UserTheoryTestMark.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,11 +71,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805141715195_Init.resx">
-      <DependentUpon>201805141715195_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805150611553_UpdateAnswer.resx">
-      <DependentUpon>201805150611553_UpdateAnswer.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805151718235_Init.resx">
+      <DependentUpon>201805151718235_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

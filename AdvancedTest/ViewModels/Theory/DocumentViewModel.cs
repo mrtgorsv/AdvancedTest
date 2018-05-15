@@ -1,17 +1,13 @@
-﻿using AdvancedTest.Service.Services.Interface;
-
-namespace AdvancedTest.ViewModel.Theory
+﻿
+namespace AdvancedTest.ViewModels.Theory
 {
-    public class DocumentViewModel : TheoryPartViewModel
+    public class DocumentViewModel : TheoryPartElementViewModel
     {
-        private readonly ITheoryService _theoryService;
+        public string DocumentPath { get; set; }
+        public int DocumentId { get; set; }
 
-        private int _currentTheoryPartId;
-
-        public DocumentViewModel(int theoryPartId , ITheoryService theoryService)
+        public DocumentViewModel()
         {
-            _theoryService = theoryService;
-            _currentTheoryPartId = theoryPartId;
         }
     }
 }

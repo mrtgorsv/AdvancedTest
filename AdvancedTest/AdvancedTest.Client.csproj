@@ -65,33 +65,51 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\DefaultControl.xaml.cs">
-      <DependentUpon>DefaultControl.xaml</DependentUpon>
+    <Compile Include="Controls\Theory\TestPartView.xaml.cs">
+      <DependentUpon>TestPartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Theory\TheoryPartTestUserControl.xaml.cs">
-      <DependentUpon>TheoryPartTestUserControl.xaml</DependentUpon>
+    <Compile Include="Controls\WelcomeView.xaml.cs">
+      <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Theory\TestView.xaml.cs">
+      <DependentUpon>TestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\TextConverter.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Utils\IoC\IocConfiguration.cs" />
     <Compile Include="Utils\IoC\IocKernel.cs" />
+    <Compile Include="Utils\PathResolver.cs" />
     <Compile Include="Utils\SecurityManager.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\Answer\CompareAnswerOptionViewModel.cs" />
+    <Compile Include="ViewModels\Answer\CompareAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Answer\SelectAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Answer\InputAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Answer\AnswerViewModel.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.Command.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Theory\TestViewModel.cs" />
+    <Compile Include="ViewModels\Test\TestPartViewModel.cs" />
+    <Compile Include="ViewModels\Test\TestViewModel.Command.cs" />
+    <Compile Include="ViewModels\Test\TestViewModel.cs" />
+    <Compile Include="ViewModels\Theory\TheoryPartElementViewModel.cs" />
     <Compile Include="ViewModels\Theory\DocumentViewModel.cs" />
-    <Compile Include="ViewModels\Theory\TheoryPartViewModel.cs" />
+    <Compile Include="ViewModels\Theory\TheoryViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\DefaultControl.xaml">
+    <Page Include="Controls\Theory\TestPartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Theory\TheoryPartTestUserControl.xaml">
+    <Page Include="Controls\WelcomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Theory\TestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,8 +148,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Content\Docs\1\1.pdf" />
-    <None Include="Content\Docs\1\2.pdf" />
+    <None Include="Content\Docs\1\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\1\2.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -151,35 +173,103 @@
       <Name>AdvancedTest.Service</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Content\Tests\0\1.png" />
-    <Resource Include="Content\Tests\0\10.png" />
-    <Resource Include="Content\Tests\0\11.png" />
-    <Resource Include="Content\Tests\0\12.png" />
-    <Resource Include="Content\Tests\0\13.png" />
-    <Resource Include="Content\Tests\0\14.png" />
-    <Resource Include="Content\Tests\0\15.png" />
-    <Resource Include="Content\Tests\0\16.png" />
-    <Resource Include="Content\Tests\0\17.png" />
-    <Resource Include="Content\Tests\0\18.png" />
-    <Resource Include="Content\Tests\0\19.png" />
-    <Resource Include="Content\Tests\0\2.png" />
-    <Resource Include="Content\Tests\0\20.png" />
-    <Resource Include="Content\Tests\0\21.PNG" />
-    <Resource Include="Content\Tests\0\22.PNG" />
-    <Resource Include="Content\Tests\0\23.PNG" />
-    <Resource Include="Content\Tests\0\24.PNG" />
-    <Resource Include="Content\Tests\0\25.PNG" />
-    <Resource Include="Content\Tests\0\26.PNG" />
-    <Resource Include="Content\Tests\0\27.PNG" />
-    <Resource Include="Content\Tests\0\3.png" />
-    <Resource Include="Content\Tests\0\4.png" />
-    <Resource Include="Content\Tests\0\5.png" />
-    <Resource Include="Content\Tests\0\6.png" />
-    <Resource Include="Content\Tests\0\7.png" />
-    <Resource Include="Content\Tests\0\8.png" />
-    <Resource Include="Content\Tests\0\9.png" />
+    <None Include="Content\Tests\1\1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\1\2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\1\3.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\1\4.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Tests\0\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\21.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\22.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\23.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\24.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\25.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\26.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\27.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tests\0\9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

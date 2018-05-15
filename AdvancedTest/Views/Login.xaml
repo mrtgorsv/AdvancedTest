@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvancedTest.Views"
         mc:Ignorable="d"
-        Title="Login" Height="300" Width="300"
-        ResizeMode="NoResize">
-    <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="272" >
+        Title="Вход в систему" Height="300" Width="300"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Label x:Name="label" Content="Логин"/>
-            <TextBox x:Name="textBox" Height="22" TextWrapping="Wrap" Text="{Binding Login}"/>
+            <TextBox x:Name="textBox" Height="22" TextWrapping="Wrap" Text="{Binding Login}" />
             <Label x:Name="label1" Content="Пароль"/>
             <TextBox x:Name="Password" Height="23" TextWrapping="Wrap" Text="{Binding Password}"/>
             <Button x:Name="LoginButton" Content="Вход" Command="{Binding LoginCommand}"/>

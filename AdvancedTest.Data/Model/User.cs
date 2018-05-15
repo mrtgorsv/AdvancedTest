@@ -13,6 +13,7 @@ namespace AdvancedTest.Data.Model
         public string Name { get; set; }
         public string Password { get; set; }
 
-        public virtual ICollection<UserTheoryTest> UserTheoryTests { get; set; }
+        public virtual ICollection<UserTheoryTestMark> UserTheoryTests { get; set; }
+        public virtual ICollection<UserTheoryDocumentMark> UserTheoryDocumentMarks { get; set; }
     }
 }

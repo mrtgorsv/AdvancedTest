@@ -17,7 +17,7 @@ namespace AdvancedTest.Service.Services.Implementation
         public List<TheoryPart> GetTheoryList()
         {
             return _context.TheoryParts
-                .Include(tp => tp.TheoryTestParts)
+                .Include(tp => tp.TheoryTestParts.Select(t=> t.Answers))
                 .Include(tp => tp.TheoryDocuments)
                 .ToList();
         }

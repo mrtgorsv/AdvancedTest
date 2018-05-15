@@ -1,9 +1,9 @@
 ﻿namespace AdvancedTest.Data.Enum
 {
-    public enum TestType
+    public enum TestPartType
     {
         SingleChoice,
-        MultipyChoice,
+        MultiplyChoice,
         Compare,
         Manual
     }

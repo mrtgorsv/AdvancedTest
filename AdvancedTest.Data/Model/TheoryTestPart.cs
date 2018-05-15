@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AdvancedTest.Data.Enum;
 
 namespace AdvancedTest.Data.Model
 {
@@ -15,6 +16,8 @@ namespace AdvancedTest.Data.Model
 
         public int Seq { get; set; }
         public string Description { get; set; }
+
+        public TestPartType TestType { get; set; }
 
         public virtual TheoryPart TheoryPart { get; set; }
 

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AdvancedTest.Controls.Theory
 {
     /// <summary>
-    /// Interaction logic for TheoryPartTestUserControl.xaml
+    /// Логика взаимодействия для TestPartView.xaml
     /// </summary>
-    public partial class TheoryPartTestUserControl : UserControl
+    public partial class TestPartView : UserControl
     {
-        public TheoryPartTestUserControl()
+        public TestPartView()
         {
             InitializeComponent();
         }

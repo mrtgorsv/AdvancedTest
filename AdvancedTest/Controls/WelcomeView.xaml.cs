@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AdvancedTest.Controls
 {
     /// <summary>
-    /// Interaction logic for DefaultControl.xaml
+    /// Interaction logic for WelcomeView.xaml
     /// </summary>
-    public partial class DefaultControl : UserControl
+    public partial class WelcomeView : UserControl
     {
-        public DefaultControl()
+        public WelcomeView()
         {
             InitializeComponent();
         }

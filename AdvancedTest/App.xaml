@@ -2,8 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:utils="clr-namespace:AdvancedTest.Utils"
+             xmlns:converters="clr-namespace:AdvancedTest.Converters"
              StartupUri="Views/Login.xaml">
     <Application.Resources>
         <utils:ViewModelLocator x:Key="ViewModelLocator"/>
+        <converters:BoolToVisibilityConverter
+            x:Key="BoolToHiddenConverter"/>
     </Application.Resources>
 </Application>

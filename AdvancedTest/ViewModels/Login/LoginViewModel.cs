@@ -24,29 +24,29 @@ namespace AdvancedTest.ViewModel.Login
 
         public string Login
         {
-            get { return _login; }
+            get => _login;
             set
             {
                 _login = value;
-                RaisePropertyChangedEvent(nameof(Login));
+                OnPropertyChanged(nameof(Login));
             }
         }
         public string Password
         {
-            get { return _password; }
+            get => _password;
             set
             {
                 _password = value;
-                RaisePropertyChangedEvent(nameof(Password));
+                OnPropertyChanged(nameof(Password));
             }
         }
         public string ErrorText
         {
-            get { return _errorText; }
+            get => _errorText;
             set
             {
                 _errorText = value;
-                RaisePropertyChangedEvent(nameof(ErrorText));
+                OnPropertyChanged(nameof(ErrorText));
             }
         }
 

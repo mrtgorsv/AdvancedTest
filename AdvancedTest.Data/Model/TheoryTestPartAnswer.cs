@@ -18,6 +18,8 @@ namespace AdvancedTest.Data.Model
 
         public string ImagePath { get; set; }
 
+        public int Seq { get; set; }
+
         public virtual TheoryTestPart TheoryTestPart { get; set; }
     }
 }
