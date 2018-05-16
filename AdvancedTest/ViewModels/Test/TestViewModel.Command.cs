@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AdvancedTest.Extensions;
 using AdvancedTest.Utils;
 
@@ -26,21 +27,28 @@ namespace AdvancedTest.ViewModels.Test
             {
                 CompleteTest();
             }
-            if (!CanNext)
+            if (CanComplete())
             {
                 NextButtonText = "Завершить";
             }
         }
+
+        private bool CanComplete()
+        {
+            return _testParts.GetNext(CurrentTestPart) == null;
+        }
+
         private void StartTest()
         {
             CurrentTestPart = _testParts.FirstOrDefault();
             IsStarted = true;
             NextButtonText = "Далее";
+            _userTestId = _userService.StartTest(_theoryId, _securityManager.CurrentUser.Id, DateTime.Now);
         }
 
         public void CompleteTest()
         {
-
+            _userService.CompleteTest(_userTestId, GetTestResult(), DateTime.Now);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace AdvancedTest.Data.Model
         [ForeignKey("TheoryPart")]
         public int TheoryPartId { get; set; }
         public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public int Attempt { get; set; }
         public double Result { get; set; }
 

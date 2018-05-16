@@ -56,5 +56,22 @@ namespace AdvancedTest.Service.Services.Implementation
                 _context.SaveChanges();
             }
         }
+
+        public int StartTest(int theoryId, int userId, DateTime startDate)
+        {
+            var newUserTest = _context.UserTheoryTestMarks.Create();
+            newUserTest.StartTime = startDate;
+            newUserTest.TheoryPartId = theoryId;
+            newUserTest.UserId = userId;
+            newUserTest.Attempt = GetPreviousAttempt(theoryId, userId) + 1;
+            _context.SaveChanges();
+            return newUserTest.Id;
+
+        }
+
+        private int GetPreviousAttempt(int theoryId, int userId)
+        {
+            return _context.UserTheoryTestMarks.Count(el => el.TheoryPartId.Equals(theoryId) && el.UserId.Equals(userId));
+        }
     }
 }

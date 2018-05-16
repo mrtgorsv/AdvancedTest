@@ -7,10 +7,15 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="400" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="{Binding TestText}" VerticalAlignment="Top"></Image>
-        <StackPanel Grid.Row="1"></StackPanel>
+        <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+
+            <Image Source="{Binding TestText}"></Image>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            
+        </StackPanel>
     </Grid>
 </UserControl>

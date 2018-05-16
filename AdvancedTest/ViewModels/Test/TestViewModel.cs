@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using AdvancedTest.Data.Enum;
 using AdvancedTest.Data.Model;
-using AdvancedTest.Extensions;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModels.Answer;
@@ -17,16 +15,20 @@ namespace AdvancedTest.ViewModels.Test
     public partial class TestViewModel : TheoryPartElementViewModel
     {
         private readonly ITestService _testService;
+        private readonly IUserService _userService;
+        private readonly ISecurityManager _securityManager;
         private int _theoryId;
+        private int _userTestId;
         private string _nextButtonText;
         private bool _isStarted;
         private TestPartViewModel _testPartViewModel;
 
         private List<TestPartViewModel> _testParts;
 
-        public TestViewModel(ITestService testService)
+        public TestViewModel(ITestService testService, IUserService userService)
         {
             _testService = testService;
+            _userService = userService;
             InitializeCommands();
         }
 
@@ -77,7 +79,7 @@ namespace AdvancedTest.ViewModels.Test
 
         public bool CanNext
         {
-            get { return _testParts.GetNext(CurrentTestPart) != null; }
+            get { return CurrentTestPart != null; }
         }
 
 
@@ -170,6 +172,16 @@ namespace AdvancedTest.ViewModels.Test
                 Text = answer.Text,
                 ImagePath = answer.ImagePath
             };
+        }
+
+        private double GetTestResult()
+        {
+            int total = _testParts.Count;
+            int validAnswers = 0;
+            foreach (TestPartViewModel testPart in _testParts)
+            {
+                
+            }
         }
     }
 }
