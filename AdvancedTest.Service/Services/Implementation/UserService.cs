@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -24,30 +25,12 @@ namespace AdvancedTest.Service.Services.Implementation
                 .FirstOrDefault(u => u.Login.Equals(login) && u.Password.Equals(password));
         }
 
-        public void MarkDocumentAsViewed(int documentId, int userId)
-        {
-            var record =
-                _context.UserTheoryDocumentMarks.FirstOrDefault(el =>
-                    el.UserId == userId && el.DocumentId == documentId);
-            if (record == null)
-            {
-                var newRecord = new UserTheoryDocumentMark
-                {
-                    UserId = userId,
-                    DocumentId = documentId,
-                    IsCompleted = true
-                };
-                _context.UserTheoryDocumentMarks.Add(newRecord);
-                _context.SaveChanges();
-            }
-        }
-
         public void CompleteTest(int testId, double result, DateTime endTime)
         {
             var record =
                 _context.UserTheoryTestMarks.FirstOrDefault(el =>
                     el.Id.Equals(testId));
-            if (record != null)
+            if (record != null && !record.IsCompleted)
             {
                 record.Result = result;
                 record.EndTime = endTime;
@@ -57,16 +40,26 @@ namespace AdvancedTest.Service.Services.Implementation
             }
         }
 
-        public int StartTest(int theoryId, int userId, DateTime startDate)
+        public UserTheoryTestMark StartTest(int theoryId, int userId, DateTime startDate)
         {
             var newUserTest = _context.UserTheoryTestMarks.Create();
             newUserTest.StartTime = startDate;
             newUserTest.TheoryPartId = theoryId;
             newUserTest.UserId = userId;
             newUserTest.Attempt = GetPreviousAttempt(theoryId, userId) + 1;
+            _context.UserTheoryTestMarks.Add(newUserTest);
             _context.SaveChanges();
-            return newUserTest.Id;
+            return newUserTest;
 
+        }
+
+        public List<UserTheoryTestMark> GetUserTestProgress(int userId)
+        {
+            return _context.UserTheoryTestMarks.Where(um => um.UserId.Equals(userId)).ToList();
+        }
+        public List<UserTheoryDocumentMark> GetUserDocProgress(int userId)
+        {
+            return _context.UserTheoryDocumentMarks.Where(um => um.UserId.Equals(userId)).ToList();
         }
 
         private int GetPreviousAttempt(int theoryId, int userId)

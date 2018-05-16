@@ -10,11 +10,11 @@
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label x:Name="label" Content="Логин"/>
-            <TextBox x:Name="textBox" Height="22" TextWrapping="Wrap" Text="{Binding Login}" />
-            <Label x:Name="label1" Content="Пароль"/>
-            <TextBox x:Name="Password" Height="23" TextWrapping="Wrap" Text="{Binding Password}"/>
-            <Button x:Name="LoginButton" Content="Вход" Command="{Binding LoginCommand}"/>
+            <Label x:Name="label" Content="Логин" Margin="10 0 10 0"/>
+            <TextBox x:Name="textBox" Height="22" TextWrapping="Wrap" Text="{Binding Login}" Margin="10 0 10 0" />
+            <Label x:Name="label1" Content="Пароль" Margin="10 0 10 0"/>
+            <PasswordBox x:Name="Password" Height="23"  PasswordChar="*" PasswordChanged="OnPasswordChanged" Margin="10 0 10 0" />
+            <Button x:Name="LoginButton" Content="Вход" Command="{Binding LoginCommand}" Margin="10 10 10 0" Padding="0 10 0 10"/>
             <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="{Binding ErrorText}" Height="132"/>
 
         </StackPanel>

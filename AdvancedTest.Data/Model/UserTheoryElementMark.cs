@@ -12,8 +12,12 @@ namespace AdvancedTest.Data.Model
         [ForeignKey("User")]
         public int UserId { get; set; }
 
+        [ForeignKey("TheoryPart")]
+        public int TheoryPartId { get; set; }
+
         public bool IsCompleted { get; set; }
 
         public virtual User User { get; set; }
+        public virtual TheoryPart TheoryPart { get; set; }
     }
 }

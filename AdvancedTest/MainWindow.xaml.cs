@@ -24,6 +24,7 @@ namespace AdvancedTest
 
         private void OnSelectedTheoryPartChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            _currentModel.ClearSelection();
             if (e.NewValue is TestViewModel theoryPart)
             {
                 _currentModel.ShowTheoryTest(theoryPart);
@@ -34,7 +35,7 @@ namespace AdvancedTest
             }
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosed(System.EventArgs e)
         {
             base.OnClosed(e);
             App.Current.Shutdown();

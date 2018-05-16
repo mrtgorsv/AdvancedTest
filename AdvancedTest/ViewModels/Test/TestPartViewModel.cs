@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using AdvancedTest.Data.Enum;
 using AdvancedTest.ViewModel;
 using AdvancedTest.ViewModels.Answer;
+using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Test
 {

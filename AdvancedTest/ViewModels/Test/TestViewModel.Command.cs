@@ -43,12 +43,14 @@ namespace AdvancedTest.ViewModels.Test
             CurrentTestPart = _testParts.FirstOrDefault();
             IsStarted = true;
             NextButtonText = "Далее";
-            _userTestId = _userService.StartTest(_theoryId, _securityManager.CurrentUser.Id, DateTime.Now);
+            _userTest = _userService.StartTest(_theoryId, _securityManager.CurrentUser.Id, DateTime.Now);
         }
 
         public void CompleteTest()
         {
-            _userService.CompleteTest(_userTestId, GetTestResult(), DateTime.Now);
+            var result = GetTestResult();
+            _userService.CompleteTest(_userTest.Id, result, DateTime.Now);
+            OnTestCompleted(result);
         }
     }
 }

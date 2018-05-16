@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Media.Imaging;
 using AdvancedTest.Data.Enum;
 using AdvancedTest.Data.Model;
+using AdvancedTest.EventArgs;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModels.Answer;
@@ -18,17 +19,21 @@ namespace AdvancedTest.ViewModels.Test
         private readonly IUserService _userService;
         private readonly ISecurityManager _securityManager;
         private int _theoryId;
-        private int _userTestId;
+        private UserTheoryTestMark _userTest;
         private string _nextButtonText;
         private bool _isStarted;
         private TestPartViewModel _testPartViewModel;
 
+        public event TestCompletedEventHandler TestCompleted;
+        public delegate void TestCompletedEventHandler(object sender, TestCompletedEventArgs args);
+
         private List<TestPartViewModel> _testParts;
 
-        public TestViewModel(ITestService testService, IUserService userService)
+        public TestViewModel(ITestService testService, IUserService userService, ISecurityManager securityManager)
         {
             _testService = testService;
             _userService = userService;
+            _securityManager = securityManager;
             InitializeCommands();
         }
 
@@ -82,6 +87,8 @@ namespace AdvancedTest.ViewModels.Test
             get { return CurrentTestPart != null; }
         }
 
+        public int Attempt { get; set; }
+
 
         private void LoadTestParts()
         {
@@ -95,7 +102,8 @@ namespace AdvancedTest.ViewModels.Test
                 {
                     CurrentTest = this,
                     TestText = LoadTestTextImage(testPart.TheoryPart.Seq , testPart.Seq),
-                    TestPartType = testPart.TestType
+                    TestPartType = testPart.TestType,
+                    CorrectAnswer = testPart.CorrectAnswer
                 };
                 testPartViewModel.Answers = CreateAnswers(testPart.Answers, testPartViewModel);
                 result.Add(testPartViewModel);
@@ -143,7 +151,7 @@ namespace AdvancedTest.ViewModels.Test
         {
             return new InputAnswerViewModel
             {
-                Seq = answer.Seq,
+                Seq = answer.AnswerNumber,
                 InputResult = string.Empty,
                 CurrentTestPart = testPartViewModel,
                 AnswerId = answer.Id
@@ -155,7 +163,7 @@ namespace AdvancedTest.ViewModels.Test
         {
             return new CompareAnswerViewModel
             {
-                Seq = answer.Seq,
+                Seq = answer.AnswerNumber,
                 CurrentTestPart = testPartViewModel,
                 AnswerId = answer.Id
             };
@@ -166,7 +174,7 @@ namespace AdvancedTest.ViewModels.Test
         {
             return new SelectAnswerViewModel
             {
-                Seq = answer.Seq,
+                Seq = answer.AnswerNumber,
                 CurrentTestPart = testPartViewModel,
                 AnswerId = answer.Id,
                 Text = answer.Text,
@@ -190,6 +198,11 @@ namespace AdvancedTest.ViewModels.Test
                 return 0;
             }
             return total / (double)validAnswers;
+        }
+
+        protected virtual void OnTestCompleted( double result)
+        {
+            TestCompleted?.Invoke(this, new TestCompletedEventArgs(result , CurrentTheoryId , _userTest.Attempt));
         }
     }
 }

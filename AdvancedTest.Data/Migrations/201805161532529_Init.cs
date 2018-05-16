@@ -40,6 +40,7 @@ namespace AdvancedTest.Data.Migrations
                         TheoryId = c.Int(nullable: false),
                         Seq = c.Int(nullable: false),
                         Description = c.String(),
+                        CorrectAnswer = c.String(),
                         TestType = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -52,10 +53,9 @@ namespace AdvancedTest.Data.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         TestPartId = c.Int(nullable: false),
-                        IsCorrect = c.Boolean(nullable: false),
                         Text = c.String(),
                         ImagePath = c.String(),
-                        Seq = c.Int(nullable: false),
+                        AnswerNumber = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.TheoryTestParts", t => t.TestPartId, cascadeDelete: false)
@@ -99,7 +99,7 @@ namespace AdvancedTest.Data.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         TheoryPartId = c.Int(nullable: false),
                         StartTime = c.DateTime(nullable: false),
-                        EndTime = c.DateTime(nullable: false),
+                        EndTime = c.DateTime(),
                         Attempt = c.Int(nullable: false),
                         Result = c.Double(nullable: false),
                         UserId = c.Int(nullable: false),

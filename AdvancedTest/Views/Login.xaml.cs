@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModel.Login;
 
@@ -23,11 +24,17 @@ namespace AdvancedTest.Views
             _viewModel.UserLogin += OnUserLogined;
         }
 
-        private void OnUserLogined(object sender, EventArgs args)
+        private void OnUserLogined(object sender, System.EventArgs args)
         {
             MainWindow mainWindow = new MainWindow();
             Hide();
             mainWindow.Show();
+        }
+
+        private void OnPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var box = sender as PasswordBox;
+            _viewModel.Password = box?.Password;
         }
     }
 }

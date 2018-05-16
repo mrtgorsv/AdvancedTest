@@ -2,9 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using AdvancedTest.Data.Model;
+using AdvancedTest.EventArgs;
+using AdvancedTest.Extensions;
+using AdvancedTest.Properties;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModel;
+using AdvancedTest.ViewModels.Base;
 using AdvancedTest.ViewModels.Test;
 using AdvancedTest.ViewModels.Theory;
 
@@ -15,19 +19,24 @@ namespace AdvancedTest.ViewModels
         private readonly ISecurityManager _securityManager;
         private readonly ITheoryService _theoryService;
         private readonly IUserService _userService;
+        private readonly IDocumentService _documentService;
         private readonly ViewModelLocator _locator;
-        private TheoryPartElementViewModel _selectedElement;
+        private ViewModelBase _selectedElement;
+        private List<UserTheoryTestMark> _completedTestList;
+        private List<UserTheoryDocumentMark> _openedUserDocList;
 
-        public MainViewModel(ITheoryService theoryService, ViewModelLocator locator, IUserService userService, ISecurityManager securityManager)
+        public MainViewModel(ITheoryService theoryService, ViewModelLocator locator, IUserService userService,
+            ISecurityManager securityManager, IDocumentService documentService)
         {
             _theoryService = theoryService;
             _locator = locator;
             _userService = userService;
             _securityManager = securityManager;
+            _documentService = documentService;
             LoadTheory();
         }
 
-        public TheoryPartElementViewModel SelectedElement
+        public ViewModelBase SelectedElement
         {
             get => _selectedElement;
             set
@@ -37,10 +46,30 @@ namespace AdvancedTest.ViewModels
             }
         }
 
+        public int CurrentUserId
+        {
+            get { return _securityManager.CurrentUser.Id; }
+        }
+
         private void LoadTheory()
         {
+            UpdateCompletedTests();
+            UpdateUserDocs();
             var theoryList = _theoryService.GetTheoryList();
+            if (_openedUserDocList.Count == 0 && theoryList.Count > 0)
+            {
+                var firstTheory = theoryList.First();
+                _theoryService.OpenTheory(firstTheory.Id, CurrentUserId);
+                UpdateUserDocs();
+                ShowMessage(Resources.WelcomeMessage);
+            }
+
             TheoryParts = new ObservableCollection<TheoryViewModel>(theoryList.Select(CreateTheory));
+        }
+
+        private void ShowMessage(string message)
+        {
+            SelectedElement = new MessageViewModel(message);
         }
 
         private TheoryViewModel CreateTheory(TheoryPart theory)
@@ -49,10 +78,24 @@ namespace AdvancedTest.ViewModels
             {
                 CurrentTheoryId = theory.Id,
                 Seq = theory.Seq,
-                Name = theory.Name
+                Name = theory.Name,
+                IsVisible = _openedUserDocList.Any(td => !td.DocumentId.HasValue && td.TheoryPartId.Equals(theory.Id))
             };
             theoryViewModel.TheoryPartElements = CreateElements(theory, theoryViewModel);
             return theoryViewModel;
+        }
+
+        private void UpdateCompletedTests()
+        {
+            _completedTestList = _userService.GetUserTestProgress(CurrentUserId)
+                .Where(ut => ut.Result > 70)
+                .ToList();
+        }
+
+        private void UpdateUserDocs()
+        {
+            _openedUserDocList = _userService.GetUserDocProgress(CurrentUserId)
+                .ToList();
         }
 
         private ObservableCollection<TheoryPartElementViewModel> CreateElements(TheoryPart theory,
@@ -68,12 +111,20 @@ namespace AdvancedTest.ViewModels
                     DocumentPath = document.DocumentPath,
                     DocumentId = document.Id,
                     Name = document.Name,
-                    IsVisible = true
+                    IsVisible = _openedUserDocList.Any(
+                        td => td.DocumentId == document.Id && td.TheoryPartId.Equals(theory.Id))
                 };
                 elements.Add(documentViewModel);
             }
 
             var testViewModel = CreateTest(theoryViewModel);
+            if (theoryViewModel.IsVisible && (_openedUserDocList.Any(td =>
+                                                  td.TheoryPartId.Equals(theoryViewModel.CurrentTheoryId) &&
+                                                  td.DocumentId.HasValue) || elements.Count == 0))
+            {
+                testViewModel.IsVisible = true;
+            }
+
             if (elements.Count > 1)
             {
                 elements.Insert(1, testViewModel);
@@ -82,6 +133,7 @@ namespace AdvancedTest.ViewModels
             {
                 elements.Add(testViewModel);
             }
+
             return new ObservableCollection<TheoryPartElementViewModel>(elements);
         }
 
@@ -91,7 +143,6 @@ namespace AdvancedTest.ViewModels
             testViewModel.CurrentTheory = theoryViewModel;
             testViewModel.Seq = 2;
             testViewModel.Name = "Тест";
-            testViewModel.IsVisible = true;
             return testViewModel;
         }
 
@@ -100,14 +151,93 @@ namespace AdvancedTest.ViewModels
         public void ShowTheoryTest(TestViewModel testListItem)
         {
             var test = CreateTest(testListItem.CurrentTheory);
+            test.Name = $" Тест - {testListItem.CurrentTheory.Name}";
             test.CurrentTheoryId = testListItem.CurrentTheory.CurrentTheoryId;
+            test.TestCompleted += OnTestCompleted;
             SelectedElement = test;
+        }
+
+        private void OnTestCompleted(object sender, TestCompletedEventArgs args)
+        {
+            ((TestViewModel) SelectedElement).TestCompleted -= OnTestCompleted;
+            if (args.TestResult > 70 || args.TestAttempt >= 3)
+            {
+                OpentNextTheory(args.TheoryId);
+            }
+            else
+            {
+                OpenNextDocument(args.TheoryId);
+            }
+            ShowCompleteTestMessage(args.TestResult , args.TestAttempt);
+        }
+
+
+        private void OpenNextDocument(int theoryId)
+        {
+            var nextDocId = _documentService.OpenNextDocument(theoryId, CurrentUserId);
+
+            if (nextDocId <= 0) return;
+            var theory = TheoryParts.FirstOrDefault(tp => tp.CurrentTheoryId.Equals(theoryId));
+            var nextDoc = theory?.TheoryPartElements.OfType<DocumentViewModel>()
+                .FirstOrDefault(d => d.DocumentId.Equals(nextDocId));
+            if (nextDoc != null)
+            {
+                nextDoc.IsVisible = true;
+            }
+        }
+
+        private void OpentNextTheory(int theoryId)
+        {
+            var currentTheory = TheoryParts.FirstOrDefault(tp => tp.CurrentTheoryId.Equals(theoryId));
+
+            if (currentTheory == null) return;
+            var nextTheory = TheoryParts.GetNext(currentTheory);
+            if (nextTheory == null) return;
+            _theoryService.OpenTheory(nextTheory.CurrentTheoryId, CurrentUserId);
+            nextTheory.IsVisible = true;
+            nextTheory.TheoryPartElements[0].IsVisible = true;
         }
 
         public void ShowDocument(DocumentViewModel theoryDoc)
         {
-            _userService.MarkDocumentAsViewed(theoryDoc.DocumentId , _securityManager.CurrentUser.Id);
-            System.Diagnostics.Process.Start(PathResolver.GenerateDocumentPath(theoryDoc.CurrentTheory.Seq.ToString(),theoryDoc.Seq.ToString()));
+            _documentService.ViewDocument(theoryDoc.DocumentId, _securityManager.CurrentUser.Id);
+            OpenTest(theoryDoc);
+            System.Diagnostics.Process.Start(PathResolver.GenerateDocumentPath(theoryDoc.DocumentPath));
+        }
+
+        private void OpenTest(DocumentViewModel theoryDoc)
+        {
+            var test = theoryDoc.CurrentTheory.TheoryPartElements.OfType<TestViewModel>()
+                .FirstOrDefault(t => t.Seq > theoryDoc.Seq);
+            if (test != null)
+            {
+                test.IsVisible = true;
+            }
+        }
+
+        private void ShowCompleteTestMessage(double testResult, int testAttempt)
+        {
+            string testResultString = testResult.ToString("F1");
+            string message;
+            if (testAttempt >= 3)
+            {
+                message = $"{string.Format(Resources.TestCompleteTemplateMessage, testResultString)} {Resources.GoToNextTheoryWithWarningMessage}";
+            }
+            else if (testResult > 70)
+            {
+                message = $"{string.Format(Resources.TestCompleteTemplateMessage, testResultString)} {Resources.GoToNextTheoryMessage}";
+            }
+            else
+            {
+                message = $"{string.Format(Resources.TestCompleteTemplateMessage, testResultString)} {Resources.TestFailedMessage}";
+            }
+
+            ShowMessage(message);
+        }
+
+        public void ClearSelection()
+        {
+            SelectedElement = null;
         }
     }
 }

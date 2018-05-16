@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AdvancedTest.Data.Model;
 
 namespace AdvancedTest.Service.Services.Interface
@@ -6,8 +7,9 @@ namespace AdvancedTest.Service.Services.Interface
     public interface IUserService
     {
         User LogIn(string login, string password);
-        void MarkDocumentAsViewed(int documentId , int userId);
         void CompleteTest(int testId, double result, DateTime endTime);
-        int StartTest(int theoryId, int userId, DateTime startDate);
+        UserTheoryTestMark StartTest(int theoryId, int userId, DateTime startDate);
+        List<UserTheoryTestMark> GetUserTestProgress(int userId);
+        List<UserTheoryDocumentMark> GetUserDocProgress(int userId);
     }
 }

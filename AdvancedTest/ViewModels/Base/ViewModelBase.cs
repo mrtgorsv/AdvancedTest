@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AdvancedTest.ViewModel
+namespace AdvancedTest.ViewModels.Base
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

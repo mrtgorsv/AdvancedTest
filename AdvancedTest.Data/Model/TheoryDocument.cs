@@ -13,7 +13,7 @@ namespace AdvancedTest.Data.Model
         public int Seq { get; set; }
         public string Name { get; set; }
 
-        public string DocumentPath => $"\\{TheoryPart?.Seq}\\{Seq}";
+        public string DocumentPath => $"{TheoryPart?.Seq}\\{Seq}";
 
         public bool IsVisible { get; set; }
 

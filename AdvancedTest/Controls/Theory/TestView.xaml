@@ -19,14 +19,14 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="240" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.ColumnSpan="3" Grid.Row="0">
+        <StackPanel  Background="White"  Grid.ColumnSpan="3" Grid.Row="0" Margin="10 , 5">
             <TextBlock Text="{Binding Name}" TextAlignment="Center" />
         </StackPanel>
-        <ContentControl Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        <ContentControl Background="White" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Content="{Binding CurrentTestPart}" >
         </ContentControl>
         <Button HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2" Content="Назад"

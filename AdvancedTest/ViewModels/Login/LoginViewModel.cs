@@ -1,6 +1,7 @@
 ﻿using System;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
+using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModel.Login
 {
@@ -13,7 +14,7 @@ namespace AdvancedTest.ViewModel.Login
         private string _errorText;
 
         public event UserLoginEventHandler UserLogin;
-        public delegate void UserLoginEventHandler(object sender, EventArgs args);
+        public delegate void UserLoginEventHandler(object sender, System.EventArgs args);
 
         public LoginViewModel(IUserService userService, ISecurityManager securityManager)
         {
@@ -57,7 +58,7 @@ namespace AdvancedTest.ViewModel.Login
 
         protected void RaiseUserLoginEvent()
         {
-            UserLogin?.Invoke(this, new EventArgs());
+            UserLogin?.Invoke(this, new System.EventArgs());
         }
     }
 }

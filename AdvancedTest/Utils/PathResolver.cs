@@ -9,9 +9,9 @@
         {
             return $"{_testFolder}/{theoryFolder}/{testPartName}.png";
         }
-        public static string GenerateDocumentPath(string theoryFolder , string documentName)
+        public static string GenerateDocumentPath(string docPath)
         {
-            return $"{_docFolder}\\{theoryFolder}\\{documentName}.pdf";
+            return $"{_docFolder}\\{docPath}.pdf";
         }
     }
 }

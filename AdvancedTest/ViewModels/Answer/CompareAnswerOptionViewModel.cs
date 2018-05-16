@@ -1,4 +1,5 @@
 ﻿using AdvancedTest.ViewModel;
+using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Answer
 {

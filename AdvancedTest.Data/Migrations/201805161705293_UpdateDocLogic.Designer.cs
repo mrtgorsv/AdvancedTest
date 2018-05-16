@@ -7,13 +7,13 @@ namespace AdvancedTest.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Init : IMigrationMetadata
+    public sealed partial class UpdateDocLogic : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateDocLogic));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805151718235_Init"; }
+            get { return "201805161705293_UpdateDocLogic"; }
         }
         
         string IMigrationMetadata.Source

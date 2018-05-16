@@ -20,6 +20,7 @@ namespace AdvancedTest.Utils.IoC
             Bind<ITestService>().To<TestService>().InSingletonScope();
             Bind<IUserService>().To<UserService>().InSingletonScope();
             Bind<ITheoryService>().To<TheoryService>().InSingletonScope();
+            Bind<IDocumentService>().To<DocumentService>().InSingletonScope();
 
             Bind<MainViewModel>().ToSelf().InTransientScope();
             Bind<LoginViewModel>().ToSelf().InTransientScope();

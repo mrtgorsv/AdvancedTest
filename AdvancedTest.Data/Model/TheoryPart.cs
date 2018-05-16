@@ -13,6 +13,7 @@ namespace AdvancedTest.Data.Model
         public int Seq { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int TestLength { get; set; }
 
         public virtual ICollection<TheoryTestPart> TheoryTestParts { get; set; }
         public virtual ICollection<TheoryDocument> TheoryDocuments { get; set; }

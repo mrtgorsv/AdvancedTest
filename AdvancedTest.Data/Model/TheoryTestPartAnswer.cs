@@ -12,13 +12,11 @@ namespace AdvancedTest.Data.Model
         [ForeignKey("TheoryTestPart")]
         public int TestPartId { get; set; }
 
-        public bool IsCorrect { get; set; }
-
         public string Text { get; set; }
 
         public string ImagePath { get; set; }
 
-        public int Seq { get; set; }
+        public int AnswerNumber { get; set; }
 
         public virtual TheoryTestPart TheoryTestPart { get; set; }
     }
