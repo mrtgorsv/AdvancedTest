@@ -180,8 +180,16 @@ namespace AdvancedTest.ViewModels.Test
             int validAnswers = 0;
             foreach (TestPartViewModel testPart in _testParts)
             {
-                
+                if (testPart.IsValid)
+                {
+                    validAnswers++;
+                }
             }
+            if (validAnswers == 0)
+            {
+                return 0;
+            }
+            return total / (double)validAnswers;
         }
     }
 }
