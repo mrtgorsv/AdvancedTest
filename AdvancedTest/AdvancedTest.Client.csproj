@@ -65,7 +65,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\Theory\TestPartView.xaml.cs">
+    <Compile Include="Controls\TestPart\CompareTestPartView.xaml.cs">
+      <DependentUpon>CompareTestPartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestPart\CustomTextTestPartView.xaml.cs">
+      <DependentUpon>CustomTextTestPartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestPart\SelectManyTestPartView.xaml.cs">
+      <DependentUpon>SelectManyTestPartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestPart\SelectOneTestPartView.xaml.cs">
+      <DependentUpon>SelectOneTestPartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestPart\TestPartView.xaml.cs">
       <DependentUpon>TestPartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MessageView.xaml.cs">
@@ -84,16 +96,19 @@
     <Compile Include="Utils\PathResolver.cs" />
     <Compile Include="Utils\SecurityManager.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\Answer\CompareAnswerOptionViewModel.cs" />
-    <Compile Include="ViewModels\Answer\CompareAnswerViewModel.cs" />
-    <Compile Include="ViewModels\Answer\SelectAnswerViewModel.cs" />
-    <Compile Include="ViewModels\Answer\InputAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Answer\AnswerOptionViewModel.cs" />
+    <Compile Include="ViewModels\Answer\ImageAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Answer\TextAnswerViewModel.cs" />
     <Compile Include="ViewModels\Answer\AnswerViewModel.cs" />
     <Compile Include="ViewModels\Base\MessageViewModel.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.Command.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Test\TestPartViewModel.cs" />
+    <Compile Include="ViewModels\TestPart\SelectOneTestPartViewModel.cs" />
+    <Compile Include="ViewModels\TestPart\SelectManyTestPartViewModel.cs" />
+    <Compile Include="ViewModels\TestPart\CompareTestPartViewModel.cs" />
+    <Compile Include="ViewModels\TestPart\CustomTextTestPartViewModel.cs" />
+    <Compile Include="ViewModels\TestPart\TestPartViewModelBase.cs" />
     <Compile Include="ViewModels\Test\TestViewModel.Command.cs" />
     <Compile Include="ViewModels\Test\TestViewModel.cs" />
     <Compile Include="ViewModels\Theory\TheoryPartElementViewModel.cs" />
@@ -103,7 +118,23 @@
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\Theory\TestPartView.xaml">
+    <Page Include="Controls\TestPart\CompareTestPartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TestPart\CustomTextTestPartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TestPart\SelectManyTestPartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TestPart\SelectOneTestPartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TestPart\TestPartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

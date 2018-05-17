@@ -3,13 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:test="clr-namespace:AdvancedTest.ViewModels.Test"
              xmlns:theory="clr-namespace:AdvancedTest.Controls.Theory"
+             xmlns:testPart="clr-namespace:AdvancedTest.ViewModels.TestPart"
+             xmlns:testPartControl="clr-namespace:AdvancedTest.Controls.TestPart"
              mc:Ignorable="d"
              d:DesignHeight="1024" d:DesignWidth="768">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type test:TestPartViewModel}">
+        <DataTemplate DataType="{x:Type testPart:TestPartViewModelBase}">
             <theory:TestPartView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type testPart:SelectOneTestPartViewModel}">
+            <testPartControl:SelectOneTestPartView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type testPart:SelectManyTestPartViewModel}">
+            <testPartControl:SelectManyTestPartView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type testPart:CustomTextTestPartViewModel}">
+            <testPartControl:CustomTextTestPartView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type testPart:CompareTestPartViewModel}">
+            <testPartControl:CompareTestPartView />
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

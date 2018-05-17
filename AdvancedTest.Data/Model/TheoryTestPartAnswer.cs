@@ -16,6 +16,8 @@ namespace AdvancedTest.Data.Model
 
         public string ImagePath { get; set; }
 
+        public string Options { get; set; }
+
         public int AnswerNumber { get; set; }
 
         public virtual TheoryTestPart TheoryTestPart { get; set; }

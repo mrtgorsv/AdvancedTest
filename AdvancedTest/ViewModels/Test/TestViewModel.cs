@@ -9,6 +9,7 @@ using AdvancedTest.EventArgs;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModels.Answer;
+using AdvancedTest.ViewModels.TestPart;
 using AdvancedTest.ViewModels.Theory;
 
 namespace AdvancedTest.ViewModels.Test
@@ -22,12 +23,12 @@ namespace AdvancedTest.ViewModels.Test
         private UserTheoryTestMark _userTest;
         private string _nextButtonText;
         private bool _isStarted;
-        private TestPartViewModel _testPartViewModel;
+        private TestPartViewModelBase _testPartViewModelBase;
 
         public event TestCompletedEventHandler TestCompleted;
         public delegate void TestCompletedEventHandler(object sender, TestCompletedEventArgs args);
 
-        private List<TestPartViewModel> _testParts;
+        private List<TestPartViewModelBase> _testParts;
 
         public TestViewModel(ITestService testService, IUserService userService, ISecurityManager securityManager)
         {
@@ -37,12 +38,12 @@ namespace AdvancedTest.ViewModels.Test
             InitializeCommands();
         }
 
-        public TestPartViewModel CurrentTestPart
+        public TestPartViewModelBase CurrentTestPart
         {
-            get => _testPartViewModel;
+            get => _testPartViewModelBase;
             set
             {
-                _testPartViewModel = value;
+                _testPartViewModelBase = value;
                 OnPropertyChanged(nameof(CurrentTestPart));
                 OnPropertyChanged(nameof(CanNext));
             }
@@ -92,23 +93,87 @@ namespace AdvancedTest.ViewModels.Test
 
         private void LoadTestParts()
         {
-            List<TestPartViewModel> result = new List<TestPartViewModel>();
+            List<TestPartViewModelBase> result = new List<TestPartViewModelBase>();
 
             List<TheoryTestPart> testParts = _testService.GetParts(_theoryId);
 
             foreach (TheoryTestPart testPart in testParts)
             {
-                TestPartViewModel testPartViewModel = new TestPartViewModel
-                {
-                    CurrentTest = this,
-                    TestText = LoadTestTextImage(testPart.TheoryPart.Seq , testPart.Seq),
-                    TestPartType = testPart.TestType,
-                    CorrectAnswer = testPart.CorrectAnswer
-                };
-                testPartViewModel.Answers = CreateAnswers(testPart.Answers, testPartViewModel);
-                result.Add(testPartViewModel);
+                result.Add(CreateTestPart(testPart));
             }
             _testParts = result;
+        }
+
+        private TestPartViewModelBase CreateTestPart(TheoryTestPart testPart)
+        {
+            switch (testPart.TestType)
+            {
+                case TestPartType.SingleChoice:
+                    return CreateSingeChoiceTestPart(testPart);
+                case TestPartType.MultiplyChoice:
+                    return CreateMultiplyChoiceTestPart(testPart);
+                case TestPartType.Compare:
+                    return CreateCompareTestPart(testPart);
+                case TestPartType.Manual:
+                    return CreateCustomTextTestPart(testPart);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private TestPartViewModelBase CreateCustomTextTestPart(TheoryTestPart testPart)
+        {
+            CustomTextTestPartViewModel testPartViewModelBase = new CustomTextTestPartViewModel
+            {
+                CurrentTest = this,
+                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestPartType = testPart.TestType,
+                CorrectAnswer = testPart.CorrectAnswer
+            };
+
+            return testPartViewModelBase;
+        }
+
+        private TestPartViewModelBase CreateCompareTestPart(TheoryTestPart testPart)
+        {
+            CompareTestPartViewModel testPartViewModelBase = new CompareTestPartViewModel
+            {
+                CurrentTest = this,
+                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestPartType = testPart.TestType,
+                CorrectAnswer = testPart.CorrectAnswer
+            };
+            testPartViewModelBase.Answers = CreateAnswers(testPart.Answers, testPartViewModelBase);
+
+            return testPartViewModelBase;
+        }
+
+        private TestPartViewModelBase CreateMultiplyChoiceTestPart(TheoryTestPart testPart)
+        {
+            SelectManyTestPartViewModel testPartViewModelBase = new SelectManyTestPartViewModel
+            {
+                CurrentTest = this,
+                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestPartType = testPart.TestType,
+                CorrectAnswer = testPart.CorrectAnswer
+            };
+            testPartViewModelBase.Answers = CreateAnswers(testPart.Answers, testPartViewModelBase);
+
+            return testPartViewModelBase;
+        }
+
+        private TestPartViewModelBase CreateSingeChoiceTestPart(TheoryTestPart testPart)
+        {
+            SelectOneTestPartViewModel testPartViewModelBase = new SelectOneTestPartViewModel
+            {
+                CurrentTest = this,
+                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestPartType = testPart.TestType,
+                CorrectAnswer = testPart.CorrectAnswer
+            };
+            testPartViewModelBase.Answers = CreateAnswers(testPart.Answers, testPartViewModelBase);
+
+            return testPartViewModelBase;
         }
 
         private BitmapImage LoadTestTextImage(int parentFolder, int fileName)
@@ -124,20 +189,20 @@ namespace AdvancedTest.ViewModels.Test
         }
 
         private ObservableCollection<AnswerViewModel> CreateAnswers(IEnumerable<TheoryTestPartAnswer> testPartAnswers,
-            TestPartViewModel testPartViewModel)
+            TestPartViewModelBase testPartViewModelBase)
         {
             List<AnswerViewModel> answers = new List<AnswerViewModel>();
-            switch (testPartViewModel.TestPartType)
+            switch (testPartViewModelBase.TestPartType)
             {
                 case TestPartType.SingleChoice:
                 case TestPartType.MultiplyChoice:
-                    answers.AddRange(testPartAnswers.Select(a => CreateSelectAnswerViewModel(a, testPartViewModel)));
+                    answers.AddRange(testPartAnswers.Select(a => CreateSelectAnswerViewModel(a, testPartViewModelBase)));
                     break;
                 case TestPartType.Compare:
-                    answers.AddRange(testPartAnswers.Select(a => CreateComareAnswerViewModel(a, testPartViewModel)));
+                    answers.AddRange(testPartAnswers.Select(a => CreateCompareAnswerViewModel(a, testPartViewModelBase)));
                     break;
                 case TestPartType.Manual:
-                    answers.AddRange(testPartAnswers.Select(a => CreateInputAnswerViewModel(a, testPartViewModel)));
+                    answers.AddRange(testPartAnswers.Select(a => CreateInputAnswerViewModel(a, testPartViewModelBase)));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -147,38 +212,62 @@ namespace AdvancedTest.ViewModels.Test
         }
 
         private AnswerViewModel CreateInputAnswerViewModel(TheoryTestPartAnswer answer,
-            TestPartViewModel testPartViewModel)
+            TestPartViewModelBase testPartViewModelBase)
         {
-            return new InputAnswerViewModel
+            return new TextAnswerViewModel
             {
                 Seq = answer.AnswerNumber,
-                InputResult = string.Empty,
-                CurrentTestPart = testPartViewModel,
+                Text = string.Empty,
+                CurrentTestPart = testPartViewModelBase,
                 AnswerId = answer.Id
             };
         }
 
-        private AnswerViewModel CreateComareAnswerViewModel(TheoryTestPartAnswer answer,
-            TestPartViewModel testPartViewModel)
+        private AnswerViewModel CreateCompareAnswerViewModel(TheoryTestPartAnswer answer,
+            TestPartViewModelBase testPartViewModelBase)
         {
-            return new CompareAnswerViewModel
+            AnswerViewModel result;
+            if (!string.IsNullOrWhiteSpace(answer.ImagePath))
             {
-                Seq = answer.AnswerNumber,
-                CurrentTestPart = testPartViewModel,
-                AnswerId = answer.Id
-            };
+                result= CreateImageAnswer(answer , testPartViewModelBase);
+            }
+            else
+            {
+                result = CreateTextAnswer(answer, testPartViewModelBase);
+            }
+            result.Options = new ObservableCollection<AnswerOptionViewModel>();
+            return result;
+
         }
+
 
         private AnswerViewModel CreateSelectAnswerViewModel(TheoryTestPartAnswer answer,
-            TestPartViewModel testPartViewModel)
+            TestPartViewModelBase testPartViewModelBase)
         {
-            return new SelectAnswerViewModel
+            if (!string.IsNullOrWhiteSpace(answer.ImagePath))
+            {
+                return CreateImageAnswer(answer, testPartViewModelBase);
+            }
+            return CreateTextAnswer(answer, testPartViewModelBase);
+        }
+
+        private AnswerViewModel CreateTextAnswer(TheoryTestPartAnswer answer, TestPartViewModelBase testPartViewModelBase)
+        {
+            return new AnswerViewModel
             {
                 Seq = answer.AnswerNumber,
-                CurrentTestPart = testPartViewModel,
-                AnswerId = answer.Id,
-                Text = answer.Text,
-                ImagePath = answer.ImagePath
+                CurrentTestPart = testPartViewModelBase,
+                AnswerId = answer.Id
+            };
+        }
+
+        private AnswerViewModel CreateImageAnswer(TheoryTestPartAnswer answer, TestPartViewModelBase testPartViewModelBase)
+        {
+            return new ImageAnswerViewModel()
+            {
+                Seq = answer.AnswerNumber,
+                CurrentTestPart = testPartViewModelBase,
+                AnswerId = answer.Id
             };
         }
 
@@ -186,7 +275,7 @@ namespace AdvancedTest.ViewModels.Test
         {
             int total = _testParts.Count;
             int validAnswers = 0;
-            foreach (TestPartViewModel testPart in _testParts)
+            foreach (TestPartViewModelBase testPart in _testParts)
             {
                 if (testPart.IsValid)
                 {

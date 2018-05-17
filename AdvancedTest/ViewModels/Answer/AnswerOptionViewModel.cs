@@ -3,13 +3,13 @@ using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Answer
 {
-    public class CompareAnswerOptionViewModel : ViewModelBase
+    public class AnswerOptionViewModel : ViewModelBase
     {
         private bool _isSelected;
         public int Value { get; set; }
         public string Name { get; set; }
 
-        public CompareAnswerOptionViewModel()
+        public AnswerOptionViewModel()
         {
         }
 

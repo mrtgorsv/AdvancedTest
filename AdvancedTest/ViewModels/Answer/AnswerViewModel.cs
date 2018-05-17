@@ -1,22 +1,39 @@
-﻿using AdvancedTest.ViewModel;
+﻿using System.Collections.ObjectModel;
 using AdvancedTest.ViewModels.Base;
-using AdvancedTest.ViewModels.Test;
+using AdvancedTest.ViewModels.TestPart;
 
 namespace AdvancedTest.ViewModels.Answer
 {
     public class AnswerViewModel : ViewModelBase
     {
-        private TestPartViewModel CurrentTestPartViewModel{ get; set; }
+
+        private bool _isSelected;
 
         public int Seq { get; set; }
         public int AnswerId { get; set; }
-        public string Text { get; set; }
-        public string ImagePath { get; set; }
+        private AnswerOptionViewModel _selectedOption;
 
-        public TestPartViewModel CurrentTestPart { get; set; }
-
-        public AnswerViewModel()
+        public bool IsSelected
         {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+            }
+        }
+
+        public TestPartViewModelBase CurrentTestPart { get; set; }
+
+        public ObservableCollection<AnswerOptionViewModel> Options { get; set; }
+        public AnswerOptionViewModel SelectedOption
+        {
+            get => _selectedOption;
+            set
+            {
+                _selectedOption = value;
+                OnPropertyChanged(nameof(SelectedOption));
+            }
         }
     }
 }

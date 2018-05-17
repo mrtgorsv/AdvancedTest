@@ -2,19 +2,19 @@
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
 using AdvancedTest.Data.Enum;
-using AdvancedTest.ViewModel;
 using AdvancedTest.ViewModels.Answer;
 using AdvancedTest.ViewModels.Base;
+using AdvancedTest.ViewModels.Test;
 
-namespace AdvancedTest.ViewModels.Test
+namespace AdvancedTest.ViewModels.TestPart
 {
-    public class TestPartViewModel : ViewModelBase
+    public class TestPartViewModelBase : ViewModelBase
     {
         private BitmapImage _testText;
         private string _testPath;
         private string _currentAnswer;
 
-        public TestPartViewModel()
+        public TestPartViewModelBase()
         {
         }
 
@@ -41,8 +41,11 @@ namespace AdvancedTest.ViewModels.Test
             {
                 _testText = value;
                 OnPropertyChanged(nameof(TestText));
+                OnPropertyChanged(nameof(ImageWidth));
             }
         }
+
+        public int ImageWidth => (int)TestText.Width;
 
         public TestViewModel CurrentTest { get; set; }
 
@@ -61,5 +64,10 @@ namespace AdvancedTest.ViewModels.Test
         public string CorrectAnswer { get; set; }
 
         public ObservableCollection<AnswerViewModel> Answers { get; set; }
+
+        public virtual string GetUserAnswer()
+        {
+            throw new NotSupportedException();
+        }
     }
 }
