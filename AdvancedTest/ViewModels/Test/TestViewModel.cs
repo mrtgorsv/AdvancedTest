@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using AdvancedTest.Data.Enum;
 using AdvancedTest.Data.Model;
 using AdvancedTest.EventArgs;
@@ -24,8 +26,12 @@ namespace AdvancedTest.ViewModels.Test
         private string _nextButtonText;
         private bool _isStarted;
         private TestPartViewModelBase _testPartViewModelBase;
+        private DispatcherTimer _timer = new DispatcherTimer(DispatcherPriority.Render, Application.Current.Dispatcher);
+        private TimeSpan _testTime;
+
 
         public event TestCompletedEventHandler TestCompleted;
+
         public delegate void TestCompletedEventHandler(object sender, TestCompletedEventArgs args);
 
         private List<TestPartViewModelBase> _testParts;
@@ -36,6 +42,8 @@ namespace AdvancedTest.ViewModels.Test
             _userService = userService;
             _securityManager = securityManager;
             InitializeCommands();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += OnTimerTick;
         }
 
         public TestPartViewModelBase CurrentTestPart
@@ -48,6 +56,8 @@ namespace AdvancedTest.ViewModels.Test
                 OnPropertyChanged(nameof(CanNext));
             }
         }
+
+        public string TestTime { get; set; }
 
         public int CurrentTheoryId
         {
@@ -79,6 +89,7 @@ namespace AdvancedTest.ViewModels.Test
                 OnPropertyChanged(nameof(CanStart));
             }
         }
+
         public bool CanStart => !_isStarted;
 
         public bool CanBack => false;
@@ -90,7 +101,6 @@ namespace AdvancedTest.ViewModels.Test
 
         public int Attempt { get; set; }
 
-
         private void LoadTestParts()
         {
             List<TestPartViewModelBase> result = new List<TestPartViewModelBase>();
@@ -101,6 +111,7 @@ namespace AdvancedTest.ViewModels.Test
             {
                 result.Add(CreateTestPart(testPart));
             }
+
             _testParts = result;
         }
 
@@ -128,7 +139,8 @@ namespace AdvancedTest.ViewModels.Test
                 CurrentTest = this,
                 TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
-                CorrectAnswer = testPart.CorrectAnswer
+                CorrectAnswer = testPart.CorrectAnswer,
+                Seq = testPart.Seq
             };
 
             return testPartViewModelBase;
@@ -141,7 +153,8 @@ namespace AdvancedTest.ViewModels.Test
                 CurrentTest = this,
                 TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
-                CorrectAnswer = testPart.CorrectAnswer
+                CorrectAnswer = testPart.CorrectAnswer,
+                Seq = testPart.Seq
             };
             testPartViewModelBase.Answers = CreateAnswers(testPart.Answers, testPartViewModelBase);
 
@@ -155,7 +168,8 @@ namespace AdvancedTest.ViewModels.Test
                 CurrentTest = this,
                 TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
-                CorrectAnswer = testPart.CorrectAnswer
+                CorrectAnswer = testPart.CorrectAnswer,
+                Seq = testPart.Seq
             };
             testPartViewModelBase.Answers = CreateAnswers(testPart.Answers, testPartViewModelBase);
 
@@ -169,7 +183,8 @@ namespace AdvancedTest.ViewModels.Test
                 CurrentTest = this,
                 TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
-                CorrectAnswer = testPart.CorrectAnswer
+                CorrectAnswer = testPart.CorrectAnswer,
+                Seq = testPart.Seq
             };
             testPartViewModelBase.Answers = CreateAnswers(testPart.Answers, testPartViewModelBase);
 
@@ -180,7 +195,7 @@ namespace AdvancedTest.ViewModels.Test
         {
             string path = PathResolver.GenerateTestDescriptionPath(parentFolder.ToString(), fileName.ToString());
             Uri.TryCreate(path, UriKind.Relative, out var uri);
-            var image =  new BitmapImage();
+            var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.UriSource = uri;
@@ -196,10 +211,12 @@ namespace AdvancedTest.ViewModels.Test
             {
                 case TestPartType.SingleChoice:
                 case TestPartType.MultiplyChoice:
-                    answers.AddRange(testPartAnswers.Select(a => CreateSelectAnswerViewModel(a, testPartViewModelBase)));
+                    answers.AddRange(testPartAnswers.Select(a =>
+                        CreateSelectAnswerViewModel(a, testPartViewModelBase)));
                     break;
                 case TestPartType.Compare:
-                    answers.AddRange(testPartAnswers.Select(a => CreateCompareAnswerViewModel(a, testPartViewModelBase)));
+                    answers.AddRange(
+                        testPartAnswers.Select(a => CreateCompareAnswerViewModel(a, testPartViewModelBase)));
                     break;
                 case TestPartType.Manual:
                     answers.AddRange(testPartAnswers.Select(a => CreateInputAnswerViewModel(a, testPartViewModelBase)));
@@ -226,48 +243,51 @@ namespace AdvancedTest.ViewModels.Test
         private AnswerViewModel CreateCompareAnswerViewModel(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
-            AnswerViewModel result;
-            if (!string.IsNullOrWhiteSpace(answer.ImagePath))
-            {
-                result= CreateImageAnswer(answer , testPartViewModelBase);
-            }
-            else
-            {
-                result = CreateTextAnswer(answer, testPartViewModelBase);
-            }
-            result.Options = new ObservableCollection<AnswerOptionViewModel>();
-            return result;
+            var result = string.IsNullOrWhiteSpace(answer.Text)
+                ? CreateImageAnswer(answer, testPartViewModelBase)
+                : CreateTextAnswer(answer, testPartViewModelBase);
 
+            result.Options = new ObservableCollection<AnswerOptionViewModel>(GetAnswerOptions(answer.Options));
+            return result;
+        }
+
+        private List<AnswerOptionViewModel> GetAnswerOptions(string answerOptions)
+        {
+            return answerOptions.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
+                .Select((answer , index ) => new AnswerOptionViewModel(answer, index)).ToList();
         }
 
 
         private AnswerViewModel CreateSelectAnswerViewModel(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
-            if (!string.IsNullOrWhiteSpace(answer.ImagePath))
-            {
-                return CreateImageAnswer(answer, testPartViewModelBase);
-            }
-            return CreateTextAnswer(answer, testPartViewModelBase);
+            return string.IsNullOrWhiteSpace(answer.Text)
+                ? CreateImageAnswer(answer, testPartViewModelBase)
+                : CreateTextAnswer(answer, testPartViewModelBase);
         }
 
-        private AnswerViewModel CreateTextAnswer(TheoryTestPartAnswer answer, TestPartViewModelBase testPartViewModelBase)
+        private AnswerViewModel CreateTextAnswer(TheoryTestPartAnswer answer,
+            TestPartViewModelBase testPartViewModelBase)
         {
-            return new AnswerViewModel
+            return new TextAnswerViewModel
             {
                 Seq = answer.AnswerNumber,
                 CurrentTestPart = testPartViewModelBase,
-                AnswerId = answer.Id
+                AnswerId = answer.Id,
+                Text = answer.Text
             };
         }
 
-        private AnswerViewModel CreateImageAnswer(TheoryTestPartAnswer answer, TestPartViewModelBase testPartViewModelBase)
+        private AnswerViewModel CreateImageAnswer(TheoryTestPartAnswer answer,
+            TestPartViewModelBase testPartViewModelBase)
         {
-            return new ImageAnswerViewModel()
+            return new ImageAnswerViewModel
             {
                 Seq = answer.AnswerNumber,
                 CurrentTestPart = testPartViewModelBase,
-                AnswerId = answer.Id
+                AnswerId = answer.Id,
+                ImagePath = PathResolver.GenerateAnswerPath(answer.TheoryTestPart.TheoryPart.Seq.ToString(),
+                    answer.TheoryTestPart.Seq.ToString(), answer.AnswerNumber.ToString())
             };
         }
 
@@ -282,16 +302,36 @@ namespace AdvancedTest.ViewModels.Test
                     validAnswers++;
                 }
             }
+
             if (validAnswers == 0)
             {
                 return 0;
             }
-            return total / (double)validAnswers;
+
+            return ((double) validAnswers / total) * 100;
         }
 
-        protected virtual void OnTestCompleted( double result)
+
+        private void OnTimerTick(object sender, System.EventArgs e)
         {
-            TestCompleted?.Invoke(this, new TestCompletedEventArgs(result , CurrentTheoryId , _userTest.Attempt));
+            if (_testTime == TimeSpan.Zero)
+            {
+                CompleteTest();
+            }
+
+            _testTime = _testTime.Add(TimeSpan.FromSeconds(-1));
+            TestTime = _testTime.ToString("T");
+            OnPropertyChanged(nameof(TestTime));
+        }
+
+        protected virtual void OnTestCompleted(double result)
+        {
+            TestCompleted?.Invoke(this, new TestCompletedEventArgs(result, CurrentTheoryId, _userTest.Attempt));
+        }
+
+        public void SetTestTime(TimeSpan testTime)
+        {
+            _testTime = testTime;
         }
     }
 }

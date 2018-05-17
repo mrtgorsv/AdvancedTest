@@ -29,6 +29,7 @@ namespace AdvancedTest.Data.Migrations
                         Seq = c.Int(nullable: false),
                         Name = c.String(),
                         Description = c.String(),
+                        TestTime = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -55,6 +56,7 @@ namespace AdvancedTest.Data.Migrations
                         TestPartId = c.Int(nullable: false),
                         Text = c.String(),
                         ImagePath = c.String(),
+                        Options = c.String(),
                         AnswerNumber = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -78,38 +80,36 @@ namespace AdvancedTest.Data.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DocumentId = c.Int(),
-                        Attempt = c.Int(nullable: false),
-                        Result = c.Double(nullable: false),
                         UserId = c.Int(nullable: false),
+                        TheoryPartId = c.Int(nullable: false),
                         IsCompleted = c.Boolean(nullable: false),
-                        TheoryPart_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.TheoryDocuments", t => t.DocumentId)
-                .ForeignKey("dbo.TheoryParts", t => t.TheoryPart_Id)
+                .ForeignKey("dbo.TheoryParts", t => t.TheoryPartId, cascadeDelete: false)
                 .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: false)
                 .Index(t => t.DocumentId)
                 .Index(t => t.UserId)
-                .Index(t => t.TheoryPart_Id);
+                .Index(t => t.TheoryPartId);
             
             CreateTable(
                 "dbo.UserTheoryTestMarks",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        TheoryPartId = c.Int(nullable: false),
                         StartTime = c.DateTime(nullable: false),
                         EndTime = c.DateTime(),
                         Attempt = c.Int(nullable: false),
                         Result = c.Double(nullable: false),
                         UserId = c.Int(nullable: false),
+                        TheoryPartId = c.Int(nullable: false),
                         IsCompleted = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.TheoryParts", t => t.TheoryPartId, cascadeDelete: false)
                 .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: false)
-                .Index(t => t.TheoryPartId)
-                .Index(t => t.UserId);
+                .Index(t => t.UserId)
+                .Index(t => t.TheoryPartId);
             
         }
         
@@ -118,14 +118,14 @@ namespace AdvancedTest.Data.Migrations
             DropForeignKey("dbo.UserTheoryTestMarks", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserTheoryTestMarks", "TheoryPartId", "dbo.TheoryParts");
             DropForeignKey("dbo.UserTheoryDocumentMarks", "UserId", "dbo.Users");
-            DropForeignKey("dbo.UserTheoryDocumentMarks", "TheoryPart_Id", "dbo.TheoryParts");
+            DropForeignKey("dbo.UserTheoryDocumentMarks", "TheoryPartId", "dbo.TheoryParts");
             DropForeignKey("dbo.UserTheoryDocumentMarks", "DocumentId", "dbo.TheoryDocuments");
             DropForeignKey("dbo.TheoryDocuments", "TheoryPartId", "dbo.TheoryParts");
             DropForeignKey("dbo.TheoryTestParts", "TheoryId", "dbo.TheoryParts");
             DropForeignKey("dbo.TheoryTestPartAnswers", "TestPartId", "dbo.TheoryTestParts");
-            DropIndex("dbo.UserTheoryTestMarks", new[] { "UserId" });
             DropIndex("dbo.UserTheoryTestMarks", new[] { "TheoryPartId" });
-            DropIndex("dbo.UserTheoryDocumentMarks", new[] { "TheoryPart_Id" });
+            DropIndex("dbo.UserTheoryTestMarks", new[] { "UserId" });
+            DropIndex("dbo.UserTheoryDocumentMarks", new[] { "TheoryPartId" });
             DropIndex("dbo.UserTheoryDocumentMarks", new[] { "UserId" });
             DropIndex("dbo.UserTheoryDocumentMarks", new[] { "DocumentId" });
             DropIndex("dbo.TheoryTestPartAnswers", new[] { "TestPartId" });

@@ -13,7 +13,9 @@ namespace AdvancedTest.Data.Model
         public int Seq { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int TestLength { get; set; }
+        public int TestTime { get; set; }
+
+        public bool IsLast { get; set; }
 
         public virtual ICollection<TheoryTestPart> TheoryTestParts { get; set; }
         public virtual ICollection<TheoryDocument> TheoryDocuments { get; set; }

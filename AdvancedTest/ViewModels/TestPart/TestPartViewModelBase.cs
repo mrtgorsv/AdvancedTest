@@ -11,27 +11,11 @@ namespace AdvancedTest.ViewModels.TestPart
     public class TestPartViewModelBase : ViewModelBase
     {
         private BitmapImage _testText;
-        private string _testPath;
         private string _currentAnswer;
-
-        public TestPartViewModelBase()
-        {
-        }
-
 
         public bool IsValid
         {
-            get { return string.Compare(CorrectAnswer, CurrentAnswer, StringComparison.InvariantCulture) == 0; }
-        }
-
-        public string TextPath
-        {
-            get => _testPath;
-            set
-            {
-                _testPath = value;
-                OnPropertyChanged(nameof(TextPath));
-            }
+            get { return string.Compare(CorrectAnswer, GetUserAnswer(), StringComparison.InvariantCulture) == 0; }
         }
 
         public BitmapImage TestText
@@ -42,24 +26,17 @@ namespace AdvancedTest.ViewModels.TestPart
                 _testText = value;
                 OnPropertyChanged(nameof(TestText));
                 OnPropertyChanged(nameof(ImageWidth));
+                OnPropertyChanged(nameof(ImageHeight));
             }
         }
 
         public int ImageWidth => (int)TestText.Width;
+        public int ImageHeight => (int)TestText.Height;
 
         public TestViewModel CurrentTest { get; set; }
+        public int Seq { get; set; }
 
         public TestPartType TestPartType { get; set; }
-
-        public string CurrentAnswer
-        {
-            get { return _currentAnswer; }
-            set
-            {
-                _currentAnswer = value;
-                OnPropertyChanged(nameof(CorrectAnswer));
-            }
-        }
 
         public string CorrectAnswer { get; set; }
 

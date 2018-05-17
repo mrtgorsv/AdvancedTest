@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using AdvancedTest.Data.Model;
@@ -7,7 +8,6 @@ using AdvancedTest.Extensions;
 using AdvancedTest.Properties;
 using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
-using AdvancedTest.ViewModel;
 using AdvancedTest.ViewModels.Base;
 using AdvancedTest.ViewModels.Test;
 using AdvancedTest.ViewModels.Theory;
@@ -22,7 +22,6 @@ namespace AdvancedTest.ViewModels
         private readonly IDocumentService _documentService;
         private readonly ViewModelLocator _locator;
         private ViewModelBase _selectedElement;
-        private List<UserTheoryTestMark> _completedTestList;
         private List<UserTheoryDocumentMark> _openedUserDocList;
 
         public MainViewModel(ITheoryService theoryService, ViewModelLocator locator, IUserService userService,
@@ -53,7 +52,6 @@ namespace AdvancedTest.ViewModels
 
         private void LoadTheory()
         {
-            UpdateCompletedTests();
             UpdateUserDocs();
             var theoryList = _theoryService.GetTheoryList();
             if (_openedUserDocList.Count == 0 && theoryList.Count > 0)
@@ -62,6 +60,10 @@ namespace AdvancedTest.ViewModels
                 _theoryService.OpenTheory(firstTheory.Id, CurrentUserId);
                 UpdateUserDocs();
                 ShowMessage(Resources.WelcomeMessage);
+            }
+            else
+            {
+                ShowMessage(Resources.ContinueMessage);
             }
 
             TheoryParts = new ObservableCollection<TheoryViewModel>(theoryList.Select(CreateTheory));
@@ -79,17 +81,11 @@ namespace AdvancedTest.ViewModels
                 CurrentTheoryId = theory.Id,
                 Seq = theory.Seq,
                 Name = theory.Name,
+                TestTime = theory.TestTime,
                 IsVisible = _openedUserDocList.Any(td => !td.DocumentId.HasValue && td.TheoryPartId.Equals(theory.Id))
             };
             theoryViewModel.TheoryPartElements = CreateElements(theory, theoryViewModel);
             return theoryViewModel;
-        }
-
-        private void UpdateCompletedTests()
-        {
-            _completedTestList = _userService.GetUserTestProgress(CurrentUserId)
-                .Where(ut => ut.Result > 70)
-                .ToList();
         }
 
         private void UpdateUserDocs()
@@ -143,6 +139,7 @@ namespace AdvancedTest.ViewModels
             testViewModel.CurrentTheory = theoryViewModel;
             testViewModel.Seq = 2;
             testViewModel.Name = "Тест";
+            testViewModel.SetTestTime(TimeSpan.FromMinutes(theoryViewModel.TestTime));
             return testViewModel;
         }
 
@@ -168,7 +165,8 @@ namespace AdvancedTest.ViewModels
             {
                 OpenNextDocument(args.TheoryId);
             }
-            ShowCompleteTestMessage(args.TestResult , args.TestAttempt);
+
+            ShowCompleteTestMessage(args.TestResult, args.TestAttempt);
         }
 
 
@@ -219,13 +217,13 @@ namespace AdvancedTest.ViewModels
         {
             string testResultString = testResult.ToString("F1");
             string message;
-            if (testAttempt >= 3)
-            {
-                message = $"{string.Format(Resources.TestCompleteTemplateMessage, testResultString)} {Resources.GoToNextTheoryWithWarningMessage}";
-            }
-            else if (testResult > 70)
+            if (testResult > 70)
             {
                 message = $"{string.Format(Resources.TestCompleteTemplateMessage, testResultString)} {Resources.GoToNextTheoryMessage}";
+            }
+            else if (testAttempt >= 3)
+            {
+                message = $"{string.Format(Resources.TestCompleteTemplateMessage, testResultString)} {Resources.GoToNextTheoryWithWarningMessage}";
             }
             else
             {

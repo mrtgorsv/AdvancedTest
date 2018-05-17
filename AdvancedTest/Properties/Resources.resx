@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ContinueMessage" xml:space="preserve">
+    <value>Добро пожаловать в систему адаптивного обучения по дисциплине 'Информационные технологии'. Продолжите свое обучение</value>
+  </data>
   <data name="GoToNextTheoryMessage" xml:space="preserve">
     <value>Можете переходить к следующей главе.</value>
   </data>

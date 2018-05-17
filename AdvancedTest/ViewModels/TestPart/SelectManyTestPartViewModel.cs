@@ -6,7 +6,7 @@ namespace AdvancedTest.ViewModels.TestPart
     {
         public override string GetUserAnswer()
         {
-            return string.Join(",", Answers.Where(a => a.IsSelected));
+            return string.Join(",", Answers.Where(a => a.IsSelected).Select(a => a.Seq));
         }
     }
 }

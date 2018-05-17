@@ -51,13 +51,13 @@
     <Compile Include="Context\AppDbContext.cs" />
     <Compile Include="Enum\TestPartType.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />
-    <Compile Include="Migrations\201805161532529_Init.cs" />
-    <Compile Include="Migrations\201805161532529_Init.Designer.cs">
-      <DependentUpon>201805161532529_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201805171631322_Init.cs" />
+    <Compile Include="Migrations\201805171631322_Init.Designer.cs">
+      <DependentUpon>201805171631322_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805161705293_UpdateDocLogic.cs" />
-    <Compile Include="Migrations\201805161705293_UpdateDocLogic.Designer.cs">
-      <DependentUpon>201805161705293_UpdateDocLogic.cs</DependentUpon>
+    <Compile Include="Migrations\201805172001550_UpdateLogic.cs" />
+    <Compile Include="Migrations\201805172001550_UpdateLogic.Designer.cs">
+      <DependentUpon>201805172001550_UpdateLogic.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TheoryDocument.cs" />
@@ -75,11 +75,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805161532529_Init.resx">
-      <DependentUpon>201805161532529_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805171631322_Init.resx">
+      <DependentUpon>201805171631322_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805161705293_UpdateDocLogic.resx">
-      <DependentUpon>201805161705293_UpdateDocLogic.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805172001550_UpdateLogic.resx">
+      <DependentUpon>201805172001550_UpdateLogic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

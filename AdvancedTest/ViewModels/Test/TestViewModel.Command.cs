@@ -44,10 +44,12 @@ namespace AdvancedTest.ViewModels.Test
             IsStarted = true;
             NextButtonText = "Далее";
             _userTest = _userService.StartTest(_theoryId, _securityManager.CurrentUser.Id, DateTime.Now);
+            _timer.Start();
         }
 
         public void CompleteTest()
         {
+            _timer.Stop();
             var result = GetTestResult();
             _userService.CompleteTest(_userTest.Id, result, DateTime.Now);
             OnTestCompleted(result);

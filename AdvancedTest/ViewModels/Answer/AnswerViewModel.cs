@@ -6,12 +6,18 @@ namespace AdvancedTest.ViewModels.Answer
 {
     public class AnswerViewModel : ViewModelBase
     {
-
         private bool _isSelected;
 
         public int Seq { get; set; }
         public int AnswerId { get; set; }
-        private AnswerOptionViewModel _selectedOption;
+        public bool TextMode { get; set; }
+
+        public bool ImageMode
+        {
+            get { return !TextMode; }
+        }
+
+        private int _selectedOption;
 
         public bool IsSelected
         {
@@ -26,7 +32,7 @@ namespace AdvancedTest.ViewModels.Answer
         public TestPartViewModelBase CurrentTestPart { get; set; }
 
         public ObservableCollection<AnswerOptionViewModel> Options { get; set; }
-        public AnswerOptionViewModel SelectedOption
+        public int SelectedOption
         {
             get => _selectedOption;
             set

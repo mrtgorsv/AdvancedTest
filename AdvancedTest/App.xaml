@@ -8,5 +8,15 @@
         <utils:ViewModelLocator x:Key="ViewModelLocator"/>
         <converters:BoolToVisibilityConverter
             x:Key="BoolToHiddenConverter"/>
+        <Style TargetType="TextBlock">
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+                <Trigger Property="Text" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

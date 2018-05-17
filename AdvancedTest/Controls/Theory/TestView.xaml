@@ -32,12 +32,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="60" />
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <StackPanel  Background="White"  Grid.ColumnSpan="3" Grid.Row="0" Margin="10 , 5">
-            <TextBlock Text="{Binding Name}" TextAlignment="Center" />
+        <StackPanel Background="White"  Grid.ColumnSpan="3" Grid.Row="0" Margin="10 , 5">
+            <TextBlock Text="{Binding Name}" TextAlignment="Center" FontSize="24" FontStyle="Oblique"/>
+            <TextBlock Text="{Binding TestTime}" Foreground="Red" TextAlignment="Right" HorizontalAlignment="Stretch" Height="25"></TextBlock>
         </StackPanel>
         <ContentControl Background="White" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Content="{Binding CurrentTestPart}" >

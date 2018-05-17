@@ -61,6 +61,15 @@ namespace AdvancedTest.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Добро пожаловать в систему адаптивного обучения по дисциплине &apos;Информационные технологии&apos;. Продолжите свое обучение.
+        /// </summary>
+        internal static string ContinueMessage {
+            get {
+                return ResourceManager.GetString("ContinueMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Можете переходить к следующей главе..
         /// </summary>
         internal static string GoToNextTheoryMessage {

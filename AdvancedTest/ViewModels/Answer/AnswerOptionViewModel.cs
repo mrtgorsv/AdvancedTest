@@ -1,5 +1,4 @@
-﻿using AdvancedTest.ViewModel;
-using AdvancedTest.ViewModels.Base;
+﻿using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Answer
 {
@@ -9,8 +8,10 @@ namespace AdvancedTest.ViewModels.Answer
         public int Value { get; set; }
         public string Name { get; set; }
 
-        public AnswerOptionViewModel()
+        public AnswerOptionViewModel(string answer , int index)
         {
+            Name = answer;
+            Value = index;
         }
 
         public bool IsSelected

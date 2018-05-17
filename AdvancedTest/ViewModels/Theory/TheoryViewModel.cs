@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using AdvancedTest.ViewModel;
 using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Theory
@@ -10,6 +9,7 @@ namespace AdvancedTest.ViewModels.Theory
         public int CurrentTheoryId { get; set; }
         public string Name { get; set; }
         public int Seq { get; set; }
+        public int TestTime { get; set; }
 
         public bool IsVisible
         {

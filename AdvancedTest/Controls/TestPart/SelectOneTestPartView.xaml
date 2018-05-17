@@ -3,27 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:AdvancedTest.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="400" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left">
-
-            <Image Source="{Binding TestText}" />
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MaxHeight="450">
+            <Label Content="Вопрос:" FontSize="24" HorizontalAlignment="Stretch" VerticalAlignment="Top"  Margin="10" DockPanel.Dock="Top"></Label>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Image Source="{Binding TestText}" Width="{Binding ImageWidth}"   VerticalAlignment="Top" Height="{Binding ImageHeight}" />
+            </ScrollViewer>
         </StackPanel>
-        <StackPanel Grid.Row="1">
-            <ListBox Name="listBoxForSelection"      
+        <StackPanel VerticalAlignment="Bottom">
+            <Label Content="Ответ:" FontSize="24" HorizontalAlignment="Stretch" Margin="10"></Label>
+            <ListBox Name="listBoxForSelection" Margin="10"   
                      ItemsSource="{Binding Answers}"       
                      IsSynchronizedWithCurrentItem="True"      
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <RadioButton GroupName="Answers">
+                        <RadioButton GroupName="Answers" IsChecked="{Binding IsSelected , Mode=TwoWay}">
                             <RadioButton.Content>
-                                <ContentControl Content="{Binding}"></ContentControl>
+                                <StackPanel>
+                                    <StackPanel.Resources>
+                                        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+                                    </StackPanel.Resources>
+                                    <TextBlock Text="{Binding Text}" Visibility="{Binding TextMode, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Top"/>
+                                    <Image Source="{Binding AnswerImage}"  Visibility="{Binding ImageMode, Converter={StaticResource BoolToVisibilityConverter}}"  VerticalAlignment="Top"/>
+                                </StackPanel>
                             </RadioButton.Content>
                         </RadioButton>
                     </DataTemplate>

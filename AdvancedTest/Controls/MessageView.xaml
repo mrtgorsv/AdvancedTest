@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBlock x:Name="label" Text="{Binding Message}"
+            <TextBlock x:Name="label" Text="{Binding Message}" FontSize="24" FontStyle="Oblique"
                        TextWrapping="Wrap"/>
         </StackPanel>
 
