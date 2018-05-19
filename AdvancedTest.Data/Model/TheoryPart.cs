@@ -16,6 +16,7 @@ namespace AdvancedTest.Data.Model
         public int TestTime { get; set; }
 
         public bool IsLast { get; set; }
+        public bool IsInitial { get; set; }
 
         public virtual ICollection<TheoryTestPart> TheoryTestParts { get; set; }
         public virtual ICollection<TheoryDocument> TheoryDocuments { get; set; }

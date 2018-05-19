@@ -88,6 +88,15 @@ namespace AdvancedTest.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Content/logo.jpg.
+        /// </summary>
+        internal static string Logo {
+            get {
+                return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Вы набрали {0}%..
         /// </summary>
         internal static string TestCompleteTemplateMessage {
@@ -102,6 +111,24 @@ namespace AdvancedTest.Properties {
         internal static string TestFailedMessage {
             get {
                 return ResourceManager.GetString("TestFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Поздравляю, вы завершили курс по дисциплине “Информационные технологии”, ваши результаты:.
+        /// </summary>
+        internal static string UserCompleteTheoryMessage {
+            get {
+                return ResourceManager.GetString("UserCompleteTheoryMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Результаты выполнения тестов по главам.
+        /// </summary>
+        internal static string UserTheoryResultMessage {
+            get {
+                return ResourceManager.GetString("UserTheoryResultMessage", resourceCulture);
             }
         }
         

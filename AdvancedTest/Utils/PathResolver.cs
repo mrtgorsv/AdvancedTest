@@ -5,7 +5,7 @@
         private static string _testFolder = "Content/Tests";
         private static string _docFolder = "Content\\Docs";
 
-        public static string GenerateTestDescriptionPath(string theoryFolder , string testPartName)
+        public static string GenerateTestImagePath(string theoryFolder , string testPartName)
         {
             return $"{_testFolder}/{theoryFolder}/{testPartName}.png";
         }
@@ -13,7 +13,7 @@
         {
             return $"{_docFolder}\\{docPath}.pdf";
         }
-        public static string GenerateAnswerPath(string theoryNum,string testNum, string answerNum)
+        public static string GenerateAnswerImagePath(string theoryNum,string testNum, string answerNum)
         {
             return $"{_testFolder}/{theoryNum}/{testNum}/{answerNum}.png";
         }

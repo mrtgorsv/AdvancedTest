@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:AdvancedTest.Views"
         mc:Ignorable="d"
         Title="Вход в систему" Height="300" Width="300"
-        ResizeMode="NoResize"
+        WindowStyle="ThreeDBorderWindow"
+        ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

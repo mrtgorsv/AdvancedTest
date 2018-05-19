@@ -1,7 +1,7 @@
 ﻿using System;
 using AdvancedTest.Utils;
 
-namespace AdvancedTest.ViewModel.Login
+namespace AdvancedTest.ViewModels.Login
 {
     public partial class LoginViewModel
     {

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdvancedTest.Data.Model
 {
-    public partial class TheoryDocument
+    public class TheoryDocument
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,6 +16,7 @@ namespace AdvancedTest.Data.Model
         public string DocumentPath => $"{TheoryPart?.Seq}\\{Seq}";
 
         public bool IsVisible { get; set; }
+        public bool IsPractice { get; set; }
 
         public virtual TheoryPart TheoryPart { get; set; }
     }

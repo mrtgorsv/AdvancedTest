@@ -22,16 +22,16 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal" Width="250">
+                            <StackPanel Orientation="Horizontal" Width="400">
                                 <StackPanel.Resources>
                                     <converters:NullVisibilityConverter x:Key="NullToVisibilityConverter" />
                                 </StackPanel.Resources>
-                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap"
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Width="400"
                                            Visibility="{Binding Text, Converter={StaticResource NullToVisibilityConverter}}" />
                                 <Image Source="{Binding AnswerImage}"
                                        Visibility="{Binding AnswerImage, Converter={StaticResource NullToVisibilityConverter}}" />
                             </StackPanel>
-                            <ComboBox ItemsSource="{Binding Options}" DisplayMemberPath="Name" SelectedValuePath="Value"
+                            <ComboBox ItemsSource="{Binding Options}" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Right" Height="25" VerticalAlignment="Center"
                                       SelectedValue="{Binding SelectedOption}" />
                         </StackPanel>
                     </DataTemplate>

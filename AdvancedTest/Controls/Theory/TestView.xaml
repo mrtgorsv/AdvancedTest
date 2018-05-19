@@ -10,7 +10,7 @@
              d:DesignHeight="1024" d:DesignWidth="768">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type testPart:TestPartViewModelBase}">
-            <theory:TestPartView />
+            <testPartControl:TestPartView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type testPart:SelectOneTestPartViewModel}">
             <testPartControl:SelectOneTestPartView />
@@ -32,13 +32,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <StackPanel Background="White"  Grid.ColumnSpan="3" Grid.Row="0" Margin="10 , 5">
             <TextBlock Text="{Binding Name}" TextAlignment="Center" FontSize="24" FontStyle="Oblique"/>
-            <TextBlock Text="{Binding TestTime}" Foreground="Red" TextAlignment="Right" HorizontalAlignment="Stretch" Height="25"></TextBlock>
+            <TextBlock Text="{Binding TestTime}" Foreground="Red" TextAlignment="Right" HorizontalAlignment="Stretch" FontSize="24"></TextBlock>
         </StackPanel>
         <ContentControl Background="White" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Content="{Binding CurrentTestPart}" >

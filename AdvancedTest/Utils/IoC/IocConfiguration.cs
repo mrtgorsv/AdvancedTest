@@ -1,10 +1,11 @@
 ﻿using AdvancedTest.Data.Context;
 using AdvancedTest.Service.Services.Implementation;
 using AdvancedTest.Service.Services.Interface;
-using AdvancedTest.ViewModel.Login;
 using AdvancedTest.ViewModels;
+using AdvancedTest.ViewModels.Base;
 using AdvancedTest.ViewModels.Test;
 using Ninject.Modules;
+using LoginViewModel = AdvancedTest.ViewModels.Login.LoginViewModel;
 
 namespace AdvancedTest.Utils.IoC
 {
@@ -25,6 +26,7 @@ namespace AdvancedTest.Utils.IoC
             Bind<MainViewModel>().ToSelf().InTransientScope();
             Bind<LoginViewModel>().ToSelf().InTransientScope();
             Bind<TestViewModel>().ToSelf().InTransientScope();
+            Bind<UserResultViewModel>().ToSelf().InTransientScope();
         }
     }
 }

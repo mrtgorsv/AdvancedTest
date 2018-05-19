@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using AdvancedTest.Utils;
-using AdvancedTest.ViewModel.Login;
+using LoginViewModel = AdvancedTest.ViewModels.Login.LoginViewModel;
 
 namespace AdvancedTest.Views
 {
@@ -13,22 +13,37 @@ namespace AdvancedTest.Views
     {
         private readonly ViewModelLocator _locator = new ViewModelLocator();
 
+        private LoginViewModel _viewModel;
 
-        private readonly LoginViewModel _viewModel;
+        private MainWindow _mainWindow;
 
         public Login()
         {
             InitializeComponent();
-            _viewModel = _locator.LoginViewModel;
-            DataContext = _viewModel;
-            _viewModel.UserLogin += OnUserLogined;
+            ShowLoginWindow();
         }
 
         private void OnUserLogined(object sender, System.EventArgs args)
         {
-            MainWindow mainWindow = new MainWindow();
+            _mainWindow = new MainWindow();
             Hide();
-            mainWindow.Show();
+            _mainWindow.Show();
+            _mainWindow.UserLogout += OnUserLogout;
+        }
+
+        private void OnUserLogout(object sender, System.EventArgs args)
+        {
+            _mainWindow.UserLogout -= OnUserLogout;
+            _mainWindow.Close();
+            ShowLoginWindow();
+        }
+
+        private void ShowLoginWindow()
+        {
+            _viewModel = _locator.LoginViewModel;
+            DataContext = _viewModel;
+            _viewModel.UserLogin += OnUserLogined;
+            Show();
         }
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)

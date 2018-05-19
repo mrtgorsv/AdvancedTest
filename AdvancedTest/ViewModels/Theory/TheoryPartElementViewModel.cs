@@ -1,5 +1,4 @@
-﻿using AdvancedTest.ViewModel;
-using AdvancedTest.ViewModels.Base;
+﻿using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Theory
 {
@@ -9,6 +8,9 @@ namespace AdvancedTest.ViewModels.Theory
         public TheoryViewModel CurrentTheory { get; set; }
 
         public string Name { get; set; }
+
+        public bool IsPractice { get; set; }
+        public bool IsOpened { get; set; }
 
         public int Seq { get; set; }
 

@@ -7,8 +7,12 @@
         xmlns:theory="clr-namespace:AdvancedTest.Controls.Theory"
         xmlns:controls="clr-namespace:AdvancedTest.Controls"
         xmlns:base="clr-namespace:AdvancedTest.ViewModels.Base"
+        xmlns:result="clr-namespace:AdvancedTest.Controls.Result"
         mc:Ignorable="d"
-        Title="Систему адаптивного обучения" Height="450" Width="800">
+        Title="Система адаптивного обучения" Height="500" Width="800"
+        WindowStyle="ThreeDBorderWindow"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     <Window.Resources>
         <DataTemplate DataType="{x:Type test:TestViewModel}">
             <theory:TestView />
@@ -16,9 +20,14 @@
         <DataTemplate DataType="{x:Type base:MessageViewModel}">
             <controls:MessageView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type base:UserResultViewModel}">
+            <result:UserResultView/>
+        </DataTemplate>
     </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
@@ -26,8 +35,12 @@
             <ColumnDefinition Width="250"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0"  Grid.Column="0" Content="Теория"></Label>
-        <TreeView Margin="0 0 0 10" Grid.Row="1"  Grid.Column="0"
+        <ToolBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+            <Button Content="Статистика" Command="{Binding ShowUserResultCommand}"></Button>
+            <Button Content="Выход" Command="{Binding ExitCommand}"></Button>
+        </ToolBar>
+        <Label Grid.Row="1"  Grid.Column="0" Content="Теория"></Label>
+        <TreeView Margin="0 0 0 10" Grid.Row="2"  Grid.Column="0"
                   BorderBrush="Black" BorderThickness="1"
                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  ItemsSource="{Binding TheoryParts }"
                   SelectedItemChanged="OnSelectedTheoryPartChanged">
@@ -44,8 +57,8 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <Border Grid.Row="1"  Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="10 0 10 10">
-            <ContentControl   Margin="30" Content="{Binding SelectedElement}">
+        <Border Grid.Row="2"  Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="10 0 10 10">
+            <ContentControl   Margin="10" Content="{Binding SelectedElement}">
             </ContentControl>
         </Border>
     </Grid>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using AdvancedTest.Data.Model;
+﻿using System.Windows;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModels;
 using AdvancedTest.ViewModels.Test;
@@ -13,6 +11,9 @@ namespace AdvancedTest
     /// </summary>
     public partial class MainWindow
     {
+        public event UserLogoutEventHandler UserLogout;
+        public delegate void UserLogoutEventHandler(object sender, System.EventArgs args);
+
         private readonly ViewModelLocator _locator = new ViewModelLocator();
         private readonly MainViewModel _currentModel;
         public MainWindow()
@@ -20,6 +21,12 @@ namespace AdvancedTest
             InitializeComponent();
             _currentModel = _locator.MainViewModel;
             DataContext = _currentModel;
+            _currentModel.UserLogout += OnUserLogout;
+        }
+
+        private void OnUserLogout(object sender, System.EventArgs args)
+        {
+            UserLogout?.Invoke(sender , args);
         }
 
         private void OnSelectedTheoryPartChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

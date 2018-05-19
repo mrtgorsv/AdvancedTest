@@ -1,9 +1,8 @@
-﻿using System;
-using AdvancedTest.Service.Services.Interface;
+﻿using AdvancedTest.Service.Services.Interface;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModels.Base;
 
-namespace AdvancedTest.ViewModel.Login
+namespace AdvancedTest.ViewModels.Login
 {
     public partial class LoginViewModel : ViewModelBase
     {

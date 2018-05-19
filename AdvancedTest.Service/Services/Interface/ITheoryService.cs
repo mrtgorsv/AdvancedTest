@@ -7,5 +7,7 @@ namespace AdvancedTest.Service.Services.Interface
     {
         List<TheoryPart> GetTheoryList();
         void OpenTheory(int theoryId, int userId);
+        bool IsTheoryComplete(int userId);
+        List<string> GetUserResults(int userId , out bool allTheoryComplete);
     }
 }

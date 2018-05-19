@@ -1,10 +1,11 @@
-﻿using AdvancedTest.ViewModel;
+﻿using System.Windows.Media.Imaging;
 
 namespace AdvancedTest.ViewModels.Base
 {
     public class MessageViewModel : ViewModelBase
     {
         private string _message;
+        private BitmapImage _image;
 
         public MessageViewModel()
         {
@@ -21,6 +22,15 @@ namespace AdvancedTest.ViewModels.Base
             {
                 _message = value;
                 OnPropertyChanged(nameof(Message));
+            }
+        }
+        public BitmapImage Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                OnPropertyChanged(nameof(Image));
             }
         }
     }

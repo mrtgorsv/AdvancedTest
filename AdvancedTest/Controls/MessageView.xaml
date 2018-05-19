@@ -7,8 +7,11 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="{Binding Image}"></ImageBrush>
+            </StackPanel.Background>
             <TextBlock x:Name="label" Text="{Binding Message}" FontSize="24" FontStyle="Oblique"
-                       TextWrapping="Wrap"/>
+                       TextWrapping="Wrap" Margin="10"/>
         </StackPanel>
 
     </Grid>

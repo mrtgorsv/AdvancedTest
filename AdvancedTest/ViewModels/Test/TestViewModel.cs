@@ -90,6 +90,9 @@ namespace AdvancedTest.ViewModels.Test
             }
         }
 
+        public bool IsInitial { get; set; }
+        public bool IsLast { get; set; }
+
         public bool CanStart => !_isStarted;
 
         public bool CanBack => false;
@@ -111,7 +114,6 @@ namespace AdvancedTest.ViewModels.Test
             {
                 result.Add(CreateTestPart(testPart));
             }
-
             _testParts = result;
         }
 
@@ -137,7 +139,7 @@ namespace AdvancedTest.ViewModels.Test
             CustomTextTestPartViewModel testPartViewModelBase = new CustomTextTestPartViewModel
             {
                 CurrentTest = this,
-                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestText = LoadTestImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
                 CorrectAnswer = testPart.CorrectAnswer,
                 Seq = testPart.Seq
@@ -151,7 +153,7 @@ namespace AdvancedTest.ViewModels.Test
             CompareTestPartViewModel testPartViewModelBase = new CompareTestPartViewModel
             {
                 CurrentTest = this,
-                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestText = LoadTestImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
                 CorrectAnswer = testPart.CorrectAnswer,
                 Seq = testPart.Seq
@@ -166,7 +168,7 @@ namespace AdvancedTest.ViewModels.Test
             SelectManyTestPartViewModel testPartViewModelBase = new SelectManyTestPartViewModel
             {
                 CurrentTest = this,
-                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestText = LoadTestImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
                 CorrectAnswer = testPart.CorrectAnswer,
                 Seq = testPart.Seq
@@ -181,7 +183,7 @@ namespace AdvancedTest.ViewModels.Test
             SelectOneTestPartViewModel testPartViewModelBase = new SelectOneTestPartViewModel
             {
                 CurrentTest = this,
-                TestText = LoadTestTextImage(testPart.TheoryPart.Seq, testPart.Seq),
+                TestText = LoadTestImage(testPart.TheoryPart.Seq, testPart.Seq),
                 TestPartType = testPart.TestType,
                 CorrectAnswer = testPart.CorrectAnswer,
                 Seq = testPart.Seq
@@ -191,16 +193,10 @@ namespace AdvancedTest.ViewModels.Test
             return testPartViewModelBase;
         }
 
-        private BitmapImage LoadTestTextImage(int parentFolder, int fileName)
+        private BitmapImage LoadTestImage(int parentFolder, int fileName)
         {
-            string path = PathResolver.GenerateTestDescriptionPath(parentFolder.ToString(), fileName.ToString());
-            Uri.TryCreate(path, UriKind.Relative, out var uri);
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = uri;
-            image.EndInit();
-            return image;
+            string path = PathResolver.GenerateTestImagePath(parentFolder.ToString(), fileName.ToString());
+            return ImageResolver.LoadImage(path);
         }
 
         private ObservableCollection<AnswerViewModel> CreateAnswers(IEnumerable<TheoryTestPartAnswer> testPartAnswers,
@@ -286,7 +282,7 @@ namespace AdvancedTest.ViewModels.Test
                 Seq = answer.AnswerNumber,
                 CurrentTestPart = testPartViewModelBase,
                 AnswerId = answer.Id,
-                ImagePath = PathResolver.GenerateAnswerPath(answer.TheoryTestPart.TheoryPart.Seq.ToString(),
+                ImagePath = PathResolver.GenerateAnswerImagePath(answer.TheoryTestPart.TheoryPart.Seq.ToString(),
                     answer.TheoryTestPart.Seq.ToString(), answer.AnswerNumber.ToString())
             };
         }

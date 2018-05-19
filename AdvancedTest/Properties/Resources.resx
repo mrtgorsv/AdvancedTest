@@ -126,11 +126,20 @@
   <data name="GoToNextTheoryWithWarningMessage" xml:space="preserve">
     <value>Можете переходить к следующей главе, но вам необходима консультация по данной теме у преподавателя.</value>
   </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Content/logo.jpg</value>
+  </data>
   <data name="TestCompleteTemplateMessage" xml:space="preserve">
     <value>Вы набрали {0}%.</value>
   </data>
   <data name="TestFailedMessage" xml:space="preserve">
     <value>Вам необходимо лучше изучить теорию.</value>
+  </data>
+  <data name="UserCompleteTheoryMessage" xml:space="preserve">
+    <value>Поздравляю, вы завершили курс по дисциплине “Информационные технологии”, ваши результаты:</value>
+  </data>
+  <data name="UserTheoryResultMessage" xml:space="preserve">
+    <value>Результаты выполнения тестов по главам</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Добро пожаловать в систему адаптивного обучения по дисциплине 'Информационные технологии'. Для начала необходимо пройти входное тестирование</value>
