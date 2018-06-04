@@ -4,6 +4,9 @@ using AdvancedTest.Service.Services.Interface;
 
 namespace AdvancedTest.ViewModels.Base
 {
+    /// <summary>
+    /// Модель представления для результатов прохождения тестов пользователя
+    /// </summary>
     public class UserResultViewModel : MessageViewModel
     {
         private int _userId;
@@ -15,6 +18,7 @@ namespace AdvancedTest.ViewModels.Base
             _theoryService = theoryService;
         }
 
+        // Ид пользователя
         public int UserId
         {
             get { return _userId; }
@@ -24,8 +28,11 @@ namespace AdvancedTest.ViewModels.Base
                 LoadResults();
             }
         }
+
+        // Коллекция результатов
         public ObservableCollection<string> UserResults { get; set; }
 
+        // Функция загрузки результатов пользователя
         private void LoadResults()
         {
             UserResults = new ObservableCollection<string>(_theoryService.GetUserResults(_userId , out var complete));

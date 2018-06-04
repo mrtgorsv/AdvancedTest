@@ -1,8 +1,8 @@
 ﻿using AdvancedTest.Utils.IoC;
 using AdvancedTest.ViewModels;
 using AdvancedTest.ViewModels.Base;
+using AdvancedTest.ViewModels.Login;
 using AdvancedTest.ViewModels.Test;
-using LoginViewModel = AdvancedTest.ViewModels.Login.LoginViewModel;
 
 namespace AdvancedTest.Utils
 {
@@ -10,6 +10,7 @@ namespace AdvancedTest.Utils
     {
         public MainViewModel MainViewModel => IocKernel.Get<MainViewModel>();
         public LoginViewModel LoginViewModel => IocKernel.Get<LoginViewModel>();
+        public RegisterViewModel RegisterViewModel => IocKernel.Get<RegisterViewModel>();
         public TestViewModel TestViewModel => IocKernel.Get<TestViewModel>();
         public UserResultViewModel UserResultViewModel => IocKernel.Get<UserResultViewModel>();
     }

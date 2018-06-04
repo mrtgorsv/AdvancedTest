@@ -8,6 +8,7 @@
         xmlns:controls="clr-namespace:AdvancedTest.Controls"
         xmlns:base="clr-namespace:AdvancedTest.ViewModels.Base"
         xmlns:result="clr-namespace:AdvancedTest.Controls.Result"
+        xmlns:practice="clr-namespace:AdvancedTest.ViewModels.Practice"
         mc:Ignorable="d"
         Title="Система адаптивного обучения" Height="500" Width="800"
         WindowStyle="ThreeDBorderWindow"
@@ -16,6 +17,12 @@
     <Window.Resources>
         <DataTemplate DataType="{x:Type test:TestViewModel}">
             <theory:TestView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type practice:WordPracticeViewModel}">
+            <theory:PracticeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type practice:ExcelPracticeViewModel}">
+            <theory:ExcelPracticeView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type base:MessageViewModel}">
             <controls:MessageView/>

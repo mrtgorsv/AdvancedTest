@@ -7,6 +7,9 @@ using AdvancedTest.Service.Services.Interface;
 
 namespace AdvancedTest.Service.Services.Implementation
 {
+    /// <summary>
+    /// Сервис для работы с главами
+    /// </summary>
     public class TheoryService : ITheoryService
     {
         private readonly AppDbContext _context;
@@ -17,6 +20,10 @@ namespace AdvancedTest.Service.Services.Implementation
             _context = context;
             _documentService = documentService;
         }
+
+        /// <summary>
+        /// Функция получения списка глав
+        /// </summary>
         public List<TheoryPart> GetTheoryList()
         {
             return _context.TheoryParts
@@ -26,6 +33,9 @@ namespace AdvancedTest.Service.Services.Implementation
                 .ToList();
         }
 
+        /// <summary>
+        /// Функция открытия главы для пользователя
+        /// </summary>
         public void OpenTheory(int theoryId, int userId)
         {
             var record =
@@ -52,11 +62,17 @@ namespace AdvancedTest.Service.Services.Implementation
             }
         }
 
+        /// <summary>
+        /// Функция проверки завршенности всех глав
+        /// </summary>
         public bool IsTheoryComplete(int userId)
         {
             return _context.UserTheoryTestMarks.FirstOrDefault(ut => ut.TheoryPart.IsLast && ut.UserId.Equals(userId)) != null;
         }
 
+        /// <summary>
+        /// Функция получения результатов пользователя
+        /// </summary>
         public List<string> GetUserResults(int userId, out bool allTheoryComplete)
         {
             allTheoryComplete = true;

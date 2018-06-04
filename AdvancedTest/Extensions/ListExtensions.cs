@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace AdvancedTest.Extensions
 {
+    /// <summary>
+    /// Расширение для получение следующей и предыдущей записи в коллекции
+    /// </summary>
     public static class ListExtensions
     {
         public static T GetNext<T>(this IEnumerable<T> list, T current)

@@ -8,6 +8,9 @@ using AdvancedTest.Service.Services.Interface;
 
 namespace AdvancedTest.Service.Services.Implementation
 {
+    /// <summary>
+    /// Сервис для работы с тестами
+    /// </summary>
     public class TestService : ITestService
     {
         private readonly AppDbContext _context;
@@ -17,6 +20,9 @@ namespace AdvancedTest.Service.Services.Implementation
             _context = context;
         }
 
+        /// <summary>
+        /// Функция получения списка заданий для теста
+        /// </summary>
         public List<TheoryTestPart> GetParts(int theoryId)
         {
             var theory = _context.TheoryParts.Find(theoryId);

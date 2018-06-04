@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using AdvancedTest.Utils;
 using AdvancedTest.ViewModels;
+using AdvancedTest.ViewModels.Practice;
 using AdvancedTest.ViewModels.Test;
 using AdvancedTest.ViewModels.Theory;
 
@@ -39,6 +40,14 @@ namespace AdvancedTest
             else if (e.NewValue is DocumentViewModel theoryDoc)
             {
                 _currentModel.ShowDocument(theoryDoc);
+            }
+            else if (e.NewValue is WordPracticeViewModel wordPracticeViewModel)
+            {
+                _currentModel.ShowWordPractice(wordPracticeViewModel);
+            }
+            else if (e.NewValue is ExcelPracticeViewModel excelPracticeViewModel)
+            {
+                _currentModel.ShowExcelPractice(excelPracticeViewModel);
             }
         }
 

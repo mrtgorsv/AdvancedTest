@@ -41,6 +41,16 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -92,6 +102,12 @@
     <Compile Include="Controls\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Theory\ExcelPracticeView.xaml.cs">
+      <DependentUpon>ExcelPracticeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Theory\PracticeView.xaml.cs">
+      <DependentUpon>PracticeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Theory\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
     </Compile>
@@ -99,6 +115,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="EventArgs\TestCompletedEventArgs.cs" />
+    <Compile Include="Extensions\ExcelExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Utils\IoC\IocConfiguration.cs" />
@@ -113,9 +130,13 @@
     <Compile Include="ViewModels\Answer\AnswerViewModel.cs" />
     <Compile Include="ViewModels\Base\UserResultViewModel.cs" />
     <Compile Include="ViewModels\Base\MessageViewModel.cs" />
+    <Compile Include="ViewModels\Login\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Login\RegisterViewModel.Command.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.Command.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\Practice\ExcelPracticeViewModel.cs" />
+    <Compile Include="ViewModels\Practice\ExcelPracticeViewModel.Command.cs" />
     <Compile Include="ViewModels\TestPart\SelectOneTestPartViewModel.cs" />
     <Compile Include="ViewModels\TestPart\SelectManyTestPartViewModel.cs" />
     <Compile Include="ViewModels\TestPart\CompareTestPartViewModel.cs" />
@@ -123,12 +144,18 @@
     <Compile Include="ViewModels\TestPart\TestPartViewModelBase.cs" />
     <Compile Include="ViewModels\Test\TestViewModel.Command.cs" />
     <Compile Include="ViewModels\Test\TestViewModel.cs" />
+    <Compile Include="ViewModels\Practice\WordPracticeViewModel.Command.cs" />
+    <Compile Include="ViewModels\Practice\WordPracticeViewModel.cs" />
+    <Compile Include="ViewModels\Theory\TimerTheoryPartElementViewModel.cs" />
     <Compile Include="ViewModels\Theory\TheoryPartElementViewModel.cs" />
     <Compile Include="ViewModels\Theory\DocumentViewModel.cs" />
     <Compile Include="ViewModels\Theory\TheoryViewModel.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegisterView.xaml.cs">
+      <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Answer\ImageAnswerView.xaml">
       <SubType>Designer</SubType>
@@ -166,6 +193,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Theory\ExcelPracticeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Theory\PracticeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Theory\TestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RegisterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,6 +366,20 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Docs\9\2.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Works\1\info.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Works\1\result.docx" />
+    <None Include="Content\Works\1\start.docx" />
+    <None Include="Content\Works\2\1.xls">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Works\2\2.xls">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Works\2\3.xls">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using AdvancedTest.Utils;
 using LoginViewModel = AdvancedTest.ViewModels.Login.LoginViewModel;
@@ -50,6 +49,20 @@ namespace AdvancedTest.Views
         {
             var box = sender as PasswordBox;
             _viewModel.Password = box?.Password;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            var registerView = new RegisterView();
+            registerView.UserCreate += OnUserCreate;
+            registerView.Owner = this;
+            registerView.Show();
+        }
+
+        private void OnUserCreate(object sender, System.EventArgs args)
+        {
+            OnUserLogined(sender, args);
+            ((RegisterView)sender).Close();
         }
     }
 }

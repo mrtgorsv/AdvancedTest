@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using AdvancedTest.Data.Enum;
 using AdvancedTest.Data.Model;
 using AdvancedTest.EventArgs;
@@ -16,7 +14,10 @@ using AdvancedTest.ViewModels.Theory;
 
 namespace AdvancedTest.ViewModels.Test
 {
-    public partial class TestViewModel : TheoryPartElementViewModel
+    /// <summary>
+    /// Модель представления для формы теста
+    /// </summary>
+    public partial class TestViewModel : TimerTheoryPartElementViewModel
     {
         private readonly ITestService _testService;
         private readonly IUserService _userService;
@@ -24,16 +25,9 @@ namespace AdvancedTest.ViewModels.Test
         private int _theoryId;
         private UserTheoryTestMark _userTest;
         private string _nextButtonText;
-        private bool _isStarted;
         private TestPartViewModelBase _testPartViewModelBase;
-        private DispatcherTimer _timer = new DispatcherTimer(DispatcherPriority.Render, Application.Current.Dispatcher);
-        private TimeSpan _testTime;
 
-
-        public event TestCompletedEventHandler TestCompleted;
-
-        public delegate void TestCompletedEventHandler(object sender, TestCompletedEventArgs args);
-
+        // Коллекция заданий теста
         private List<TestPartViewModelBase> _testParts;
 
         public TestViewModel(ITestService testService, IUserService userService, ISecurityManager securityManager)
@@ -42,10 +36,9 @@ namespace AdvancedTest.ViewModels.Test
             _userService = userService;
             _securityManager = securityManager;
             InitializeCommands();
-            _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += OnTimerTick;
         }
 
+        // Текущее задание теста
         public TestPartViewModelBase CurrentTestPart
         {
             get => _testPartViewModelBase;
@@ -57,9 +50,9 @@ namespace AdvancedTest.ViewModels.Test
             }
         }
 
-        public string TestTime { get; set; }
 
-        public int CurrentTheoryId
+        // Ид текущей главы теории
+        public override int CurrentTheoryId
         {
             get => _theoryId;
             set
@@ -68,7 +61,7 @@ namespace AdvancedTest.ViewModels.Test
                 LoadTestParts();
             }
         }
-
+        // Текст кнопки "Следующее задание"
         public string NextButtonText
         {
             get => _nextButtonText;
@@ -79,31 +72,24 @@ namespace AdvancedTest.ViewModels.Test
             }
         }
 
-        public bool IsStarted
-        {
-            get => _isStarted;
-            set
-            {
-                _isStarted = value;
-                OnPropertyChanged(nameof(IsStarted));
-                OnPropertyChanged(nameof(CanStart));
-            }
-        }
-
+        // Флаг, указывающий, что тест входной
         public bool IsInitial { get; set; }
+        // Флаг, указывающий, что тест итоговый
         public bool IsLast { get; set; }
 
-        public bool CanStart => !_isStarted;
-
+        // Флаг, указывающий, что можно вернутся к предыдущему заданию
         public bool CanBack => false;
 
+        // Флаг, указывающий, что можно перейти к следующему заданию
         public bool CanNext
         {
             get { return CurrentTestPart != null; }
         }
 
+        // Текущая попытка
         public int Attempt { get; set; }
 
+        // Функция загрузки заданий теста
         private void LoadTestParts()
         {
             List<TestPartViewModelBase> result = new List<TestPartViewModelBase>();
@@ -117,6 +103,7 @@ namespace AdvancedTest.ViewModels.Test
             _testParts = result;
         }
 
+        // Функция создания задания теста
         private TestPartViewModelBase CreateTestPart(TheoryTestPart testPart)
         {
             switch (testPart.TestType)
@@ -134,6 +121,7 @@ namespace AdvancedTest.ViewModels.Test
             }
         }
 
+        // Функция создания задания, требующего ввода текста
         private TestPartViewModelBase CreateCustomTextTestPart(TheoryTestPart testPart)
         {
             CustomTextTestPartViewModel testPartViewModelBase = new CustomTextTestPartViewModel
@@ -148,6 +136,7 @@ namespace AdvancedTest.ViewModels.Test
             return testPartViewModelBase;
         }
 
+        // Функция создания задания сопоставления
         private TestPartViewModelBase CreateCompareTestPart(TheoryTestPart testPart)
         {
             CompareTestPartViewModel testPartViewModelBase = new CompareTestPartViewModel
@@ -163,6 +152,7 @@ namespace AdvancedTest.ViewModels.Test
             return testPartViewModelBase;
         }
 
+        // Функция создания задания с множественным выбором
         private TestPartViewModelBase CreateMultiplyChoiceTestPart(TheoryTestPart testPart)
         {
             SelectManyTestPartViewModel testPartViewModelBase = new SelectManyTestPartViewModel
@@ -178,6 +168,7 @@ namespace AdvancedTest.ViewModels.Test
             return testPartViewModelBase;
         }
 
+        // Функция создания теста с единственным выбором
         private TestPartViewModelBase CreateSingeChoiceTestPart(TheoryTestPart testPart)
         {
             SelectOneTestPartViewModel testPartViewModelBase = new SelectOneTestPartViewModel
@@ -193,12 +184,14 @@ namespace AdvancedTest.ViewModels.Test
             return testPartViewModelBase;
         }
 
+        // Функция загрузки изображения описания задания
         private BitmapImage LoadTestImage(int parentFolder, int fileName)
         {
             string path = PathResolver.GenerateTestImagePath(parentFolder.ToString(), fileName.ToString());
             return ImageResolver.LoadImage(path);
         }
 
+        // Функция создания ответов задания
         private ObservableCollection<AnswerViewModel> CreateAnswers(IEnumerable<TheoryTestPartAnswer> testPartAnswers,
             TestPartViewModelBase testPartViewModelBase)
         {
@@ -224,6 +217,7 @@ namespace AdvancedTest.ViewModels.Test
             return new ObservableCollection<AnswerViewModel>(answers);
         }
 
+        // Функция создания ответа, для ручного ввода ответа
         private AnswerViewModel CreateInputAnswerViewModel(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
@@ -236,6 +230,7 @@ namespace AdvancedTest.ViewModels.Test
             };
         }
 
+        // Функция создания ответа с сопоставлением
         private AnswerViewModel CreateCompareAnswerViewModel(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
@@ -247,13 +242,14 @@ namespace AdvancedTest.ViewModels.Test
             return result;
         }
 
+        // Функция создания вариантов ответа для задания с сопоставлением
         private List<AnswerOptionViewModel> GetAnswerOptions(string answerOptions)
         {
             return answerOptions.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select((answer , index ) => new AnswerOptionViewModel(answer, index)).ToList();
         }
 
-
+        // Функция создания ответа с выбором одного значения
         private AnswerViewModel CreateSelectAnswerViewModel(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
@@ -262,6 +258,7 @@ namespace AdvancedTest.ViewModels.Test
                 : CreateTextAnswer(answer, testPartViewModelBase);
         }
 
+        // Функция создания текстового ответа
         private AnswerViewModel CreateTextAnswer(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
@@ -274,6 +271,7 @@ namespace AdvancedTest.ViewModels.Test
             };
         }
 
+        // Функция создания ответа с изображением
         private AnswerViewModel CreateImageAnswer(TheoryTestPartAnswer answer,
             TestPartViewModelBase testPartViewModelBase)
         {
@@ -287,6 +285,7 @@ namespace AdvancedTest.ViewModels.Test
             };
         }
 
+        // Функция получения результата теста
         private double GetTestResult()
         {
             int total = _testParts.Count;
@@ -307,27 +306,5 @@ namespace AdvancedTest.ViewModels.Test
             return ((double) validAnswers / total) * 100;
         }
 
-
-        private void OnTimerTick(object sender, System.EventArgs e)
-        {
-            if (_testTime == TimeSpan.Zero)
-            {
-                CompleteTest();
-            }
-
-            _testTime = _testTime.Add(TimeSpan.FromSeconds(-1));
-            TestTime = _testTime.ToString("T");
-            OnPropertyChanged(nameof(TestTime));
-        }
-
-        protected virtual void OnTestCompleted(double result)
-        {
-            TestCompleted?.Invoke(this, new TestCompletedEventArgs(result, CurrentTheoryId, _userTest.Attempt));
-        }
-
-        public void SetTestTime(TimeSpan testTime)
-        {
-            _testTime = testTime;
-        }
     }
 }

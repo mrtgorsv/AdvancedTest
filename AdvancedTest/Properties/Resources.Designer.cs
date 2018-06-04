@@ -70,6 +70,15 @@ namespace AdvancedTest.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на docx.
+        /// </summary>
+        internal static string DocExtenstion {
+            get {
+                return ResourceManager.GetString("DocExtenstion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Можете переходить к следующей главе..
         /// </summary>
         internal static string GoToNextTheoryMessage {
@@ -93,6 +102,71 @@ namespace AdvancedTest.Properties {
         internal static string Logo {
             get {
                 return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на pdf.
+        /// </summary>
+        internal static string PdfExtension {
+            get {
+                return ResourceManager.GetString("PdfExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ваша оценка - {0}..
+        /// </summary>
+        internal static string PointMessage {
+            get {
+                return ResourceManager.GetString("PointMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Вы завершили контрольную работу. Потраченное время {0}..
+        /// </summary>
+        internal static string PracticeCompleteTemplateMessage {
+            get {
+                return ResourceManager.GetString("PracticeCompleteTemplateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на К сожалению вы допустили ошибки({0} ошибки)..
+        /// </summary>
+        internal static string PracticeFailedTemplateMessage {
+            get {
+                return ResourceManager.GetString("PracticeFailedTemplateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Поздравляем,ошибок нет..
+        /// </summary>
+        internal static string PracticeSuccessTemplateMessage {
+            get {
+                return ResourceManager.GetString("PracticeSuccessTemplateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] result {
+            get {
+                object obj = ResourceManager.GetObject("result", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] start {
+            get {
+                object obj = ResourceManager.GetObject("start", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

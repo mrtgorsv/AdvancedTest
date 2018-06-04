@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace AdvancedTest.Data.Extensions
 {
+    /// <summary>
+    /// Расширение для перечислений для получения значения атрибута "DisplayName"
+    /// </summary>
     public static class EnumHelper
     {
         public static string GetDisplayName(this System.Enum enumValue)

@@ -3,6 +3,9 @@ using System.Windows.Media.Imaging;
 
 namespace AdvancedTest.ViewModels.Answer
 {
+    /// <summary>
+    /// Модель представления для вариантов ответа тестового задания типа изображение
+    /// </summary>
     public class ImageAnswerViewModel : AnswerViewModel
     {
         private BitmapImage _answerImage;
@@ -13,6 +16,7 @@ namespace AdvancedTest.ViewModels.Answer
             TextMode = false;
         }
 
+        // Относительный путь к изображению
         public string ImagePath
         {
             get { return _imagePath; }
@@ -22,7 +26,7 @@ namespace AdvancedTest.ViewModels.Answer
                 LoadTestTextImage();
             }
         }
-
+        // Изображение ответа
         public BitmapImage AnswerImage
         {
             get => _answerImage;
@@ -33,6 +37,7 @@ namespace AdvancedTest.ViewModels.Answer
             }
         }
 
+        // Загрузка изображения в память
         private void LoadTestTextImage()
         {
             Uri.TryCreate(_imagePath, UriKind.Relative, out var uri);

@@ -2,6 +2,9 @@
 
 namespace AdvancedTest.ViewModels.TestPart
 {
+    /// <summary>
+    /// Модель представления для формы задания с единичным выбором ответа
+    /// </summary>
     public class SelectOneTestPartViewModel : TestPartViewModelBase
     {
         public override string GetUserAnswer()

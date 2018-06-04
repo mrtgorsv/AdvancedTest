@@ -5,14 +5,25 @@ using AdvancedTest.Data.Model;
 
 namespace AdvancedTest.Data.Context
 {
+    
+    /// <summary>
+    /// Контекст базы данных приложения
+    /// </summary>
     public class AppDbContext : DbContext
     {
+        // Коллекция пользователей
         public DbSet<User> Users { get; set; }
+        // Коллекция глав теории
         public DbSet<TheoryPart> TheoryParts { get; set; }
+        // Коллекция заданий тестов
         public DbSet<TheoryTestPart> TheoryTestParts { get; set; }
+        // Коллекция документов для глав
         public DbSet<TheoryDocument> TheoryDocuments { get; set; }
+
         public DbSet<TheoryTestPartAnswer> TheoryTestPartAnswers { get; set; }
+        // Коллекция отметок о прохождении тестов пользователями
         public DbSet<UserTheoryTestMark> UserTheoryTestMarks { get; set; }
+        // Коллекция отметок о просмотре документов глав
         public DbSet<UserTheoryDocumentMark> UserTheoryDocumentMarks { get; set; }
 
         public AppDbContext()

@@ -1,11 +1,16 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AdvancedTest.ViewModels.Base
 {
+    /// <summary>
+    /// Модель представления для сообщений приложения
+    /// </summary>
     public class MessageViewModel : ViewModelBase
     {
         private string _message;
         private BitmapImage _image;
+        private Brush _textColor = Brushes.Black;
 
         public MessageViewModel()
         {
@@ -31,6 +36,16 @@ namespace AdvancedTest.ViewModels.Base
             {
                 _image = value;
                 OnPropertyChanged(nameof(Image));
+            }
+        }
+
+        public Brush TextColor
+        {
+            get => _textColor;
+            set
+            {
+                _textColor = value;
+                OnPropertyChanged(nameof(TextColor));
             }
         }
     }

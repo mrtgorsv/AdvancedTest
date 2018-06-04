@@ -10,7 +10,7 @@
             <StackPanel.Background>
                 <ImageBrush ImageSource="{Binding Image}"></ImageBrush>
             </StackPanel.Background>
-            <TextBlock x:Name="label" Text="{Binding Message}" FontSize="24" FontStyle="Oblique"
+            <TextBlock x:Name="label" Text="{Binding Message}" FontSize="24" FontStyle="Oblique" Foreground="{Binding Path=TextColor}"
                        TextWrapping="Wrap" Margin="10"/>
         </StackPanel>
 

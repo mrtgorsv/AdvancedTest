@@ -4,12 +4,19 @@ using AdvancedTest.ViewModels.TestPart;
 
 namespace AdvancedTest.ViewModels.Answer
 {
+    /// <summary>
+    /// Модель представления для варианта ответа тестового задания
+    /// </summary>
     public class AnswerViewModel : ViewModelBase
     {
+        // Флаг, указывающий, что вариант выбран
         private bool _isSelected;
 
+        // Порядок отображение в списке ответов
         public int Seq { get; set; }
+        // Ид ответа в базе данных
         public int AnswerId { get; set; }
+        // Флаг, указывающий на режим отображения ответа(текстовый или изображение)
         public bool TextMode { get; set; }
 
         public bool ImageMode
@@ -17,6 +24,7 @@ namespace AdvancedTest.ViewModels.Answer
             get { return !TextMode; }
         }
 
+        // Выбранный вариант при сопоставлении
         private int _selectedOption;
 
         public bool IsSelected
@@ -29,8 +37,10 @@ namespace AdvancedTest.ViewModels.Answer
             }
         }
 
+        // Текущее тестовое задание
         public TestPartViewModelBase CurrentTestPart { get; set; }
 
+        // Варианты ответов при сопоставлении
         public ObservableCollection<AnswerOptionViewModel> Options { get; set; }
         public int SelectedOption
         {

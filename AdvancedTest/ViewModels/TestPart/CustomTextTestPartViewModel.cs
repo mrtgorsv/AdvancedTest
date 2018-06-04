@@ -1,5 +1,8 @@
 ﻿namespace AdvancedTest.ViewModels.TestPart
 {
+    /// <summary>
+    /// Модель представления для формы задания с ручным вводом ответа
+    /// </summary>
     public class CustomTextTestPartViewModel : TestPartViewModelBase
     {
         private string _answer;

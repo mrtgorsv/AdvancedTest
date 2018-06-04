@@ -5,6 +5,9 @@ using System.Windows.Data;
 
 namespace AdvancedTest.Converters
 {
+    /// <summary>
+    /// Преобразует нулевые значение в Visibility
+    /// </summary>
     public class NullVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

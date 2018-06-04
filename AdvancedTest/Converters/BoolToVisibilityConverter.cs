@@ -5,6 +5,9 @@ using System.Windows.Data;
 
 namespace AdvancedTest.Converters
 {
+    /// <summary>
+    /// Преобразует булевые значение в Visibility
+    /// </summary>
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public sealed class BoolToVisibilityConverter : IValueConverter
     {

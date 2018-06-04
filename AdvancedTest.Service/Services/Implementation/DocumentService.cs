@@ -6,6 +6,9 @@ using AdvancedTest.Service.Services.Interface;
 
 namespace AdvancedTest.Service.Services.Implementation
 {
+    /// <summary>
+    /// Сервис для работы с документами
+    /// </summary>
     public class DocumentService : IDocumentService
     {
         private readonly AppDbContext _context;
@@ -15,6 +18,9 @@ namespace AdvancedTest.Service.Services.Implementation
             _context = context;
         }
 
+        /// <summary>
+        /// Функция открытия документа для пользователя
+        /// </summary>
         public void OpenDocument(int documentId, int userId)
         {
             var document = _context.TheoryDocuments.Find(documentId);
@@ -32,6 +38,9 @@ namespace AdvancedTest.Service.Services.Implementation
             }
         }
 
+        /// <summary>
+        /// Функция проставления отметки об открытии документа
+        /// </summary>
         public void ViewDocument(int documentId, int userId)
         {
             var userDocument =
@@ -45,6 +54,9 @@ namespace AdvancedTest.Service.Services.Implementation
             }
         }
 
+        /// <summary>
+        /// Функция открытия следующего документа
+        /// </summary>
         public int OpenNextDocument(int theoryId, int userId)
         {
             var userDocIds =

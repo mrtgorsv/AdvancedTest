@@ -4,6 +4,9 @@ using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Login
 {
+    /// <summary>
+    /// Модель представления для формы логина пользователя
+    /// </summary>
     public partial class LoginViewModel : ViewModelBase
     {
         private readonly IUserService _userService;
@@ -22,6 +25,7 @@ namespace AdvancedTest.ViewModels.Login
             InitializeCommands();
         }
 
+        // Логин
         public string Login
         {
             get => _login;
@@ -31,6 +35,7 @@ namespace AdvancedTest.ViewModels.Login
                 OnPropertyChanged(nameof(Login));
             }
         }
+        // Пароль
         public string Password
         {
             get => _password;
@@ -40,6 +45,7 @@ namespace AdvancedTest.ViewModels.Login
                 OnPropertyChanged(nameof(Password));
             }
         }
+        // Текст ошибки
         public string ErrorText
         {
             get => _errorText;
@@ -50,11 +56,13 @@ namespace AdvancedTest.ViewModels.Login
             }
         }
 
+        // Вызывает событие успешного логина в систему
         private void OnSuccessLogin()
         {
             RaiseUserLoginEvent();
         }
 
+        // Оповещает всех подписчиков о событии входа в систему
         protected void RaiseUserLoginEvent()
         {
             UserLogin?.Invoke(this, new System.EventArgs());

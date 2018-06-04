@@ -1,6 +1,9 @@
 ﻿
 namespace AdvancedTest.ViewModels.Theory
 {
+    /// <summary>
+    /// Модель представления для документов теории
+    /// </summary>
     public class DocumentViewModel : TheoryPartElementViewModel
     {
         public string DocumentPath { get; set; }

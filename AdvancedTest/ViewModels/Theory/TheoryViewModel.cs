@@ -3,6 +3,7 @@ using AdvancedTest.ViewModels.Base;
 
 namespace AdvancedTest.ViewModels.Theory
 {
+        // Текущая глава
     public class TheoryViewModel : ViewModelBase
     {
         private bool _isVisible;

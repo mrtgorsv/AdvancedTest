@@ -3,21 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AdvancedTest.Views"
         mc:Ignorable="d"
-        Title="Вход в систему" Height="300" Width="300"
+        Title="Вход в систему" Height="250" Width="300"
         WindowStyle="ThreeDBorderWindow"
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="10">
-        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
             <Label x:Name="label" Content="Логин" Margin="10 0 10 0"/>
             <TextBox x:Name="textBox" Height="22" TextWrapping="Wrap" Text="{Binding Login}" Margin="10 0 10 0" />
             <Label x:Name="label1" Content="Пароль" Margin="10 0 10 0"/>
             <PasswordBox x:Name="Password" Height="23"  PasswordChar="*" PasswordChanged="OnPasswordChanged" Margin="10 0 10 0" />
-            <Button x:Name="LoginButton" Content="Вход" Command="{Binding LoginCommand}" Margin="10 10 10 0" Padding="0 10 0 10"/>
-            <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="{Binding ErrorText}" Height="132"/>
-
+            <Button x:Name="LoginButton" Content="Вход" Command="{Binding LoginCommand}" Margin="10 10 10 0" Padding="0 10 0 10" />
+            <TextBlock x:Name="CreateLink" Margin="10 0 10 0" Height="23" Text=" ">
+                <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="*">
+                    Создать нового пользователя
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="{Binding ErrorText}" VerticalAlignment="Stretch"/>
         </StackPanel>
     </Grid>
 </Window>
