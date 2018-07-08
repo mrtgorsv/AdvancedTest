@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:theory="clr-namespace:AdvancedTest.Controls.Theory"
-             xmlns:testPart="clr-namespace:AdvancedTest.ViewModels.TestPart"
              xmlns:testPartControl="clr-namespace:AdvancedTest.Controls.TestPart"
+             xmlns:testPart="clr-namespace:AdvancedTest.Common.ViewModels.TestPart;assembly=AdvancedTest.Common"
              mc:Ignorable="d"
              d:DesignHeight="1024" d:DesignWidth="768">
     <UserControl.Resources>

@@ -1,9 +1,9 @@
 ﻿using System.Windows;
+using AdvancedTest.Common.Utils;
+using AdvancedTest.Common.ViewModels;
+using AdvancedTest.Common.ViewModels.Test;
+using AdvancedTest.Common.ViewModels.Theory;
 using AdvancedTest.Utils;
-using AdvancedTest.ViewModels;
-using AdvancedTest.ViewModels.Practice;
-using AdvancedTest.ViewModels.Test;
-using AdvancedTest.ViewModels.Theory;
 
 namespace AdvancedTest
 {
@@ -41,20 +41,20 @@ namespace AdvancedTest
             {
                 _currentModel.ShowDocument(theoryDoc);
             }
-            else if (e.NewValue is WordPracticeViewModel wordPracticeViewModel)
-            {
-                _currentModel.ShowWordPractice(wordPracticeViewModel);
-            }
-            else if (e.NewValue is ExcelPracticeViewModel excelPracticeViewModel)
-            {
-                _currentModel.ShowExcelPractice(excelPracticeViewModel);
-            }
+//            else if (e.NewValue is WordPracticeViewModel wordPracticeViewModel)
+//            {
+//                _currentModel.ShowWordPractice(wordPracticeViewModel);
+//            }
+//            else if (e.NewValue is ExcelPracticeViewModel excelPracticeViewModel)
+//            {
+//                _currentModel.ShowExcelPractice(excelPracticeViewModel);
+//            }
         }
 
         protected override void OnClosed(System.EventArgs e)
         {
             base.OnClosed(e);
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         }
     }
 }

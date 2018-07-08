@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdvancedTest.Data.Model
 {
+    [Serializable]
     public partial class TheoryTestPartAnswer
     {
         [Key]

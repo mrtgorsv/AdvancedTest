@@ -1,0 +1,22 @@
+﻿<Application x:Class="AdvancedTest.Practice.Client.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters1="clr-namespace:AdvancedTest.Converters;assembly=AdvancedTest"
+             xmlns:utils="clr-namespace:AdvancedTest.Common.Utils;assembly=AdvancedTest.Common"
+             StartupUri="Login.xaml">
+    <Application.Resources>
+        <utils:ViewModelLocator x:Key="ViewModelLocator"/>
+        <converters1:BoolToVisibilityConverter
+            x:Key="BoolToHiddenConverter"/>
+        <Style TargetType="TextBlock">
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+                <Trigger Property="Text" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Application.Resources>
+</Application>

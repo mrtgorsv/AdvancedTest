@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using AdvancedTest.Common.Utils;
+using AdvancedTest.Common.ViewModels.Login;
 using AdvancedTest.Utils;
-using LoginViewModel = AdvancedTest.ViewModels.Login.LoginViewModel;
 
 namespace AdvancedTest.Views
 {

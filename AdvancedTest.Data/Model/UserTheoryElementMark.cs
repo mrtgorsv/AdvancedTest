@@ -18,6 +18,7 @@ namespace AdvancedTest.Data.Model
         public bool IsCompleted { get; set; }
 
         public virtual User User { get; set; }
+
         public virtual TheoryPart TheoryPart { get; set; }
     }
 }

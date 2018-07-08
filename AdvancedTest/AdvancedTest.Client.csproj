@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -114,43 +115,11 @@
     <Compile Include="Converters\NullVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\TextConverter.cs" />
-    <Compile Include="EventArgs\TestCompletedEventArgs.cs" />
-    <Compile Include="Extensions\ExcelExtensions.cs" />
-    <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Utils\DelegateCommand.cs" />
-    <Compile Include="Utils\IoC\IocConfiguration.cs" />
-    <Compile Include="Utils\IoC\IocKernel.cs" />
-    <Compile Include="Utils\ImageResolver.cs" />
-    <Compile Include="Utils\PathResolver.cs" />
-    <Compile Include="Utils\SecurityManager.cs" />
-    <Compile Include="Utils\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\Answer\AnswerOptionViewModel.cs" />
-    <Compile Include="ViewModels\Answer\ImageAnswerViewModel.cs" />
-    <Compile Include="ViewModels\Answer\TextAnswerViewModel.cs" />
-    <Compile Include="ViewModels\Answer\AnswerViewModel.cs" />
-    <Compile Include="ViewModels\Base\UserResultViewModel.cs" />
-    <Compile Include="ViewModels\Base\MessageViewModel.cs" />
-    <Compile Include="ViewModels\Login\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\Login\RegisterViewModel.Command.cs" />
-    <Compile Include="ViewModels\Login\LoginViewModel.Command.cs" />
-    <Compile Include="ViewModels\Login\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Practice\ExcelPracticeViewModel.cs" />
-    <Compile Include="ViewModels\Practice\ExcelPracticeViewModel.Command.cs" />
-    <Compile Include="ViewModels\TestPart\SelectOneTestPartViewModel.cs" />
-    <Compile Include="ViewModels\TestPart\SelectManyTestPartViewModel.cs" />
-    <Compile Include="ViewModels\TestPart\CompareTestPartViewModel.cs" />
-    <Compile Include="ViewModels\TestPart\CustomTextTestPartViewModel.cs" />
-    <Compile Include="ViewModels\TestPart\TestPartViewModelBase.cs" />
-    <Compile Include="ViewModels\Test\TestViewModel.Command.cs" />
-    <Compile Include="ViewModels\Test\TestViewModel.cs" />
-    <Compile Include="ViewModels\Practice\WordPracticeViewModel.Command.cs" />
-    <Compile Include="ViewModels\Practice\WordPracticeViewModel.cs" />
-    <Compile Include="ViewModels\Theory\TimerTheoryPartElementViewModel.cs" />
-    <Compile Include="ViewModels\Theory\TheoryPartElementViewModel.cs" />
-    <Compile Include="ViewModels\Theory\DocumentViewModel.cs" />
-    <Compile Include="ViewModels\Theory\TheoryViewModel.cs" />
-    <Compile Include="ViewModels\Base\ViewModelBase.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\IoC\ThoeryIocConfiguration.cs" />
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -205,29 +174,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\WindowStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Login.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RegisterView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -296,10 +261,43 @@
     <None Include="Content\Docs\18\1.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Docs\19\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\19\2.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\19\3.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Docs\1\1.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Docs\1\2.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\20\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\21\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\22\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\23\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\24\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\25\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\26\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Docs\27\1.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Docs\2\1.pdf">
@@ -387,12 +385,15 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="ViewModels\MainViewModel.Command.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AdvancedTest.Common\AdvancedTest.Common.csproj">
+      <Project>{866889F0-FBCC-46E7-89C1-EBCD332D998D}</Project>
+      <Name>AdvancedTest.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AdvancedTest.Data\AdvancedTest.Data.csproj">
       <Project>{3DD89646-3AD1-47F5-8A72-C56E7725F180}</Project>
       <Name>AdvancedTest.Data</Name>
@@ -979,6 +980,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Tests\9\9.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Tests\3\9.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

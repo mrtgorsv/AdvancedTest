@@ -6,12 +6,16 @@
              xmlns:converters="clr-namespace:AdvancedTest.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MaxHeight="450">
             <Label Content="Вопрос:" FontSize="24" HorizontalAlignment="Stretch" VerticalAlignment="Top"  Margin="10" DockPanel.Dock="Top"></Label>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"   Visibility="{Binding ImageMode, Converter={StaticResource BoolToVisibilityConverter}}" >
                 <Image Source="{Binding TestText}" Width="{Binding ImageWidth}"   VerticalAlignment="Top" Height="{Binding ImageHeight}" />
             </ScrollViewer>
+            <TextBlock Text="{Binding Description}" FontSize="18" VerticalAlignment="Top" Visibility="{Binding TextMode, Converter={StaticResource BoolToVisibilityConverter}}" />
         </StackPanel>
         <StackPanel VerticalAlignment="Bottom">
             <Label Content="Ответ:" FontSize="24" HorizontalAlignment="Stretch" Margin="10"></Label>
@@ -24,9 +28,6 @@
                         <RadioButton GroupName="Answers" IsChecked="{Binding IsSelected , Mode=TwoWay}">
                             <RadioButton.Content>
                                 <StackPanel>
-                                    <StackPanel.Resources>
-                                        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-                                    </StackPanel.Resources>
                                     <TextBlock Text="{Binding Text}" Visibility="{Binding TextMode, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Top"/>
                                     <Image Source="{Binding AnswerImage}"  Visibility="{Binding ImageMode, Converter={StaticResource BoolToVisibilityConverter}}"  VerticalAlignment="Top"/>
                                 </StackPanel>

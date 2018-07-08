@@ -15,6 +15,8 @@ namespace AdvancedTest.Data.Context
         public DbSet<User> Users { get; set; }
         // Коллекция глав теории
         public DbSet<TheoryPart> TheoryParts { get; set; }
+        // Коллекция разделов
+        public DbSet<TheorySection> TheorySections { get; set; }
         // Коллекция заданий тестов
         public DbSet<TheoryTestPart> TheoryTestParts { get; set; }
         // Коллекция документов для глав

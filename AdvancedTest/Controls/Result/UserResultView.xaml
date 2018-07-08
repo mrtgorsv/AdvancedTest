@@ -11,14 +11,16 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="{Binding Message}" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Stretch" FontSize="24" FontStyle="Oblique"/>
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding UserResults}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Margin="0 1 0 1">
-                        <TextBlock Text="{Binding}" HorizontalAlignment="Stretch" FontSize="18" FontStyle="Oblique"></TextBlock>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding UserResults}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch" Margin="0 1 0 1">
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Stretch" FontSize="18" FontStyle="Oblique"></TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

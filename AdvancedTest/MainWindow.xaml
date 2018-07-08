@@ -3,31 +3,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:test="clr-namespace:AdvancedTest.ViewModels.Test"
         xmlns:theory="clr-namespace:AdvancedTest.Controls.Theory"
         xmlns:controls="clr-namespace:AdvancedTest.Controls"
-        xmlns:base="clr-namespace:AdvancedTest.ViewModels.Base"
         xmlns:result="clr-namespace:AdvancedTest.Controls.Result"
-        xmlns:practice="clr-namespace:AdvancedTest.ViewModels.Practice"
+        xmlns:test1="clr-namespace:AdvancedTest.Common.ViewModels.Test;assembly=AdvancedTest.Common"
+        xmlns:practice1="clr-namespace:AdvancedTest.Common.ViewModels.Practice;assembly=AdvancedTest.Common"
+        xmlns:base1="clr-namespace:AdvancedTest.Common.ViewModels.Base;assembly=AdvancedTest.Common"
         mc:Ignorable="d"
         Title="Система адаптивного обучения" Height="500" Width="800"
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type test:TestViewModel}">
+        <DataTemplate DataType="{x:Type test1:TestViewModel}">
             <theory:TestView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type practice:WordPracticeViewModel}">
+<!--        <DataTemplate DataType="{x:Type practice1:WordPracticeViewModel}">
             <theory:PracticeView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type practice:ExcelPracticeViewModel}">
+        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type practice1:PracticeViewModel}">
             <theory:ExcelPracticeView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type base:MessageViewModel}">
+        <DataTemplate DataType="{x:Type base1:MessageViewModel}">
             <controls:MessageView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type base:UserResultViewModel}">
+        <DataTemplate DataType="{x:Type base1:UserResultViewModel}">
             <result:UserResultView/>
         </DataTemplate>
     </Window.Resources>
@@ -39,7 +39,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition Width="300"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <ToolBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
@@ -49,7 +49,7 @@
         <Label Grid.Row="1"  Grid.Column="0" Content="Теория"></Label>
         <TreeView Margin="0 0 0 10" Grid.Row="2"  Grid.Column="0"
                   BorderBrush="Black" BorderThickness="1"
-                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  ItemsSource="{Binding TheoryParts }"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  ItemsSource="{Binding TheorySections }"
                   SelectedItemChanged="OnSelectedTheoryPartChanged">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
@@ -59,8 +59,13 @@
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding TheoryPartElements}">
-                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                <HierarchicalDataTemplate ItemsSource="{Binding TheoryParts}">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Name}"/>
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding TheoryPartElements}">
+                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                        </HierarchicalDataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

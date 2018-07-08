@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using AdvancedTest.Common.Utils.IoC;
 using AdvancedTest.Utils.IoC;
 
 namespace AdvancedTest
@@ -10,7 +11,7 @@ namespace AdvancedTest
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            IocKernel.Initialize(new IocConfiguration());
+            IocKernel.Initialize(new ThoeryIocConfiguration());
 
             base.OnStartup(e);
         }

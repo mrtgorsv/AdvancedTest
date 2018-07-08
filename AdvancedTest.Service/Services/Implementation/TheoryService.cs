@@ -34,6 +34,19 @@ namespace AdvancedTest.Service.Services.Implementation
         }
 
         /// <summary>
+        /// Функция получения списка разделов
+        /// </summary>
+        public List<TheorySection> GetTheorySectionList()
+        {
+            return _context.TheorySections
+                .Include(ts => ts.TheoryParts)
+                .Include(ts => ts.TheoryParts.Select(tp => tp.TheoryTestParts.Select(ttp => ttp.Answers)))
+                .Include(ts => ts.TheoryParts.Select(tp => tp.TheoryDocuments))
+                .OrderBy(t => t.Seq)
+                .ToList();
+        }
+
+        /// <summary>
         /// Функция открытия главы для пользователя
         /// </summary>
         public void OpenTheory(int theoryId, int userId)
@@ -76,7 +89,7 @@ namespace AdvancedTest.Service.Services.Implementation
         public List<string> GetUserResults(int userId, out bool allTheoryComplete)
         {
             allTheoryComplete = true;
-            var allTheory = _context.TheoryParts.OrderBy(t => t.Seq).ToList();
+            var allTheory = _context.TheoryParts.Include(tp => tp.TheorySection).OrderBy(t => t.TheorySection.Seq).ThenBy(t => t.Seq).ToList();
             List<string> result = new List<string>();
             var allResults = _context.UserTheoryTestMarks.Where(ut => ut.UserId.Equals(userId))
                 .ToList()
@@ -84,17 +97,23 @@ namespace AdvancedTest.Service.Services.Implementation
                 .Select(utg => utg.OrderBy(ut => ut.Result).FirstOrDefault())
                 .Where(ut => ut != null)
                 .ToList();
+
+            var userDocMarks = _context.UserTheoryDocumentMarks.Where(utd => utd.UserId.Equals(userId)).ToList();
             foreach (TheoryPart theoryPart in allTheory)
             {
                 var currentTheoryResult = allResults.FirstOrDefault(r => r.TheoryPartId.Equals(theoryPart.Id));
                 if (currentTheoryResult != null)
                 {
-                    result.Add($"{theoryPart.Name} - {currentTheoryResult.Result:F2}%");
+                    result.Add($"{theoryPart.TheorySection.Name}. {theoryPart.Name} - {currentTheoryResult.Result:F2}%");
+                }
+                else if(theoryPart.TestTime==0 && theoryPart.TheoryDocuments.All(td=>userDocMarks.Any(udm=>udm.DocumentId.Equals(td.Id))))
+                {
+                    result.Add($"{theoryPart.TheorySection.Name}. {theoryPart.Name} - пройдено.");
                 }
                 else
                 {
                     allTheoryComplete = false;
-                    result.Add($"{theoryPart.Name} - не пройдено.");
+                    result.Add($"{theoryPart.TheorySection.Name}. {theoryPart.Name} - не пройдено.");
                 }
             }
                return result;

@@ -49,26 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\AppDbContext.cs" />
+    <Compile Include="Enum\TheoryType.cs" />
     <Compile Include="Enum\TestPartType.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />
-    <Compile Include="Migrations\201805171631322_Init.cs" />
-    <Compile Include="Migrations\201805171631322_Init.Designer.cs">
-      <DependentUpon>201805171631322_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805172001550_UpdateLogic.cs" />
-    <Compile Include="Migrations\201805172001550_UpdateLogic.Designer.cs">
-      <DependentUpon>201805172001550_UpdateLogic.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805181548595_AddInitialFlag.cs" />
-    <Compile Include="Migrations\201805181548595_AddInitialFlag.Designer.cs">
-      <DependentUpon>201805181548595_AddInitialFlag.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805181844020_AddPracticeDocs.cs" />
-    <Compile Include="Migrations\201805181844020_AddPracticeDocs.Designer.cs">
-      <DependentUpon>201805181844020_AddPracticeDocs.cs</DependentUpon>
+    <Compile Include="Helpers\CopyHelper.cs" />
+    <Compile Include="Helpers\TestPartBuilder.cs" />
+    <Compile Include="Migrations\201806121107332_Init.cs" />
+    <Compile Include="Migrations\201806121107332_Init.Designer.cs">
+      <DependentUpon>201806121107332_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TheoryDocument.cs" />
+    <Compile Include="Model\TheorySection.cs" />
     <Compile Include="Model\TheoryPart.cs" />
     <Compile Include="Model\TheoryTestPartAnswer.cs" />
     <Compile Include="Model\TheoryTestPart.cs" />
@@ -83,17 +75,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805171631322_Init.resx">
-      <DependentUpon>201805171631322_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805172001550_UpdateLogic.resx">
-      <DependentUpon>201805172001550_UpdateLogic.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805181548595_AddInitialFlag.resx">
-      <DependentUpon>201805181548595_AddInitialFlag.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805181844020_AddPracticeDocs.resx">
-      <DependentUpon>201805181844020_AddPracticeDocs.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201806121107332_Init.resx">
+      <DependentUpon>201806121107332_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

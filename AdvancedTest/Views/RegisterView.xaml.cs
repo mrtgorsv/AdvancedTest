@@ -1,8 +1,8 @@
-﻿using AdvancedTest.Utils;
-using AdvancedTest.ViewModels.Login;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using AdvancedTest.Common.Utils;
+using AdvancedTest.Common.ViewModels.Login;
 
 namespace AdvancedTest.Views
 {
@@ -14,7 +14,7 @@ namespace AdvancedTest.Views
         private readonly ViewModelLocator _locator = new ViewModelLocator();
 
         public event UserCreateEventHandler UserCreate;
-        public delegate void UserCreateEventHandler(object sender, System.EventArgs args);
+        public delegate void UserCreateEventHandler(object sender, EventArgs args);
 
         private RegisterViewModel _viewModel;
 
@@ -31,14 +31,14 @@ namespace AdvancedTest.Views
             Show();
         }
 
-        private void OnUserCreated(object sender, System.EventArgs args)
+        private void OnUserCreated(object sender, EventArgs args)
         {
             RaiseUserCreated();
         }
 
         private void RaiseUserCreated()
         {
-            UserCreate?.Invoke(this, new System.EventArgs());
+            UserCreate?.Invoke(this, new EventArgs());
         }
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)

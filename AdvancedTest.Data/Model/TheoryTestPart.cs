@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AdvancedTest.Data.Enum;
 
 namespace AdvancedTest.Data.Model
 {
+    [Serializable]
     public partial class TheoryTestPart
     {
         [Key]
@@ -15,6 +17,7 @@ namespace AdvancedTest.Data.Model
         public int TheoryId { get; set; }
 
         public int Seq { get; set; }
+
         public string Description { get; set; }
 
         public string CorrectAnswer { get; set; }

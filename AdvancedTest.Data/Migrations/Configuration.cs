@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using AdvancedTest.Data.Context;
 using AdvancedTest.Data.Enum;
+using AdvancedTest.Data.Extensions;
+using AdvancedTest.Data.Helpers;
 using AdvancedTest.Data.Model;
 
 namespace AdvancedTest.Data.Migrations
@@ -11,6 +13,8 @@ namespace AdvancedTest.Data.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<AppDbContext>
     {
         private int _theorySeq;
+        private int _globalTheorySeq;
+        private int _globalSectionSeq;
 
         public Configuration()
         {
@@ -22,26 +26,36 @@ namespace AdvancedTest.Data.Migrations
             if (!context.TheoryParts.Any())
             {
                 CreateDefaultUser(context);
-                CreateInitialTest(context, _theorySeq++);
-                CreateFirstTheory(context, _theorySeq++);
-                CreateSecondTheory(context, _theorySeq++);
-                CreateThirdTheory(context, _theorySeq++);
-                CreateFourTheory(context, _theorySeq++);
-                CreateFiveTheory(context, _theorySeq++);
-                CreateSixTheory(context, _theorySeq++);
-                CreateSevenTheory(context, _theorySeq++);
-                CreateEighthTheory(context, _theorySeq++);
-                CreateNinthTheory(context, _theorySeq++);
-                CreateTenTheory(context, _theorySeq++);
-                CreateEleventhTheory(context, _theorySeq++);
-                CreateTwelfthTheory(context, _theorySeq++);
-                CreateThirteenthTheory(context, _theorySeq++);
-                CreateFourteenthTheory(context, _theorySeq++);
-                CreateFifteenthTheory(context, _theorySeq++);
-                CreateSixteenTheory(context, _theorySeq++);
-                CreateSeventeenTheory(context, _theorySeq++);
-                CreateEighthteenTheory(context, _theorySeq++);
-                CreateTotalTest(context, _theorySeq++);
+                /*                CreateInitialTest(context, _theorySeq++);
+                                CreateFirstTheory(context, _theorySeq++);
+                                CreateSecondTheory(context, _theorySeq++);
+                                CreateThirdTheory(context, _theorySeq++);
+                                CreateFourTheory(context, _theorySeq++);
+                                CreateFiveTheory(context, _theorySeq++);
+                                CreateSixTheory(context, _theorySeq++);
+                                CreateSevenTheory(context, _theorySeq++);
+                                CreateEighthTheory(context, _theorySeq++);
+                                CreateNinthTheory(context, _theorySeq++);
+                                CreateTenTheory(context, _theorySeq++);
+                                CreateEleventhTheory(context, _theorySeq++);
+                                CreateTwelfthTheory(context, _theorySeq++);
+                                CreateThirteenthTheory(context, _theorySeq++);
+                                CreateFourteenthTheory(context, _theorySeq++);
+                                CreateFifteenthTheory(context, _theorySeq++);
+                                CreateSixteenTheory(context, _theorySeq++);
+                                CreateSeventeenTheory(context, _theorySeq++);
+                                CreateEighthteenTheory(context, _theorySeq++);
+                                CreateTotalTest(context, _globalTheorySeq++);*/
+                CreateInitialSection(context);
+                var first = CreateFirstSection(context);
+                var second = CreateSecondSection(context);
+                CreateThirdSection(context);
+                CreateFourSection(context);
+                CreateFiveSection(context);
+                CreateFirstSectionLabs(context, first);
+                CreateSecondSectionLabs(context, second);
+                CreateTotalSection(context);
+                context.SaveChanges();
             }
         }
 
@@ -57,10 +71,10 @@ namespace AdvancedTest.Data.Migrations
             context.SaveChanges();
         }
 
-        private void CreateInitialTest(AppDbContext context, int seq)
+        private TheoryPart CreateInitialTest(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Входное тестирование", seq, 40);
+            TheoryPart theory = CreateTheory("Входное тестирование", seq, 40 , theoryType: TheoryType.None);
             theory.IsInitial = true;
             CreateSingle(theory, pSeq++, "4", "11010010", "11100000", "11001110", "11010000");
             CreateSingle(theory, pSeq++, "1", "Уменьшился на 20 байт", "Увеличился на 20 байт", "Увеличился на 20 бит",
@@ -95,24 +109,152 @@ namespace AdvancedTest.Data.Migrations
             CreateCustom(theory, pSeq, "2341");
 
             context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateTotalTest(AppDbContext context, int seq)
+        {
+            TheoryPart theory = CreateTheory("Итоговое тестирование", seq, 40, theoryType: TheoryType.None);
+            theory.IsLast = true;
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private void CreateInitialSection(AppDbContext context)
+        {
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Входное тестирование" , addPrefix: false);
+            AddTheoryToSection(section, CreateInitialTest(context , theoryPartSeq));
             context.SaveChanges();
         }
 
-        private void CreateTotalTest(AppDbContext context, int seq)
+        private void CreateTotalSection(AppDbContext context)
         {
-            TheoryPart theory = CreateTheory("Итоговое тестирование", seq, 40);
-            theory.IsLast = true;
-            context.TheoryParts.Add(theory);
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Итоговое тестирование", addPrefix: false);
+            TheoryPart theory = CreateTotalTest(context, theoryPartSeq);
+            AddTheoryToSection(section, theory);
             context.SaveChanges();
         }
+
+        #region Section
+
+        private TheorySection CreateFirstSection(AppDbContext context)
+        {
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Базовые информационные процессы");
+            context.SaveChanges();
+
+            AddTheoryToSection(section , CreateFirstTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section , CreateSecondTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section , CreateThirdTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section , CreateFourTheory(context, theoryPartSeq++));
+            context.TheorySections.Add(section);
+            return section;
+        }
+
+        private void CreateFirstSectionLabs(AppDbContext context , TheorySection section)
+        {
+            int theoryPartSeq = 1;
+            AddTheoryToSection(section, CreateLab_1_1(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateLab_1_2(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateLab_1_3(context, theoryPartSeq));
+        }
+
+        private TheorySection CreateSecondSection(AppDbContext context)
+        {
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Инструментальная база ИТ");
+            context.SaveChanges();
+
+            AddTheoryToSection(section, CreateFiveTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateSixTheory(context, theoryPartSeq++));
+            context.TheorySections.Add(section);
+            return section;
+        }
+
+        private void CreateSecondSectionLabs(AppDbContext context, TheorySection section)
+        {
+            AddTheoryToSection(section, CreateLab_2_1(context, 1));
+        }
+
+        private TheorySection CreateThirdSection(AppDbContext context)
+        {
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Базовые информационные технологии");
+            context.SaveChanges();
+
+            AddTheoryToSection(section, CreateSevenTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateEighthTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateNinthTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateTenTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateEleventhTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateTwelfthTheory(context, theoryPartSeq));
+            theoryPartSeq = 1;
+            AddTheoryToSection(section, CreateThirteenthTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateFourteenthTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateFifteenthTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateSixteenTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateSeventeenTheory(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateEighthteenTheory(context, theoryPartSeq));
+            context.TheorySections.Add(section);
+            return section;
+        }
+
+        private TheorySection CreateFourSection(AppDbContext context)
+        {
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Технология построения ИС");
+            context.SaveChanges();
+            AddTheoryToSection(section, CreateTheory_19(context, theoryPartSeq++));
+            AddTheoryToSection(section, CreateTheory_20(context, theoryPartSeq));
+            theoryPartSeq = 1;
+            AddTheoryToSection(section, CreateTheory_21(context, theoryPartSeq));
+            context.TheorySections.Add(section);
+            return section;
+        }
+
+        private TheorySection CreateFiveSection(AppDbContext context)
+        {
+            int theoryPartSeq = 1;
+            TheorySection section = CreateTheorySection("Специализированные ИТ");
+            context.SaveChanges();
+            AddTheoryToSection(section, CreateTheory_22(context, theoryPartSeq++));
+            theoryPartSeq = 1;
+            AddTheoryToSection(section, CreateTheory_23(context, theoryPartSeq));
+            context.TheorySections.Add(section);
+            return section;
+        }
+
+        private void AddTheoryToSection(TheorySection section, TheoryPart theoryPart)
+        {
+            theoryPart.TheorySection = section;
+            theoryPart.TheorySectionId = section.Id;
+            section.TheoryParts.Add(theoryPart);
+        }
+
+        private TheorySection CreateTheorySection(string name, string description = null , bool addPrefix = true)
+        {
+            var section = new TheorySection
+            {
+                Description = description ?? name,
+                Name = addPrefix ? $"Раздел {_globalSectionSeq}. {name}" : name,
+                Seq = _globalSectionSeq,
+                TheoryParts = new List<TheoryPart>()
+            };
+            _globalSectionSeq++;
+            return section;
+        }
+
+        #endregion
 
         #region Theory
 
-        private void CreateFirstTheory(AppDbContext context, int seq)
+        private TheoryPart CreateFirstTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
 
-            TheoryPart theory = CreateTheory("Глава 1. Транспортирование информации", seq);
+            TheoryPart theory = CreateTheory("Транспортирование информации", seq);
 
             CreateSingle(theory, pSeq++, "4", "Html", "ftp", "www", "http");
             CreateSingle(theory, pSeq++, "1", "www.mail.ru", "mail.ru/chair806", "chair806", "ftp.html", "html");
@@ -140,14 +282,14 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 2);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateSecondTheory(AppDbContext context, int seq)
+        private TheoryPart CreateSecondTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
 
-            TheoryPart theory = CreateTheory("Глава 2. Хранение информации", seq);
+            TheoryPart theory = CreateTheory("Хранение информации", seq);
             CreateСompare(theory, pSeq++, "321", "Определение данных;Хранение данных;Выборка данных",
                 "Запрашивание существующих данных пользователями и извлечение данных для использования прикладными программами",
                 "Вставка новых данных в уже существующие сруктуры данных, обновление данных в существующих структурах, удаление данных из существующих структур",
@@ -179,13 +321,13 @@ namespace AdvancedTest.Data.Migrations
             CreateDocuments(theory, 3);
 
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateThirdTheory(AppDbContext context, int seq)
+        private TheoryPart CreateThirdTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 3. Извлечение, представление и использование информации", seq);
+            TheoryPart theory = CreateTheory("Извлечение, представление и использование информации", seq);
 
             CreateСompare(theory, pSeq++, "231", "Предмет;Класс;Объект", "множество книг и периодических изданий",
                 "название книги, автор, год издания ",
@@ -198,17 +340,24 @@ namespace AdvancedTest.Data.Migrations
             CreateCustom(theory, pSeq++, "класс");
             CreateCustom(theory, pSeq++, "объект");
             CreateCustom(theory, pSeq, "формы исследования данных");
+            TestPartBuilder.New().CorrectAnswer("3")
+                .Answers("РЕГИСТР_НОМЕР<120 И РЕГИСТР_НОМЕР>150",
+                    "РЕГИСТР_НОМЕР<120 ИЛИ РЕГИСТР_НОМЕР>150 И (ПОЛ=\"ж\" ИЛИ ПОЛ=\"м\")",
+                    "РЕГИСТР_НОМЕР<120 ИЛИ РЕГИСТР_НОМЕР>150",
+                    "РЕГИСТР_НОМЕР<120 ИЛИ РЕГИСТР_НОМЕР>150 И (ПОЛ=\"ж\" И ПОЛ=\"м\")",
+                    "(РЕГИСТР_НОМЕР<120 ИЛИ РЕГИСТР_НОМЕР>150) И (ПОЛ=\"ж\" И ПОЛ=\"м\")")
+                .Build(theory);
 
             CreateDocuments(theory, 3);
 
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateFourTheory(AppDbContext context, int seq)
+        private TheoryPart CreateFourTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 4. Обработка информации", seq);
+            TheoryPart theory = CreateTheory("Обработка информации", seq);
 
             CreateСompare(theory, pSeq++, "21",
                 "Структурирование, поиск, кодирование;Вычисления по формулам, логическое рассуждение, исследование моделей",
@@ -238,13 +387,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateFiveTheory(AppDbContext context, int seq)
+        private TheoryPart CreateFiveTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 5. Программные и технические средства", seq);
+            TheoryPart theory = CreateTheory("Программные и технические средства", seq);
 
             CreateCustom(theory, pSeq++, "система управления базами данных");
             CreateCustom(theory, pSeq++, "реализация языка");
@@ -266,13 +415,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateSixTheory(AppDbContext context, int seq)
+        private TheoryPart CreateSixTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 6. Методические средства ИТ", seq);
+            TheoryPart theory = CreateTheory("Методические средства ИТ", seq);
 
             CreateCustom(theory, pSeq++, "Унификация");
             CreateCustom(theory, pSeq++, "ISO/OSI");
@@ -286,13 +435,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateSevenTheory(AppDbContext context, int seq)
+        private TheoryPart CreateSevenTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 7. Мультимедиа технологии", seq);
+            TheoryPart theory = CreateTheory("Мультимедиа технологии", seq);
 
             CreateSingle(theory, pSeq++, "1",
                 "Объект, отдельные элементы которого наследуют свойства родительских структур",
@@ -322,13 +471,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateEighthTheory(AppDbContext context, int seq)
+        private TheoryPart CreateEighthTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 8. ГИС технологии", seq);
+            TheoryPart theory = CreateTheory("ГИС технологии", seq);
 
             CreateMultiply(theory, pSeq++, "15", "мультимедиа", "корпоративная", "информационно управляющая",
                 "автоматизированного проектирования", "геоинформационная");
@@ -349,13 +498,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 2);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateNinthTheory(AppDbContext context, int seq)
+        private TheoryPart CreateNinthTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 9. Технологии защиты информации", seq);
+            TheoryPart theory = CreateTheory("Технологии защиты информации", seq);
 
             CreateMultiply(theory, pSeq++, "135",
                 "устранение ошибок на этапах разработки программно-аппаратных средств",
@@ -382,13 +531,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 2);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateTenTheory(AppDbContext context, int seq)
+        private TheoryPart CreateTenTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 10. Телекоммуникационные технологии", seq);
+            TheoryPart theory = CreateTheory("Телекоммуникационные технологии", seq);
 
             CreateSingle(theory, pSeq++, "1", "цветы & (Тайвань | Хонсю)", "цветы & Тайвань & Хонсю",
                 "цветы | Тайвань | Хонсю", "цветы & (остров | Тайвань | Хонсю)");
@@ -406,13 +555,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 2);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateEleventhTheory(AppDbContext context, int seq)
+        private TheoryPart CreateEleventhTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 11. Технологии искусственного интеллекта", seq);
+            TheoryPart theory = CreateTheory("Технологии искусственного интеллекта", seq);
 
             CreateSingle(theory, pSeq++, "1", "дедуктивное рассуждение", "абдуктивное рассуждение",
                 "индуктивное рассуждение", "рассуждение по аналогии", "рассуждение по прецеденту");
@@ -428,13 +577,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateTwelfthTheory(AppDbContext context, int seq)
+        private TheoryPart CreateTwelfthTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 12. Технологии представления знаний", seq);
+            TheoryPart theory = CreateTheory("Технологии представления знаний", seq);
 
             CreateMultiply(theory, pSeq++, "34", "достоверность", "актуальность", "понятность", "однородность");
             CreateCustom(theory, pSeq++, "Данные");
@@ -447,13 +596,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreateDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateThirteenthTheory(AppDbContext context, int seq)
+        private TheoryPart CreateThirteenthTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 13. Технологии БД", seq);
+            TheoryPart theory = CreateTheory("Технологии БД", seq , theoryType: TheoryType.Laboratory);
 
             CreateSingle(theory, pSeq++, "1", "Панель для управления базой данных",
                 "Панель для изменения параметров проекта C#", "Панель свойств объектов формы",
@@ -469,13 +618,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreatePracticeDocuments(theory, 3);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateFourteenthTheory(AppDbContext context, int seq)
+        private TheoryPart CreateFourteenthTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 14. Проигрывание файлов формата WMA, получение метаданных", seq);
+            TheoryPart theory = CreateTheory("Проигрывание файлов формата WMA, получение метаданных", seq, theoryType: TheoryType.Laboratory);
 
             CreateSingle(theory, pSeq++, "3", "Загрузки содержимого файла в память",
                 "Обновления атрибутов времени чтения файла", "Отображения стандартного диалога открытия файла",
@@ -491,13 +640,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreatePracticeDocuments(theory, 1);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateFifteenthTheory(AppDbContext context, int seq)
+        private TheoryPart CreateFifteenthTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 15. ГИС-системы", seq);
+            TheoryPart theory = CreateTheory("ГИС-системы", seq, theoryType: TheoryType.Laboratory);
 
             CreateSingle(theory, pSeq++, "1", "Load", "Activated", "Closed", "Shown");
             CreateSingle(theory, pSeq++, "4", "ShowTileGridLines", "ShowTileGridLines", "CanDropMap", "CanDragMap");
@@ -514,13 +663,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreatePracticeDocuments(theory, 1);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateSixteenTheory(AppDbContext context, int seq)
+        private TheoryPart CreateSixteenTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 16. Технологии защиты информации", seq);
+            TheoryPart theory = CreateTheory("Технологии защиты информации", seq, theoryType: TheoryType.Laboratory);
 
             CreateSingle(theory, pSeq++, "1", "Получения хэша MD5", "Обратимого шифрования произвольных данных",
                 "Управления пакетами параметров SQL Server", "Доступа к набору глобальных объектов шифрования");
@@ -535,13 +684,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreatePracticeDocuments(theory, 1);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateSeventeenTheory(AppDbContext context, int seq)
+        private TheoryPart CreateSeventeenTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 17. Телекоммуникационные технологии", seq);
+            TheoryPart theory = CreateTheory("Телекоммуникационные технологии", seq, theoryType: TheoryType.Laboratory);
 
             CreateSingle(theory, pSeq++, "1", "Системные исключения", "Обмен сообщениями", "Объекты синхронизации",
                 "Механизмы разделения памяти");
@@ -557,13 +706,13 @@ namespace AdvancedTest.Data.Migrations
 
             CreatePracticeDocuments(theory, 1);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
-        private void CreateEighthteenTheory(AppDbContext context, int seq)
+        private TheoryPart CreateEighthteenTheory(AppDbContext context, int seq)
         {
             int pSeq = 1;
-            TheoryPart theory = CreateTheory("Глава 18. Технологии искусственного интеллекта", seq);
+            TheoryPart theory = CreateTheory("Технологии искусственного интеллекта", seq, theoryType: TheoryType.Laboratory);
 
             CreateSingle(theory, pSeq++, "2", "Запись двоичного файла на диск",
                 "Процесс преобразования какого-либо объекта в поток байтов", "Очистка памяти от накопившегося мусора",
@@ -580,9 +729,97 @@ namespace AdvancedTest.Data.Migrations
 
             CreatePracticeDocuments(theory, 1);
             context.TheoryParts.Add(theory);
-            context.SaveChanges();
+            return theory;
         }
 
+        private TheoryPart CreateTheory_19(AppDbContext context, int sectionSeq)
+        {
+            TheoryPart theory = CreateTheory("Системология", sectionSeq);
+
+            TestPartBuilder.New().CorrectAnswer("1").Answers("Целостность", "Адекватность","Единственность", "Многокритериальность").Description("Необходимым условием существования системы является…").Build(theory);
+            TestPartBuilder.New().CorrectAnswer("2").Answers("8", "16", "24", "32").Description("Для системы из 4 элементов и все элементы имеют по 2 состояния число состояний равно").Build(theory);
+            TestPartBuilder.New().CorrectAnswer("2").Answers("Состава системы", "«Черного ящика»", "Структуры системы", "«Белого ящика»").Description("Модель, представляющая систему на уровне описания ее входов и выходов, называется").Build(theory);
+            TestPartBuilder.New().CorrectAnswer("2").Answers("пространственная структура", "временная структура", "физическая структура", "иерархическая структура").Description("В сетевом, календарном планировании и в теории массового обслуживания применяется структурная модель вида").Build(theory);
+            TestPartBuilder.New().CorrectAnswer("1").Answers("анализа и синтеза", "заказчика и исполнителя", "математики и физики", "управления и оптимизации").Description("Построенная структурная модель будет отражать основные свойства исследуемого объекта для достижения поставленных целей при условии совместного применения методов …").Build(theory);
+            TestPartBuilder.New().CorrectAnswer("1").Answers("Декомпозиция", "Агрегирование", "Тестирование", "Классификация").Description("В структурном моделировании при анализе основной операцией является").Build(theory);
+            TestPartBuilder.New().CorrectAnswer("1").Answers("элементарность части системы", "внешняя целостность системы", "внутренняя целостность системы", "эмерджентность системы").Description("Условие окончания декомпозиции системы").Build(theory);
+            TestPartBuilder.New(TestPartType.Manual).CorrectAnswer("белого ящика").Description("Модель, включающая все элементы системы, все связи между элементами внутри системы и связи системы с окружающей средой, называется").Build(theory);
+            TestPartBuilder.New(TestPartType.Manual).CorrectAnswer("Ориентированным").Description("Граф, содержащий несимметричные связи-дуги между элементами системы, называется").Build(theory);
+            TestPartBuilder.New(TestPartType.Manual).CorrectAnswer("агрегатом").Description("Результатом агрегирования является система, которую называют").Build(theory);
+            CreateDocuments(theory, 3);
+            context.TheoryParts.Add(theory);
+
+            return theory;
+        }
+
+        private TheoryPart CreateTheory_20(AppDbContext context, int sectionSeq)
+        {
+            TheoryPart theory = CreateTheory("Этапы проектирования ИС", sectionSeq,0);
+            CreateDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateTheory_21(AppDbContext context, int sectionSeq)
+        {
+            TheoryPart theory = CreateTheory("Разработка информационной системы", sectionSeq, 0, theoryType: TheoryType.Laboratory);
+            CreatePracticeDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateTheory_22(AppDbContext context, int sectionSeq)
+        {
+            TheoryPart theory = CreateTheory("Специализированные ИТ", sectionSeq,0);
+            CreateDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateTheory_23(AppDbContext context, int sectionSeq)
+        {
+            TheoryPart theory = CreateTheory("Применение специализированных технологий для построения ИС", sectionSeq, 0, theoryType:TheoryType.Laboratory);
+
+            CreatePracticeDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateLab_1_1(AppDbContext context, int seq)
+        {
+            TheoryPart theory = CreateTheory("Табличный процессор Microsoft Excel", seq, 0, theoryType: TheoryType.Laboratory);
+
+            CreatePracticeDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateLab_1_2(AppDbContext context, int seq)
+        {
+            TheoryPart theory = CreateTheory("Табличный процессор Microsoft Excel", seq, 0, theoryType: TheoryType.Laboratory);
+
+            CreatePracticeDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateLab_1_3(AppDbContext context, int seq)
+        {
+            TheoryPart theory = CreateTheory("Текстовый процессор Microsoft Word", seq , 0, theoryType: TheoryType.Laboratory);
+            CreatePracticeDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+
+        private TheoryPart CreateLab_2_1(AppDbContext context, int seq)
+        {
+            TheoryPart theory = CreateTheory("Построение приложений локальных баз данных средствами СУБД Microsoft Access", seq, 0, theoryType: TheoryType.Laboratory);
+
+            CreatePracticeDocuments(theory, 1);
+            context.TheoryParts.Add(theory);
+            return theory;
+        }
+        
         #endregion
 
         #region Answers
@@ -605,21 +842,21 @@ namespace AdvancedTest.Data.Migrations
         private void CreateСompare(TheoryPart theory, int seq, string correctAnswer, string options,
             params string[] answers)
         {
-            theory.TheoryTestParts.Add(CreatePart(theory, seq, correctAnswer, TestPartType.Compare, answers,
-                options: options));
+            theory.TheoryTestParts.Add(CreatePart(theory, seq, correctAnswer, TestPartType.Compare, answers, options));
         }
 
         #endregion
 
         #region Entities
 
-        private TheoryPart CreateTheory(string name, int seq, int testTime = 20, string description = null)
+        private TheoryPart CreateTheory(string name, int seq, int testTime = 20, string description = null , TheoryType theoryType= TheoryType.Theme)
         {
+            var prefix = theoryType.GetDisplayName();
             return new TheoryPart
             {
                 Description = description ?? name,
-                Name = name,
-                Seq = seq,
+                Name = !string.IsNullOrWhiteSpace(prefix) ? $"{prefix} {seq}. {name}": name,
+                Seq = _globalTheorySeq++,
                 TestTime = testTime,
                 TheoryTestParts = new List<TheoryTestPart>()
             };
