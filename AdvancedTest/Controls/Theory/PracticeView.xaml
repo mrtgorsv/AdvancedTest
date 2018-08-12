@@ -20,7 +20,7 @@
             <TextBlock Text="{Binding Name}" TextAlignment="Center" FontSize="24" FontStyle="Oblique" FontWeight="Bold" />
             <TextBlock Text="{Binding TestTime}" Foreground="Red" TextAlignment="Right" HorizontalAlignment="Stretch" FontSize="24"></TextBlock>
         </StackPanel>
-        <Button HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" Content="{Binding ButtonText}"
+        <Button HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="2" Content="{Binding ButtonText}" IsEnabled="{Binding CanStart}" 
                 Command="{Binding StartCommand}" />
         <Button HorizontalAlignment="Stretch" Grid.Column="2" Grid.Row="2" Content="Правила оформления докладов"
                 Command="{Binding RulesCommand}"/>

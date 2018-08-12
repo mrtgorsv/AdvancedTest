@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
-using AdvancedTest.Common.EventArgs;
+using AdvancedTest.Common.Event;
 using AdvancedTest.Common.Utils;
-using AdvancedTest.Properties;
+using AdvancedTest.Data.Enum;
+using AdvancedTest.Practice.Client.Properties;
 using Microsoft.Office.Interop.Word;
 
 namespace AdvancedTest.Practice.Client.ViewModels.Practice
@@ -13,7 +14,9 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
     public partial class WordPracticeViewModel
     {
         private Document _userFile;
+        private bool _complete;
         private Application _app = new Application();
+        private int _testResult;
 
         // Функция инициализации команд
         private void InitializeCommands()
@@ -21,6 +24,8 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             StartCommand = new DelegateCommand(Start);
             RulesCommand = new DelegateCommand(ShowRules);
         }
+
+        public override bool CanStart => !IsStarted || !_complete;
 
         // Функция запуска теста
         protected override void Start()
@@ -44,26 +49,17 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             StopTimer();
             try
             {
-                var result = new TestCompletedEventArgs(CompareFiles(), CurrentTheoryId, -1, _elapsedTime);
-                OnTestCompleted(result);
+                OnTestCompleted(GetSuccessResult());
             }
             catch (Exception ex)
             {
-                var result = new TestCompletedEventArgs(0, CurrentTheoryId, -1, _elapsedTime, false, ex.Message);
+                var result = GetError(ex);
                 OnTestFailed(result);
             }
-        }
 
-        private int CompareFiles()
-        {
-            if (_userFile != null)
-            {
-                _app.Visible = false;
-                var resultFile = CreateDocument(Resources.result, _app);
-                var compareDoc = _app.CompareDocuments(resultFile, _userFile);
-                return compareDoc.Revisions.Count;
-            }
-            throw new NullReferenceException();
+            _complete = true;
+            ButtonText = "Завершено";
+            OnPropertyChanged(nameof(CanStart));
         }
 
         private void ShowStartDoc()
@@ -132,12 +128,88 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
                     _userFile = null;
                 }
             }
-            // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception)
             {
+                //
             }
             GC.Collect();
             base.Dispose();
+        }
+
+        protected override TestCompletedEventArgs GetError(Exception ex)
+        {
+            return new TestCompletedEventArgs
+            {
+                TheoryId = CurrentTheoryId,
+                Error = ex.Message,
+                Complete = false
+            };
+        }
+
+        protected override TestCompletedEventArgs GetSuccessResult()
+        {
+            _testResult = CompareFiles();
+
+            return new TestCompletedEventArgs
+            {
+                TestAttempt = -1,
+                TheoryId = CurrentTheoryId,
+                Message = GetResultMessage(),
+                Complete = true
+            };
+        }
+
+        protected override string GetResultMessage()
+        {
+            var grade = GetGrade();
+
+            var pointMessage = string.Format(Resources.PointMessage, (int)grade);
+            var baseMessage = string.Format(Resources.PracticeCompleteTemplateMessage, _elapsedTime.ToString("T"));
+
+            if (_testResult != 0)
+            {
+               return $"{baseMessage} {string.Format(Resources.PracticeFailedTemplateMessage, _testResult)} {pointMessage}";
+            } 
+            return $"{baseMessage} {Resources.PracticeSuccessTemplateMessage} {pointMessage}";
+        }
+
+        protected override Grade GetGrade()
+        {
+            switch (_testResult)
+            {
+
+                case int value when value == 0:
+                {
+                    return CheckTotalMinutes(20) ? Grade.A : Grade.B;
+                }
+                case int value when value <= 2:
+                {
+                    return CheckTotalMinutes(23) ? Grade.B : Grade.C;
+                }
+                case int value when value <= 3:
+                {
+                    return CheckTotalMinutes(25) ? Grade.C : Grade.D;
+                }
+                default:
+                    return Grade.E;
+            }
+        }
+
+        private bool CheckTotalMinutes(int minutes)
+        {
+            return _elapsedTime.TotalMinutes < minutes;
+        }
+
+        private int CompareFiles()
+        {
+            if (_userFile != null)
+            {
+                _app.Visible = false;
+                var resultFile = CreateDocument(Resources.result, _app);
+                var compareDoc = _app.CompareDocuments(resultFile, _userFile);
+                return compareDoc.Revisions.Count;
+            }
+            throw new NullReferenceException();
         }
     }
 }

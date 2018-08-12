@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
-using AdvancedTest.Common.EventArgs;
-using AdvancedTest.Common.Extensions;
+using AdvancedTest.Common.Event;
 using AdvancedTest.Common.Utils;
+using AdvancedTest.Data.Enum;
 using Microsoft.Office.Interop.Excel;
 
 namespace AdvancedTest.Practice.Client.ViewModels.Practice
@@ -44,65 +45,21 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             StopTimer();
             try
             {
-                bool passed = CheckResult();
-                var result = new TestCompletedEventArgs(CurrentTheoryId, _elapsedTime, passed);
-                OnTestCompleted(result);
+                OnTestCompleted(GetSuccessResult());
             }
             catch (Exception ex)
             {
-                var result = new TestCompletedEventArgs(CurrentTheoryId, _elapsedTime, false, ex.Message);
-                OnTestFailed(result);
+                OnTestFailed(GetError(ex));
             }
         }
 
-        private bool CheckResult()
+        private bool IsValid()
         {
             _sheets = _wb.Worksheets;
-            _worksheet = (Worksheet)_sheets["task19"];
+            _worksheet = (Worksheet)_sheets[1];
             _cells = _worksheet.Cells;
-            bool isValid = true;
-            switch (SelectedOption)
-            {
-                case 0:
-                    if (_cells.Named("G1").FormulaLocal != "=МАКС(E2:E264)")
-                    {
-                        isValid = false;
-                    }
-                    if (_cells.Named("F2").FormulaLocal != "=СЧЁТЕСЛИ(B2:B264;\"Подгорный\")")
-                    {
-                        isValid = false;
-                    }
-                    if (_cells.Named("G2").FormulaLocal != "=F2/263*100")
-                    {
-                        isValid = false;
-                    }
-                    break;
-                case 1:
-                    if (_cells.Named("H2").FormulaLocal != "=СРЗНАЧ(B61:B152)")
-                    {
-                        isValid = false;
-                    }
-                    if (_cells.Named("H3").FormulaLocal != "=СУММЕСЛИ(E2:E366;\"Ю\";C2:C366)/СЧЁТЕСЛИ(E2:E366;\"Ю\")")
-                    {
-                        isValid = false;
-                    }
-                    break;
-                case 2:
-                    if (_cells.Named("H2").FormulaLocal != "=СРЗНАЧ(E199:E258)")
-                    {
-                        isValid = false;
-                    }
-                    if (_cells.Named("H3").FormulaLocal != "=СУММЕСЛИ(D2:D371;\"Информатика\";E2:E371)/СЧЁТЕСЛИ(D2:D371;\"Информатика\")")
-                    {
-                        isValid = false;
-                    }
-                    break;
-                default:
-                    isValid = false;
-                    break;
-            }
 
-            return isValid;
+            return CellValidation.All(cv => cv.Validate(_cells));
         }
 
         private void ShowStartDocument()
@@ -119,36 +76,76 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             _app.DisplayAlerts = false;
             _wb.BeforeClose -= OnBeforeCloseExcel;
             Complete();
+            ButtonText = "Завершено";
         }
 
-        public override void Dispose()
+        protected override Grade GetGrade()
         {
-            try
+            if (!IsValid())
             {
-                if (_app != null && _wb != null)
+                return Grade.E;
+            }
+
+            var minutes = Convert.ToInt32(_elapsedTime.TotalMinutes);
+
+            switch (minutes)
+            {
+                case int value when value <= 12:
                 {
-                    _wb.Close(false);
-                    _app.Quit();
-                    _wbs.Close();
-                    CloseExcelApp();
-                    Marshal.FinalReleaseComObject(_cells);
-                    Marshal.FinalReleaseComObject(_worksheet);
-                    Marshal.FinalReleaseComObject(_sheets);
-                    Marshal.FinalReleaseComObject(_wb);
-                    Marshal.FinalReleaseComObject(_wbs);
-                    Marshal.FinalReleaseComObject(_app);
+                    return Grade.A;
                 }
+                case int value when value <= 15:
+                {
+                    return Grade.B;
+                }
+                case int value when value <= 18:
+                {
+                    return Grade.C;
+                }
+                case int value when value > 18:
+                {
+                    return Grade.D;
+                }
+                default:
+                    return Grade.E;
             }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            base.Dispose();
-
         }
+
+        protected override string GetResultMessage()
+        {
+            var grade = GetGrade();
+            switch (grade)
+            {
+                case Grade.E:
+                    return "В решении допущена ошибка, попробоуйте выполнить задание в следующий раз";
+                case Grade.D:
+                    return "Задания выполнены верно. Превышен лимит времени на выполнение заданий, попробуйте выполнить задание в следующий раз";
+            }
+
+            return $"Задания выполнены верно. Время выполнения: {_elapsedTime.TotalMinutes} минут. Ваша оценка {(int) grade}";
+        }
+
+        protected override TestCompletedEventArgs GetError(Exception ex)
+        {
+            return new TestCompletedEventArgs
+            {
+                TheoryId = CurrentTheoryId,
+                Complete = false,
+                Error = ex.Message
+            };
+        }
+
+        protected override TestCompletedEventArgs GetSuccessResult()
+        {
+            return new TestCompletedEventArgs
+            {
+                Message = GetResultMessage(),
+                TheoryId = CurrentTheoryId,
+                Complete = true
+            };
+        }
+
+        #region IDisposable
 
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
@@ -166,5 +163,57 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             _wbs = null;
             _app = null;
         }
+
+
+        public override void Dispose()
+        {
+            try
+            {
+                if (_app != null && _wb != null)
+                {
+                    _wb.Close(false);
+
+                    _app.Quit();
+                    _wbs.Close();
+
+                    CloseExcelApp();
+
+                    if (_cells != null)
+                    {
+                        Marshal.FinalReleaseComObject(_cells);
+                    }
+                    if (_worksheet != null)
+                    {
+                        Marshal.FinalReleaseComObject(_worksheet);
+                    }
+                    if (_sheets != null)
+                    {
+                        Marshal.FinalReleaseComObject(_sheets);
+                    }
+                    if (_wb != null)
+                    {
+                        Marshal.FinalReleaseComObject(_wb);
+                    }
+                    if (_wbs != null)
+                    {
+                        Marshal.FinalReleaseComObject(_wbs);
+                    }
+                    if (_app != null)
+                    {
+                        Marshal.FinalReleaseComObject(_app);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            base.Dispose();
+        }
+
+        #endregion
     }
 }

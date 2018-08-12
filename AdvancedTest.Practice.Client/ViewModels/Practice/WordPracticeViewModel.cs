@@ -1,4 +1,5 @@
 ﻿using AdvancedTest.Common.ViewModels.Practice;
+using AdvancedTest.Data.Enum;
 
 namespace AdvancedTest.Practice.Client.ViewModels.Practice
 {
@@ -11,6 +12,9 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
         public byte[] StartDocument { get; set; }
         public byte[] ResultDocument { get; set; }
         public string RulesDescription { get; set; }
+
+        public override PracticeType PracticeType => PracticeType.Word;
+
         public override string ButtonText
         {
             get => _buttonText;

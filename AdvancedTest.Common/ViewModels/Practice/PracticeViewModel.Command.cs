@@ -1,5 +1,7 @@
 ﻿using System;
+using AdvancedTest.Common.Event;
 using AdvancedTest.Common.Utils;
+using AdvancedTest.Data.Enum;
 
 namespace AdvancedTest.Common.ViewModels.Practice
 {
@@ -24,6 +26,26 @@ namespace AdvancedTest.Common.ViewModels.Practice
         {
             //
 
+        }
+
+        protected virtual Grade GetGrade()
+        {
+            return Grade.E;
+        }
+
+        protected virtual TestCompletedEventArgs GetError(Exception ex)
+        {
+            throw new NotSupportedException();
+        }
+
+        protected virtual TestCompletedEventArgs GetSuccessResult()
+        {
+            throw new NotSupportedException();
+        }
+
+        protected virtual string GetResultMessage()
+        {
+            return string.Empty;
         }
     }
 }

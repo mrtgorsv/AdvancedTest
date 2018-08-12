@@ -3,7 +3,7 @@
     /// <summary>
     /// Модель представления для главного окна приложения
     /// </summary>
-    public partial class PractiveMainViewModel
+    public partial class PracticeMainViewModel
     {
     }
 }

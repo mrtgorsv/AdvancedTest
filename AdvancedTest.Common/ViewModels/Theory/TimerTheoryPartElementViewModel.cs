@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using AdvancedTest.Common.EventArgs;
+using AdvancedTest.Common.Event;
 
 namespace AdvancedTest.Common.ViewModels.Theory
 {
@@ -21,7 +21,7 @@ namespace AdvancedTest.Common.ViewModels.Theory
         public string ElapsedTime => _elapsedTime.Equals(TimeSpan.Zero) ? string.Empty : _elapsedTime.ToString("T");
 
         // Флаг, указывающий, что задание можно запустить
-        public bool CanStart => !_isStarted;
+        public virtual bool CanStart => !_isStarted;
 
         // Флаг, указывающий, что тест начался
         public bool IsStarted
@@ -45,7 +45,7 @@ namespace AdvancedTest.Common.ViewModels.Theory
         public delegate void TestCompletedEventHandler(object sender, TestCompletedEventArgs args);
 
         // Функция обработки события переключения таймера
-        private void OnTimerTick(object sender, System.EventArgs e)
+        private void OnTimerTick(object sender, EventArgs e)
         {
             if (_testTime == TimeSpan.Zero && !_endless)
             {

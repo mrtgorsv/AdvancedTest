@@ -2,6 +2,7 @@
 using AdvancedTest.Common.ViewModels.Answer;
 using AdvancedTest.Common.ViewModels.TestPart;
 using AdvancedTest.Common.ViewModels.Theory;
+using AdvancedTest.Data.Enum;
 
 namespace AdvancedTest.Common.ViewModels.Practice
 {
@@ -12,6 +13,8 @@ namespace AdvancedTest.Common.ViewModels.Practice
     {
         public int DocumentId { get; set; }
         public string Description { get; set; }
+
+        public virtual PracticeType PracticeType { get;}
 
         public virtual string DocumentPath { get; set; }
         public virtual string ButtonText { get; set; }

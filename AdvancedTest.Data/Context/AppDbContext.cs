@@ -51,8 +51,8 @@ namespace AdvancedTest.Data.Context
     {
         public PartMap()
         {
-            this.HasKey(c => c.Id);
-            this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
+            Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 
@@ -60,8 +60,8 @@ namespace AdvancedTest.Data.Context
     {
         public UserMap()
         {
-            this.HasKey(c => c.Id);
-            this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
+            Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 
@@ -69,8 +69,8 @@ namespace AdvancedTest.Data.Context
     {
         public AnswerMap()
         {
-            this.HasKey(c => c.Id);
-            this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
+            Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 
@@ -78,8 +78,8 @@ namespace AdvancedTest.Data.Context
     {
         public UserTestMap()
         {
-            this.HasKey(c => c.Id);
-            this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
+            Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 
@@ -87,8 +87,8 @@ namespace AdvancedTest.Data.Context
     {
         public TestPartMap()
         {
-            this.HasKey(c => c.Id);
-            this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
+            Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 
@@ -96,8 +96,8 @@ namespace AdvancedTest.Data.Context
     {
         public PartDocumentMap()
         {
-            this.HasKey(c => c.Id);
-            this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
+            Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }
 

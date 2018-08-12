@@ -10,7 +10,7 @@
         xmlns:practice1="clr-namespace:AdvancedTest.Common.ViewModels.Practice;assembly=AdvancedTest.Common"
         xmlns:base1="clr-namespace:AdvancedTest.Common.ViewModels.Base;assembly=AdvancedTest.Common"
         mc:Ignorable="d"
-        Title="Система адаптивного обучения" Height="500" Width="800"
+        Title="{Binding Title}" Height="500" Width="800"
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
@@ -18,10 +18,7 @@
         <DataTemplate DataType="{x:Type test1:TestViewModel}">
             <theory:TestView />
         </DataTemplate>
-<!--        <DataTemplate DataType="{x:Type practice1:WordPracticeViewModel}">
-            <theory:PracticeView />
-        </DataTemplate>-->
-        <DataTemplate DataType="{x:Type practice1:PracticeViewModel}">
+        <DataTemplate x:Key="ExcelPracticeView">
             <theory:ExcelPracticeView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type base1:MessageViewModel}">
@@ -29,6 +26,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type base1:UserResultViewModel}">
             <result:UserResultView/>
+        </DataTemplate>
+        <DataTemplate x:Key="WordPracticeView">
+            <theory:PracticeView />
         </DataTemplate>
     </Window.Resources>
 
@@ -70,7 +70,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <Border Grid.Row="2"  Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="10 0 10 10">
-            <ContentControl   Margin="10" Content="{Binding SelectedElement}">
+            <ContentControl Margin="10" Content="{Binding SelectedElement}" ContentTemplateSelector="{Binding ContentSelector}">
             </ContentControl>
         </Border>
     </Grid>

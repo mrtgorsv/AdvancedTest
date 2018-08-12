@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AdvancedTest.Common.EventArgs;
+using AdvancedTest.Common.Event;
 using AdvancedTest.Common.Extensions;
 using AdvancedTest.Common.Utils;
 

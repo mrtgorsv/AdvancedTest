@@ -18,7 +18,7 @@ namespace AdvancedTest.Data.Helpers
 
             }
 
-            if (Object.ReferenceEquals(obj, null))
+            if (ReferenceEquals(obj, null))
 
             {
 

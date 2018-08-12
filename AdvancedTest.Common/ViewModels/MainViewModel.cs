@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
-using AdvancedTest.Common.EventArgs;
+using AdvancedTest.Common.Event;
 using AdvancedTest.Common.Extensions;
 using AdvancedTest.Common.Properties;
 using AdvancedTest.Common.Utils;
-using AdvancedTest.Common.ViewModels.Answer;
 using AdvancedTest.Common.ViewModels.Base;
+using AdvancedTest.Common.ViewModels.Interfaces;
 using AdvancedTest.Common.ViewModels.Practice;
 using AdvancedTest.Common.ViewModels.Test;
 using AdvancedTest.Common.ViewModels.Theory;
@@ -17,9 +17,10 @@ using AdvancedTest.Service.Services.Interface;
 
 namespace AdvancedTest.Common.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ViewModelBase , IMainWindowViewModel
     {
-        protected readonly ISecurityManager _securityManager;
+        protected readonly ISecurityManager SecurityManager;
+
         private readonly ITheoryService _theoryService;
         private readonly IUserService _userService;
         private readonly IDocumentService _documentService;
@@ -29,7 +30,7 @@ namespace AdvancedTest.Common.ViewModels
 
         public event UserLogoutEventHandler UserLogout;
 
-        public delegate void UserLogoutEventHandler(object sender, System.EventArgs args);
+        public delegate void UserLogoutEventHandler(object sender, EventArgs args);
 
         public MainViewModel(ITheoryService theoryService, ViewModelLocator locator, IUserService userService,
             ISecurityManager securityManager, IDocumentService documentService)
@@ -37,10 +38,18 @@ namespace AdvancedTest.Common.ViewModels
             _theoryService = theoryService;
             _locator = locator;
             _userService = userService;
-            _securityManager = securityManager;
+            SecurityManager = securityManager;
             _documentService = documentService;
-            LoadTheory();
             InitializeCommands();
+        }
+
+        #region Interface Members
+
+        public int CurrentUserId => SecurityManager.CurrentUser.Id;
+
+        public virtual string Title
+        {
+            get { return "Система адаптивного обучения"; }
         }
 
         public ViewModelBase SelectedElement
@@ -53,16 +62,29 @@ namespace AdvancedTest.Common.ViewModels
             }
         }
 
-        public int CurrentUserId => _securityManager.CurrentUser.Id;
-
-        protected List<TheoryViewModel> TheoryParts
+        public virtual List<TheoryViewModel> TheoryParts
         {
             get { return TheorySections.SelectMany(ts => ts.TheoryParts).ToList(); }
         }
 
+        public virtual void ShowTest(TestViewModel selectedTest)
+        {
+            var test = CreateTest(selectedTest.CurrentTheory);
+            test.Name = $" Тест - {selectedTest.CurrentTheory.Name}";
+            test.CurrentTheoryId = selectedTest.CurrentTheory.CurrentTheoryId;
+            test.IsInitial = selectedTest.IsInitial;
+            test.IsLast = selectedTest.IsLast;
+            test.TestCompleted += OnTestCompleted;
+            SelectedElement = test;
+        }
+
+        #endregion
+
         public ObservableCollection<TheorySectionViewModel> TheorySections { get; set; }
 
-        public virtual void LoadTheory()
+        public virtual ContentDataTemplateSelector ContentSelector => new ContentDataTemplateSelector();
+
+        public virtual void LoadDataSource()
         {
             UpdateUserDocs();
             var theorySectionList = _theoryService.GetTheorySectionList();
@@ -87,10 +109,10 @@ namespace AdvancedTest.Common.ViewModels
 
         private bool IsTheoryComplete()
         {
-            return _theoryService.IsTheoryComplete(_securityManager.CurrentUser.Id);
+            return _theoryService.IsTheoryComplete(SecurityManager.CurrentUser.Id);
         }
 
-        private TheorySectionViewModel CreateTheorySection(TheorySection section)
+        protected TheorySectionViewModel CreateTheorySection(TheorySection section)
         {
             var sectionViewModel = new TheorySectionViewModel
             {
@@ -185,31 +207,19 @@ namespace AdvancedTest.Common.ViewModels
             return testViewModel;
         }
 
-        public void ShowTheoryTest(TestViewModel testListItem)
+        public virtual void ShowPractice(PracticeViewModel practice)
         {
-            var test = CreateTest(testListItem.CurrentTheory);
-            test.Name = $" Тест - {testListItem.CurrentTheory.Name}";
-            test.CurrentTheoryId = testListItem.CurrentTheory.CurrentTheoryId;
-            test.IsInitial = testListItem.IsInitial;
-            test.IsLast = testListItem.IsLast;
-            test.TestCompleted += OnTestCompleted;
-            SelectedElement = test;
+            throw new NotSupportedException();
         }
 
         public virtual void ShowWordPractice(PracticeViewModel wordPracticeListItem)
         {
+            throw new NotSupportedException();
         }
 
         public virtual void ShowExcelPractice(PracticeViewModel practiceListItem)
         {
-        }
-
-        public virtual void OnWordPracticeCompleted(object sender, TestCompletedEventArgs args)
-        {
-        }
-
-        public virtual void OnExcelPracticeCompleted(object sender, TestCompletedEventArgs args)
-        {
+            throw new NotSupportedException();
         }
 
         private void OnTestCompleted(object sender, TestCompletedEventArgs args)
@@ -230,7 +240,7 @@ namespace AdvancedTest.Common.ViewModels
         private void ShowTotalResult()
         {
             var viewModel = _locator.UserResultViewModel;
-            viewModel.UserId = _securityManager.CurrentUser.Id;
+            viewModel.UserId = SecurityManager.CurrentUser.Id;
             SelectedElement = viewModel;
         }
 
@@ -283,12 +293,12 @@ namespace AdvancedTest.Common.ViewModels
             }
         }
 
-        public void ShowDocument(DocumentViewModel theoryDoc)
+        public void ShowDocument(DocumentViewModel document)
         {
-            _documentService.ViewDocument(theoryDoc.DocumentId, _securityManager.CurrentUser.Id);
-            theoryDoc.IsOpened = true;
-            OpenTest(theoryDoc);
-            System.Diagnostics.Process.Start(PathResolver.GenerateDocumentPath(theoryDoc.DocumentPath));
+            _documentService.ViewDocument(document.DocumentId, SecurityManager.CurrentUser.Id);
+            document.IsOpened = true;
+            OpenTest(document);
+            System.Diagnostics.Process.Start(PathResolver.GenerateDocumentPath(document.DocumentPath));
 
             if (IsTheoryComplete()) ShowTotalResult();
         }
@@ -351,7 +361,7 @@ namespace AdvancedTest.Common.ViewModels
 
         private void Logout()
         {
-            UserLogout?.Invoke(this, new System.EventArgs());
+            UserLogout?.Invoke(this, new EventArgs());
         }
     }
 }

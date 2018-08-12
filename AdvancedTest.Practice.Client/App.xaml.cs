@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using AdvancedTest.Common.Utils.IoC;
+using AdvancedTest.Practice.Client.Utils.IoC;
 
 namespace AdvancedTest.Practice.Client
 {
@@ -13,5 +9,11 @@ namespace AdvancedTest.Practice.Client
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            IocKernel.Initialize(new PracticeIocConfiguration());
+
+            base.OnStartup(e);
+        }
     }
 }

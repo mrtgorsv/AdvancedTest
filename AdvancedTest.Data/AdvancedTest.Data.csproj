@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\AppDbContext.cs" />
+    <Compile Include="Enum\Grade.cs" />
+    <Compile Include="Enum\PracticeType.cs" />
     <Compile Include="Enum\TheoryType.cs" />
     <Compile Include="Enum\TestPartType.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />

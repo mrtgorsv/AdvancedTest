@@ -12,7 +12,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="110" />
+            <RowDefinition Height="130" />
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
@@ -20,7 +20,7 @@
         <StackPanel Background="White" Grid.ColumnSpan="3" Grid.Row="0" Margin="10 5">
             <TextBlock Text="{Binding Name}" TextAlignment="Center" FontSize="24" FontStyle="Oblique" FontWeight="Bold" />
             <TextBlock Text="{Binding ElapsedTime}" Foreground="Red" TextAlignment="Right" HorizontalAlignment="Stretch" FontSize="24" />
-            <TextBlock Text="{Binding Description}" FontSize="24" FontStyle="Oblique" FontWeight="Bold" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Description}" FontSize="24" FontStyle="Oblique" FontWeight="Bold" TextWrapping="Wrap" Padding="10 10 0 0"/>
         </StackPanel>
         <StackPanel Background="White" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" Margin="10 5" Orientation="Horizontal">
             <Label Content="Выберите задание" FontSize="24" FontStyle="Oblique" FontWeight="Bold" />
@@ -31,7 +31,7 @@
         <StackPanel Background="White" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="2" Margin="10 5">
             <Label Content="Описание" FontSize="24" FontStyle="Oblique" FontWeight="Bold" />
             <TextBlock Text="{Binding SelectionDescription }" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                       FontStyle="Oblique" FontSize="24" TextWrapping="Wrap"/>
+                       FontStyle="Normal" FontSize="24" TextWrapping="Wrap"/>
         </StackPanel>
         <Button HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="3" Content="{Binding ButtonText}" IsEnabled="{Binding CanStart}" Margin="10 0"
                 Command="{Binding StartCommand}" />

@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using AdvancedTest.Common.Utils;
 using AdvancedTest.Common.ViewModels.Login;
-using AdvancedTest.Utils;
 
 namespace AdvancedTest.Views
 {
