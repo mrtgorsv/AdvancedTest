@@ -19,7 +19,7 @@ namespace AdvancedTest.Data.Model
 
 
         [ForeignKey("TheorySection")]
-        public int TheorySectionId { get; set; }
+        public int? TheorySectionId { get; set; }
 
         public bool IsLast { get; set; }
         public bool IsInitial { get; set; }

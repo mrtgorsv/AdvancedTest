@@ -1,10 +1,13 @@
-﻿using AdvancedTest.Common.ViewModels.Base;
+﻿using System;
+using AdvancedTest.Common.ViewModels.Base;
 
 namespace AdvancedTest.Common.ViewModels.Theory
 {
     /// <summary>
     /// Модель представления для элемента теории
     /// </summary>
+
+    [Serializable]
     public class TheoryPartElementViewModel : ViewModelBase
     {
         // Флаг видимости 

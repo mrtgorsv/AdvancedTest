@@ -33,25 +33,10 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
                 OnPropertyChanged(nameof(ButtonText));
             }
         }
-        public override string SelectionDescription => Options[_selectedOption].Description;
-
 
         public ExcelPracticeViewModel()
         {
             _buttonText = "Начать";
-        }
-
-        private int _selectedOption;
-
-        public override int SelectedOption
-        {
-            get => _selectedOption;
-            set
-            {
-                _selectedOption = value;
-                OnPropertyChanged(nameof(SelectedOption));
-                OnPropertyChanged(nameof(SelectionDescription));
-            }
         }
 
         private IEnumerable<ExcelCellValidation> GetCellValidation()

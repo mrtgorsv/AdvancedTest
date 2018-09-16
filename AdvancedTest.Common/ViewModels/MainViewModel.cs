@@ -12,6 +12,7 @@ using AdvancedTest.Common.ViewModels.Interfaces;
 using AdvancedTest.Common.ViewModels.Practice;
 using AdvancedTest.Common.ViewModels.Test;
 using AdvancedTest.Common.ViewModels.Theory;
+using AdvancedTest.Data.Enum;
 using AdvancedTest.Data.Model;
 using AdvancedTest.Service.Services.Interface;
 
@@ -22,11 +23,13 @@ namespace AdvancedTest.Common.ViewModels
         protected readonly ISecurityManager SecurityManager;
 
         private readonly ITheoryService _theoryService;
-        private readonly IUserService _userService;
+        protected readonly IUserService UserService;
         private readonly IDocumentService _documentService;
         private readonly ViewModelLocator _locator;
         private ViewModelBase _selectedElement;
         private List<UserTheoryDocumentMark> _openedUserDocList;
+
+        protected virtual bool CanEditPractice => false;
 
         public event UserLogoutEventHandler UserLogout;
 
@@ -37,7 +40,7 @@ namespace AdvancedTest.Common.ViewModels
         {
             _theoryService = theoryService;
             _locator = locator;
-            _userService = userService;
+            UserService = userService;
             SecurityManager = securityManager;
             _documentService = documentService;
             InitializeCommands();
@@ -47,10 +50,7 @@ namespace AdvancedTest.Common.ViewModels
 
         public int CurrentUserId => SecurityManager.CurrentUser.Id;
 
-        public virtual string Title
-        {
-            get { return "Система адаптивного обучения"; }
-        }
+        public virtual string Title => "Система адаптивного обучения";
 
         public ViewModelBase SelectedElement
         {
@@ -105,6 +105,80 @@ namespace AdvancedTest.Common.ViewModels
 
             TheorySections =
                 new ObservableCollection<TheorySectionViewModel>(theorySectionList.Select(CreateTheorySection));
+            LoadPractice();
+        }
+
+        private TheorySectionViewModel CreatePracticeSection()
+        {
+            return new TheorySectionViewModel
+            {
+                CurrentSectionId = -1,
+                Name = "Контрольные работы",
+                Seq = -1,
+                IsVisible = true
+            };
+        }
+
+        protected virtual void LoadPractice()
+        {
+            var practiceSection = CreatePracticeSection();
+            TheorySections.Add(practiceSection);
+            var theoryViewModel = new TheoryViewModel
+            {
+                CurrentTheoryId = -1,
+                Name = "Контрольные работы",
+                Seq = -1,
+                IsVisible = true,
+                TheoryPartElements = new ObservableCollection<TheoryPartElementViewModel>()
+            };
+            practiceSection.TheoryParts.Add(theoryViewModel);
+
+            AddPractice(theoryViewModel, StaticTheoryBuilder.CreateWordPracticeViewModel());
+            AddPractice(theoryViewModel, StaticTheoryBuilder.CreateExcelPracticeViewModel());
+            TheoryParts.Insert(0, theoryViewModel);
+        }
+
+        private void AddPractice(TheoryViewModel theoryViewModel , PracticeViewModel practiceViewModel)
+        {
+
+            practiceViewModel.CurrentTheory = theoryViewModel;
+            UpdateSelection(practiceViewModel);
+            theoryViewModel.TheoryPartElements.Add(practiceViewModel);
+        }
+
+        protected void UpdateSelection(PracticeViewModel practiceViewModel)
+        {
+            var practice = UserService.GetPractice(SecurityManager.CurrentUser.Id, practiceViewModel.CurrentTheoryId);
+            if (practice == null)
+            {
+                practiceViewModel.SelectedOption = new Random().Next(0, practiceViewModel.Options.Count - 1);
+                UserService.CreateWork(practiceViewModel.CurrentTheoryId, SecurityManager.CurrentUser.Id, optionId: practiceViewModel.SelectedOption);
+            }
+            else
+            {
+                if (!practice.StartTime.HasValue)
+                {
+                    UserService.StartWork(practice);
+                }
+                else if (practiceViewModel.PracticeType.Equals(PracticeType.Word))
+                {
+                    if (DateTime.Now - practice.StartTime.Value < TimeSpan.FromMinutes(40))
+                    {
+                        SelectOption(practiceViewModel, practice.OptionId);
+                    }
+                    else
+                    {
+                        UserService.CompleteWork(practice);
+                        UpdateSelection(practiceViewModel);
+                    }
+                }
+            }
+            practiceViewModel.CanEdit = CanEditPractice;
+        }
+
+        protected void SelectOption(PracticeViewModel practiceViewModel , int? optionId = null)
+        {
+            practiceViewModel.SelectedOption = optionId ?? new Random().Next(0 , practiceViewModel.Options.Count - 1);
         }
 
         private bool IsTheoryComplete()
@@ -151,7 +225,7 @@ namespace AdvancedTest.Common.ViewModels
 
         private void UpdateUserDocs()
         {
-            _openedUserDocList = _userService.GetUserDocProgress(CurrentUserId)
+            _openedUserDocList = UserService.GetUserDocProgress(CurrentUserId)
                 .ToList();
         }
 
@@ -169,10 +243,8 @@ namespace AdvancedTest.Common.ViewModels
                     DocumentId = document.Id,
                     Name = document.Name,
                     IsPractice = document.IsPractice,
-                    IsOpened = _openedUserDocList.Any(
-                        td => td.DocumentId == document.Id && td.TheoryPartId.Equals(theory.Id)),
-                    IsVisible = _openedUserDocList.Any(
-                        td => td.DocumentId == document.Id && td.TheoryPartId.Equals(theory.Id))
+                    IsOpened = _openedUserDocList.Any(td => td.DocumentId == document.Id && td.TheoryPartId.Equals(theory.Id)),
+                    IsVisible = _openedUserDocList.Any(td => td.DocumentId == document.Id && td.TheoryPartId.Equals(theory.Id))
                 });
 
             elements.AddRange(documents);
@@ -209,17 +281,21 @@ namespace AdvancedTest.Common.ViewModels
 
         public virtual void ShowPractice(PracticeViewModel practice)
         {
-            throw new NotSupportedException();
-        }
+            PracticeViewModel practiceViewModel;
+            switch (practice.PracticeType)
+            {
+                case PracticeType.Excel:
+                    practiceViewModel = StaticTheoryBuilder.CreateExcelPracticeViewModel();
+                    break;
+                case PracticeType.Word:
+                    practiceViewModel = StaticTheoryBuilder.CreateWordPracticeViewModel();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            UpdateSelection(practiceViewModel);
 
-        public virtual void ShowWordPractice(PracticeViewModel wordPracticeListItem)
-        {
-            throw new NotSupportedException();
-        }
-
-        public virtual void ShowExcelPractice(PracticeViewModel practiceListItem)
-        {
-            throw new NotSupportedException();
+            SelectedElement = practiceViewModel;
         }
 
         private void OnTestCompleted(object sender, TestCompletedEventArgs args)

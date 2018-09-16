@@ -52,13 +52,14 @@ namespace AdvancedTest.Service.Services.Implementation
         /// <summary>
         /// Функция сохранения записи о начале теста
         /// </summary>
-        public UserTheoryTestMark StartTest(int theoryId, int userId, DateTime startDate)
+        public UserTheoryTestMark CreateWork(int theoryId, int userId, DateTime? startDate = null , int? optionId = null)
         {
             var newUserTest = _context.UserTheoryTestMarks.Create();
             newUserTest.StartTime = startDate;
             newUserTest.TheoryPartId = theoryId;
             newUserTest.UserId = userId;
             newUserTest.Attempt = GetPreviousAttempt(theoryId, userId) + 1;
+            newUserTest.OptionId = optionId;
             _context.UserTheoryTestMarks.Add(newUserTest);
             _context.SaveChanges();
             return newUserTest;
@@ -73,12 +74,36 @@ namespace AdvancedTest.Service.Services.Implementation
             return _context.UserTheoryTestMarks.Where(um => um.UserId.Equals(userId)).ToList();
         }
 
+        public UserTheoryTestMark GetPractice(int userId, int practiceId)
+        {
+            return _context.UserTheoryTestMarks
+                .FirstOrDefault(ut => ut.TheoryPartId.Equals(practiceId) && ut.UserId.Equals(userId) && !ut.IsCompleted);
+        }
+
         /// <summary>
         /// Функция получения списка просмотренных документов
         /// </summary>
         public List<UserTheoryDocumentMark> GetUserDocProgress(int userId)
         {
             return _context.UserTheoryDocumentMarks.Where(um => um.UserId.Equals(userId)).ToList();
+        }
+
+        public void CompleteWork(UserTheoryTestMark practiceEntity)
+        {
+            if (practiceEntity == null)
+            {
+                return;
+            }
+            practiceEntity.IsCompleted = true;
+            _context.UserTheoryTestMarks.AddOrUpdate(practiceEntity);
+            _context.SaveChanges();
+        }
+
+        public void StartWork(UserTheoryTestMark practice)
+        {
+            practice.StartTime = DateTime.Now;
+            _context.UserTheoryTestMarks.AddOrUpdate(practice);
+            _context.SaveChanges();
         }
 
         /// <summary>

@@ -106,13 +106,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Content\Works\1\2.docx" />
+    <None Include="Content\Works\1\2_result.docx" />
+    <None Include="Content\Works\1\3.docx" />
+    <None Include="Content\Works\1\3_result.docx" />
     <None Include="Content\Works\1\info.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Works\1\result.docx">
+    <None Include="Content\Works\1\1_result.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Works\1\start.docx">
+    <None Include="Content\Works\1\1.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Works\2\1.xls">

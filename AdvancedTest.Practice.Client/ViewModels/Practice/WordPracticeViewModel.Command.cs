@@ -25,7 +25,7 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             RulesCommand = new DelegateCommand(ShowRules);
         }
 
-        public override bool CanStart => !IsStarted || !_complete;
+        public override bool CanStart => (!IsStarted || !_complete) && CanEdit;
 
         // Функция запуска теста
         protected override void Start()
@@ -64,7 +64,7 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
 
         private void ShowStartDoc()
         {
-            _userFile = CreateDocument(Resources.start , _app);
+            _userFile = CreateDocument(StartDocument, _app);
             _app.DocumentBeforeClose += OnBeforeClose;
             ((DocumentEvents2_Event) _userFile).Close += OnUserDocumentClose;
             _app.Visible = true;
@@ -205,7 +205,7 @@ namespace AdvancedTest.Practice.Client.ViewModels.Practice
             if (_userFile != null)
             {
                 _app.Visible = false;
-                var resultFile = CreateDocument(Resources.result, _app);
+                var resultFile = CreateDocument(ResultDocument, _app);
                 var compareDoc = _app.CompareDocuments(resultFile, _userFile);
                 return compareDoc.Revisions.Count;
             }

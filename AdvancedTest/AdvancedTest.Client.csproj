@@ -109,6 +109,9 @@
     <Compile Include="Controls\Theory\PracticeView.xaml.cs">
       <DependentUpon>PracticeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Theory\WordPracticeView.xaml.cs">
+      <DependentUpon>WordPracticeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Theory\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Theory\PracticeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Theory\WordPracticeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

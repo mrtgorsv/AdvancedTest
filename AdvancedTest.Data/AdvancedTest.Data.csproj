@@ -60,6 +60,22 @@
     <Compile Include="Migrations\201806121107332_Init.Designer.cs">
       <DependentUpon>201806121107332_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809160514460_AddOptionField.cs" />
+    <Compile Include="Migrations\201809160514460_AddOptionField.Designer.cs">
+      <DependentUpon>201809160514460_AddOptionField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160525242_SetNullableTheoryId.cs" />
+    <Compile Include="Migrations\201809160525242_SetNullableTheoryId.Designer.cs">
+      <DependentUpon>201809160525242_SetNullableTheoryId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160527151_SetNullableTheorySectionId.cs" />
+    <Compile Include="Migrations\201809160527151_SetNullableTheorySectionId.Designer.cs">
+      <DependentUpon>201809160527151_SetNullableTheorySectionId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809160623350_SetNullableStartDate.cs" />
+    <Compile Include="Migrations\201809160623350_SetNullableStartDate.Designer.cs">
+      <DependentUpon>201809160623350_SetNullableStartDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TheoryDocument.cs" />
     <Compile Include="Model\TheorySection.cs" />
@@ -80,6 +96,21 @@
     <EmbeddedResource Include="Migrations\201806121107332_Init.resx">
       <DependentUpon>201806121107332_Init.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160514460_AddOptionField.resx">
+      <DependentUpon>201809160514460_AddOptionField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160525242_SetNullableTheoryId.resx">
+      <DependentUpon>201809160525242_SetNullableTheoryId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160527151_SetNullableTheorySectionId.resx">
+      <DependentUpon>201809160527151_SetNullableTheorySectionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809160623350_SetNullableStartDate.resx">
+      <DependentUpon>201809160623350_SetNullableStartDate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\Scripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

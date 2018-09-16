@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Event\TestCompletedEventArgs.cs" />
     <Compile Include="Extensions\ExcelExtensions.cs" />
+    <Compile Include="Extensions\ClassExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Models\ExcelCellValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Utils\IoC\IocKernel.cs" />
     <Compile Include="Utils\PathResolver.cs" />
     <Compile Include="Utils\SecurityManager.cs" />
+    <Compile Include="Utils\StaticTheoryBuilder.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
     <Compile Include="ViewModels\Answer\AnswerOptionViewModel.cs" />
     <Compile Include="ViewModels\Answer\AnswerViewModel.cs" />

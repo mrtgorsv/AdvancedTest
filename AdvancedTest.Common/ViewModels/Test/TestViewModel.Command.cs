@@ -53,7 +53,7 @@ namespace AdvancedTest.Common.ViewModels.Test
             CurrentTestPart = _testParts.FirstOrDefault();
             IsStarted = true;
             NextButtonText = "Далее";
-            _userTest = _userService.StartTest(_theoryId, _securityManager.CurrentUser.Id, DateTime.Now);
+            _userTest = _userService.CreateWork(_theoryId, _securityManager.CurrentUser.Id, DateTime.Now);
             StartTimer();
         }
 

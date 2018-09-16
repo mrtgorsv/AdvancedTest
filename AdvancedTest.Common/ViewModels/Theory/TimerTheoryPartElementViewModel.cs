@@ -8,6 +8,7 @@ namespace AdvancedTest.Common.ViewModels.Theory
     /// <summary>
     /// Модель представления для элемента теории
     /// </summary>
+    [Serializable]
     public class TimerTheoryPartElementViewModel : TheoryPartElementViewModel
     {
         private readonly DispatcherTimer _timer = new DispatcherTimer(DispatcherPriority.Render, Application.Current.Dispatcher);
@@ -20,8 +21,10 @@ namespace AdvancedTest.Common.ViewModels.Theory
         public string TestTime { get; set; }
         public string ElapsedTime => _elapsedTime.Equals(TimeSpan.Zero) ? string.Empty : _elapsedTime.ToString("T");
 
+        public virtual bool CanEdit { get; set; } = true;
+
         // Флаг, указывающий, что задание можно запустить
-        public virtual bool CanStart => !_isStarted;
+        public virtual bool CanStart => !_isStarted && CanEdit;
 
         // Флаг, указывающий, что тест начался
         public bool IsStarted

@@ -9,8 +9,11 @@ namespace AdvancedTest.Service.Services.Interface
         User LogIn(string login, string password);
         User Create(string login, string password);
         void CompleteTest(int testId, double result, DateTime endTime);
-        UserTheoryTestMark StartTest(int theoryId, int userId, DateTime startDate);
+        UserTheoryTestMark CreateWork(int theoryId, int userId, DateTime? startDate = null, int? optionId = null);
         List<UserTheoryTestMark> GetUserTestProgress(int userId);
+        UserTheoryTestMark GetPractice(int userId , int practiceId);
         List<UserTheoryDocumentMark> GetUserDocProgress(int userId);
+        void CompleteWork(UserTheoryTestMark practiceEntity);
+        void StartWork(UserTheoryTestMark practice);
     }
 }

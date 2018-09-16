@@ -11,6 +11,7 @@ namespace AdvancedTest.Common.ViewModels.TestPart
     /// <summary>
     /// Базовая модель представления для формы задания
     /// </summary>
+    [Serializable]
     public class TestPartViewModelBase : ViewModelBase
     {
         // Изображение описания задания

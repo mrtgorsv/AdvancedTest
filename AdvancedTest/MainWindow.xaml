@@ -18,6 +18,9 @@
         <DataTemplate DataType="{x:Type test1:TestViewModel}">
             <theory:TestView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type practice1:PracticeViewModel}">
+            <theory:PracticeView />
+        </DataTemplate>
         <DataTemplate x:Key="ExcelPracticeView">
             <theory:ExcelPracticeView />
         </DataTemplate>
@@ -28,7 +31,7 @@
             <result:UserResultView/>
         </DataTemplate>
         <DataTemplate x:Key="WordPracticeView">
-            <theory:PracticeView />
+            <theory:WordPracticeView />
         </DataTemplate>
     </Window.Resources>
 

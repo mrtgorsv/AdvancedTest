@@ -1,10 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace AdvancedTest.Common.ViewModels.Base
 {
     /// <summary>
     /// Базовый класс для всех моделей представления
     /// </summary>
+    [Serializable]
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

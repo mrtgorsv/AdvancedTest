@@ -117,68 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ContinueMessage" xml:space="preserve">
-    <value>Добро пожаловать в систему адаптивного обучения по дисциплине 'Информационные технологии'. Продолжите свое обучение</value>
+  <data name="Target" xml:space="preserve">
+    <value>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</value>
   </data>
-  <data name="GoToNextTheoryMessage" xml:space="preserve">
-    <value>Можете переходить к следующей главе.</value>
-  </data>
-  <data name="GoToNextTheoryWithWarningMessage" xml:space="preserve">
-    <value>Можете переходить к следующей главе, но вам необходима консультация по данной теме у преподавателя.</value>
-  </data>
-  <data name="Logo" xml:space="preserve">
-    <value>Content/logo.jpg</value>
-  </data>
-  <data name="TestCompleteTemplateMessage" xml:space="preserve">
-    <value>Вы набрали {0}%.</value>
-  </data>
-  <data name="TestFailedMessage" xml:space="preserve">
-    <value>Вам необходимо лучше изучить теорию.</value>
-  </data>
-  <data name="UserCompleteTheoryMessage" xml:space="preserve">
-    <value>Поздравляю, вы завершили курс по дисциплине “Информационные технологии”, ваши результаты:</value>
-  </data>
-  <data name="UserTheoryResultMessage" xml:space="preserve">
-    <value>Результаты выполнения тестов по главам</value>
-  </data>
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Добро пожаловать в систему адаптивного обучения по дисциплине 'Информационные технологии'. Для начала необходимо пройти входное тестирование</value>
-  </data>
-  <data name="DocExtenstion" xml:space="preserve">
-    <value>docx</value>
-  </data>
-  <data name="PdfExtension" xml:space="preserve">
-    <value>pdf</value>
-  </data>
-  <data name="PracticeCompleteTemplateMessage" xml:space="preserve">
-    <value>Вы завершили контрольную работу. Потраченное время {0}.</value>
-  </data>
-  <data name="PracticeFailedTemplateMessage" xml:space="preserve">
-    <value>К сожалению вы допустили ошибки({0} ошибки).</value>
-  </data>
-  <data name="PracticeSuccessTemplateMessage" xml:space="preserve">
-    <value>Поздравляем,ошибок нет.</value>
-  </data>
-  <data name="PointMessage" xml:space="preserve">
-    <value>Ваша оценка - {0}.</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Content\Works\1\1.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_1_result" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Content\Works\1\1_result.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Content\Works\1\2.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_2_result" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Content\Works\1\2_result.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Content\Works\1\3.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_3_result" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Content\Works\1\3_result.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using AdvancedTest.Common.ViewModels.Answer;
 using AdvancedTest.Common.ViewModels.TestPart;
 using AdvancedTest.Common.ViewModels.Theory;
@@ -9,17 +10,30 @@ namespace AdvancedTest.Common.ViewModels.Practice
     /// <summary>
     /// Модель представления для документов теории
     /// </summary>
+    [Serializable]
     public partial class PracticeViewModel : TimerTheoryPartElementViewModel
     {
         public int DocumentId { get; set; }
         public string Description { get; set; }
 
-        public virtual PracticeType PracticeType { get;}
+        public virtual PracticeType PracticeType { get; set; }
 
         public virtual string DocumentPath { get; set; }
         public virtual string ButtonText { get; set; }
-        public virtual string SelectionDescription { get; }
-        public virtual int SelectedOption { get; set; }
+        public string SelectionDescription => Options[_selectedOption].Description;
+
+        private int _selectedOption;
+
+        public virtual int SelectedOption
+        {
+            get => _selectedOption;
+            set
+            {
+                _selectedOption = value;
+                OnPropertyChanged(nameof(SelectedOption));
+                OnPropertyChanged(nameof(SelectionDescription));
+            }
+        }
 
         public PracticeViewModel()
         {

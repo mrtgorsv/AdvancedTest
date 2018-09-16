@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 namespace AdvancedTest.Common.Utils
 {
+    [Serializable]
     public class DelegateCommand : ICommand
     {
         private readonly Action _action;
