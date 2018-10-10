@@ -19,11 +19,12 @@ namespace AdvancedTest.Data.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            
         }
 
         protected override void Seed(AppDbContext context)
         {
-            if (!context.TheoryParts.Any())
+            if (!context.Users.Any())
             {
                 CreateDefaultUser(context);
                 /*                CreateInitialTest(context, _theorySeq++);

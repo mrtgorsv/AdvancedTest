@@ -53,6 +53,8 @@
     <Compile Include="Enum\PracticeType.cs" />
     <Compile Include="Enum\TheoryType.cs" />
     <Compile Include="Enum\TestPartType.cs" />
+    <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\EntityFrameworkExtensions.cs" />
     <Compile Include="Extensions\EnumHelper.cs" />
     <Compile Include="Helpers\CopyHelper.cs" />
     <Compile Include="Helpers\TestPartBuilder.cs" />
@@ -75,6 +77,10 @@
     <Compile Include="Migrations\201809160623350_SetNullableStartDate.cs" />
     <Compile Include="Migrations\201809160623350_SetNullableStartDate.Designer.cs">
       <DependentUpon>201809160623350_SetNullableStartDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810101556135_InsertPracticeParts.cs" />
+    <Compile Include="Migrations\201810101556135_InsertPracticeParts.Designer.cs">
+      <DependentUpon>201810101556135_InsertPracticeParts.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TheoryDocument.cs" />
@@ -108,9 +114,13 @@
     <EmbeddedResource Include="Migrations\201809160623350_SetNullableStartDate.resx">
       <DependentUpon>201809160623350_SetNullableStartDate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810101556135_InsertPracticeParts.resx">
+      <DependentUpon>201810101556135_InsertPracticeParts.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Migrations\Scripts\" />
+    <EmbeddedResource Include="Scripts\201810101556135_InsertPracticeParts\TheoryPart_Add_Practice_Parts.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
