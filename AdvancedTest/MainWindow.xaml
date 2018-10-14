@@ -46,7 +46,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <ToolBar Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
-            <Button Content="Статистика" Command="{Binding ShowUserResultCommand}"></Button>
+            <!--<Button Content="Статистика" Command="{Binding ShowUserResultCommand}"></Button>-->
             <Button Content="Выход" Command="{Binding ExitCommand}"></Button>
         </ToolBar>
         <Label Grid.Row="1"  Grid.Column="0" Content="Теория"></Label>
